@@ -29,7 +29,7 @@
             android:onClick="recordClick"
             >
 
-            <com.yunbao.video.custom.VideoRecordBtnView
+            <com.myylook.video.custom.VideoRecordBtnView
                 android:id="@+id/record_btn_view"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -48,7 +48,7 @@
                 />
         </FrameLayout>
 
-        <com.yunbao.common.custom.DrawableTextView
+        <com.myylook.common.custom.DrawableTextView
             android:id="@+id/btn_next"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -64,7 +64,7 @@
             app:dt_top_width="30dp"
             />
 
-        <com.yunbao.video.custom.RecordProgressView
+        <com.myylook.video.custom.RecordProgressView
             android:id="@+id/record_progress_view"
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -102,7 +102,7 @@
                 android:translationY="-2dp"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_camera"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
@@ -121,7 +121,7 @@
                 app:dt_top_width="26dp"
                 />
 
-            <com.yunbao.common.custom.DrawableRadioButton2
+            <com.myylook.common.custom.DrawableRadioButton2
                 android:id="@+id/btn_flash"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
@@ -142,7 +142,7 @@
                 app:dt_top_width="26dp"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_beauty"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
@@ -162,7 +162,7 @@
                 app:dt_top_width="26dp"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_music"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
@@ -275,7 +275,7 @@
                 android:translationX="100dp"
                 >
 
-                <com.yunbao.common.custom.DrawableTextView
+                <com.myylook.common.custom.DrawableTextView
                     android:id="@+id/btn_upload"
                     android:layout_width="40dp"
                     android:layout_height="50dp"

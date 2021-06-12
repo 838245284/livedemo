@@ -83,7 +83,7 @@
             />
     </LinearLayout>
 
-    <com.yunbao.common.custom.RatioImageView
+    <com.myylook.common.custom.RatioImageView
         android:id="@+id/btn_use"
         android:layout_width="match_parent"
         android:layout_height="0dp"

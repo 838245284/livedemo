@@ -31,7 +31,7 @@
             android:orientation="horizontal"
             >
 
-            <com.yunbao.video.custom.NumberProgressBar
+            <com.myylook.video.custom.NumberProgressBar
                 android:id="@+id/progressbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

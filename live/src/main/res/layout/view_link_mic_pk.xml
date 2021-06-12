@@ -6,7 +6,7 @@
     android:layout_height="270dp"
     >
 
-    <com.yunbao.live.custom.FrameImageView
+    <com.myylook.live.custom.FrameImageView
         android:id="@+id/frame_img"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -16,7 +16,7 @@
         app:fiv_ratio="0.213"
         />
 
-    <com.yunbao.live.custom.PkProgressBar
+    <com.myylook.live.custom.PkProgressBar
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -85,7 +85,7 @@
         android:layout_centerInParent="true"
         />
 
-    <com.yunbao.live.custom.ProgressTextView
+    <com.myylook.live.custom.ProgressTextView
         android:id="@+id/pk_wait_progress"
         android:layout_width="70dp"
         android:layout_height="0dp"

@@ -25,7 +25,7 @@
                 android:background="@color/transparent"
                 android:fadingEdge="none"
                 app:elevation="0dp"
-                app:layout_behavior="com.yunbao.common.custom.AppBarLayoutBehavior"
+                app:layout_behavior="com.myylook.common.custom.AppBarLayoutBehavior"
                 >
 
                 <LinearLayout
@@ -35,7 +35,7 @@
                     app:layout_scrollFlags="scroll"
                     >
 
-                    <com.yunbao.common.custom.SquareImageView
+                    <com.myylook.common.custom.SquareImageView
                         android:id="@+id/thumb"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -158,7 +158,7 @@
             </android.support.design.widget.AppBarLayout>
 
 
-            <com.yunbao.common.custom.CommonRefreshView
+            <com.myylook.common.custom.CommonRefreshView
                 android:id="@+id/refreshView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

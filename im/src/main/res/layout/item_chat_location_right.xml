@@ -75,7 +75,7 @@
 
         </FrameLayout>
 
-        <com.yunbao.common.custom.BubbleLayout
+        <com.myylook.common.custom.BubbleLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
@@ -124,7 +124,7 @@
                     />
 
 
-                <com.yunbao.im.custom.MyRelativeLayout
+                <com.myylook.im.custom.MyRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     >
@@ -145,11 +145,11 @@
                         android:src="@mipmap/icon_location_marker"
                         android:translationY="-5dp"
                         />
-                </com.yunbao.im.custom.MyRelativeLayout>
+                </com.myylook.im.custom.MyRelativeLayout>
 
             </LinearLayout>
 
-        </com.yunbao.common.custom.BubbleLayout>
+        </com.myylook.common.custom.BubbleLayout>
 
 
     </LinearLayout>

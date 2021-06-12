@@ -40,7 +40,7 @@
         />
 
 
-    <com.yunbao.common.custom.MyRadioButton
+    <com.myylook.common.custom.MyRadioButton
         android:id="@+id/btn_send"
         android:layout_width="48dp"
         android:layout_height="match_parent"

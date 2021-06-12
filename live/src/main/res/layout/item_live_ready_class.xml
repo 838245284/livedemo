@@ -38,7 +38,7 @@
         android:textSize="13sp"
         />
 
-    <com.yunbao.common.custom.MyRadioButton
+    <com.myylook.common.custom.MyRadioButton
         android:id="@+id/radioButton"
         android:layout_width="20dp"
         android:layout_height="20dp"

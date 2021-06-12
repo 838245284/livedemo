@@ -27,7 +27,7 @@
         android:visibility="invisible"
         >
 
-        <com.yunbao.common.custom.CircleProgress
+        <com.myylook.common.custom.CircleProgress
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

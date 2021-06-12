@@ -17,7 +17,7 @@ android {
         useNewCruncher = false
     }
     defaultConfig {
-        applicationId "com.yunbao.phonelive"
+        applicationId "com.myylook.meikan"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion 28
         versionCode rootProject.ext.android.versionCode

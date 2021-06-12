@@ -31,7 +31,7 @@
         app:riv_oval="true"
         />
 
-    <com.yunbao.common.custom.BubbleLayout
+    <com.myylook.common.custom.BubbleLayout
         android:id="@+id/bubbleLayout"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
@@ -48,14 +48,14 @@
         app:bubbleBgColor="#FF825C"
         app:bubbleRadius="5dp">
 
-        <com.yunbao.im.custom.ChatVoiceLayout
+        <com.myylook.im.custom.ChatVoiceLayout
             android:id="@+id/voice"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:cvl_direction="right"
             />
 
-    </com.yunbao.common.custom.BubbleLayout>
+    </com.myylook.common.custom.BubbleLayout>
 
 
     <TextView

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     >
 
-    <com.yunbao.common.custom.SquareImageView
+    <com.myylook.common.custom.SquareImageView
         android:id="@+id/cover"
         android:layout_width="match_parent"
         android:layout_height="0dp"

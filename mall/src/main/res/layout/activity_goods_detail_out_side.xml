@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.yunbao.common.custom.MyFrameLayout2
+            <com.myylook.common.custom.MyFrameLayout2
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
@@ -47,7 +47,7 @@
                     android:textSize="11sp"
                     android:visibility="invisible" />
 
-            </com.yunbao.common.custom.MyFrameLayout2>
+            </com.myylook.common.custom.MyFrameLayout2>
 
 
 

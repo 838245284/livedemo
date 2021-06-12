@@ -38,7 +38,7 @@
                 android:background="@color/transparent"
                 android:fadingEdge="none"
                 app:elevation="0dp"
-                app:layout_behavior="com.yunbao.common.custom.FixAppBarLayoutBehavior">
+                app:layout_behavior="com.myylook.common.custom.FixAppBarLayoutBehavior">
 
                 <LinearLayout
                     android:layout_width="match_parent"

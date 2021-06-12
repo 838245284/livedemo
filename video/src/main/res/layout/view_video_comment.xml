@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.yunbao.common.custom.MyLinearLayout3
+    <com.myylook.common.custom.MyLinearLayout3
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -50,7 +50,7 @@
             style="@style/line2"
             />
 
-        <com.yunbao.common.custom.CommonRefreshView
+        <com.myylook.common.custom.CommonRefreshView
             android:id="@+id/refreshView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -93,5 +93,5 @@
                 android:tint="@color/gray1"
                 />
         </LinearLayout>
-    </com.yunbao.common.custom.MyLinearLayout3>
+    </com.myylook.common.custom.MyLinearLayout3>
 </FrameLayout>

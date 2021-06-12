@@ -22,7 +22,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
-    <com.yunbao.video.custom.VideoLoadingBar
+    <com.myylook.video.custom.VideoLoadingBar
         android:id="@+id/video_loading"
         android:layout_width="match_parent"
         android:layout_height="1dp"

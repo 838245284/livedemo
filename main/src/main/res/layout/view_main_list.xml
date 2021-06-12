@@ -12,7 +12,7 @@
         android:layout_height="110dp"
         >
 
-        <com.yunbao.common.custom.RatioImageView
+        <com.myylook.common.custom.RatioImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"

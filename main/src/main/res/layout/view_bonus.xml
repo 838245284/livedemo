@@ -79,7 +79,7 @@
                     android:layout_weight="1"
                     >
 
-                    <com.yunbao.main.custom.BonusItemView
+                    <com.myylook.main.custom.BonusItemView
                         android:id="@+id/btn_day_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                     android:layout_weight="1"
                     >
 
-                    <com.yunbao.main.custom.BonusItemView
+                    <com.myylook.main.custom.BonusItemView
                         android:id="@+id/btn_day_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                     android:layout_weight="1"
                     >
 
-                    <com.yunbao.main.custom.BonusItemView
+                    <com.myylook.main.custom.BonusItemView
                         android:id="@+id/btn_day_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                     android:layout_weight="1"
                     >
 
-                    <com.yunbao.main.custom.BonusItemView
+                    <com.myylook.main.custom.BonusItemView
                         android:id="@+id/btn_day_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
                         android:layout_weight="1"
                         >
 
-                        <com.yunbao.main.custom.BonusItemView
+                        <com.myylook.main.custom.BonusItemView
                             android:id="@+id/btn_day_5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                         android:layout_weight="1"
                         >
 
-                        <com.yunbao.main.custom.BonusItemView
+                        <com.myylook.main.custom.BonusItemView
                             android:id="@+id/btn_day_6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -257,7 +257,7 @@
                     android:layout_weight="1"
                     >
 
-                    <com.yunbao.common.custom.RatioImageView
+                    <com.myylook.common.custom.RatioImageView
                         android:id="@+id/btn_day_7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

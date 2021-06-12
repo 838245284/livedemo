@@ -34,7 +34,7 @@
             android:textSize="14sp"
             />
 
-        <com.yunbao.common.custom.DrawableCheckBox
+        <com.myylook.common.custom.DrawableCheckBox
             android:id="@+id/btn_face"
             android:layout_width="46dp"
             android:layout_height="46dp"

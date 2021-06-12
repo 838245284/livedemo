@@ -72,7 +72,7 @@
         android:layout_toRightOf="@id/level_anchor"
         />
 
-    <com.yunbao.common.custom.MyRadioButton
+    <com.myylook.common.custom.MyRadioButton
         android:id="@+id/btn_follow"
         android:layout_width="44dp"
         android:layout_height="20dp"

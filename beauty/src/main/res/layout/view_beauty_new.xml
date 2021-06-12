@@ -85,7 +85,7 @@
                 android:background="@mipmap/icon_beauty_camera_bottom"
                 android:padding="5dp">
 
-                <com.yunbao.beauty.ui.views.custom.ScaleImageButton
+                <com.myylook.beauty.ui.views.custom.ScaleImageButton
                     android:id="@+id/btn_beauty_take_camera"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -218,7 +218,7 @@
             android:clickable="true"
             >
 
-            <com.yunbao.beauty.ui.views.custom.TextSeekBarNew
+            <com.myylook.beauty.ui.views.custom.TextSeekBarNew
                 android:id="@+id/tsb_beauty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

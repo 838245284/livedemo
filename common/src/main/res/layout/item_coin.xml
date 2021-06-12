@@ -47,7 +47,7 @@
     </FrameLayout>
 
 
-    <com.yunbao.common.custom.CoinGiveLayout
+    <com.myylook.common.custom.CoinGiveLayout
         android:id="@+id/give_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,6 +71,6 @@
             android:textSize="11sp" />
 
 
-    </com.yunbao.common.custom.CoinGiveLayout>
+    </com.myylook.common.custom.CoinGiveLayout>
 
 </FrameLayout>

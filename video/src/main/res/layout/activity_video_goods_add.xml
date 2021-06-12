@@ -65,14 +65,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.yunbao.common.custom.CommonRefreshView
+        <com.myylook.common.custom.CommonRefreshView
             android:id="@+id/refreshView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:crv_refreshEnable="false"
             />
 
-        <com.yunbao.common.custom.CommonRefreshView
+        <com.myylook.common.custom.CommonRefreshView
             android:id="@+id/refreshView_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

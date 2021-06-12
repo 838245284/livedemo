@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.yunbao.common">
+          package="com.myylook.common">
 
     <application
         android:allowBackup="true"
         >
         <activity
-            android:name=".activity.WebViewActivity"
+            android:name="com.myylook.common.activity.WebViewActivity"
             android:screenOrientation="portrait"
             />
 
@@ -44,13 +44,13 @@
         <!--支付宝 end-->
 
 
-        <activity android:name=".activity.ChooseImageActivity"
+        <activity android:name="com.myylook.common.activity.ChooseImageActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".activity.ChooseVideoActivity"
+        <activity android:name="com.myylook.common.activity.ChooseVideoActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".activity.ChooseLocationActivity"
+        <activity android:name="com.myylook.common.activity.ChooseLocationActivity"
             android:screenOrientation="portrait"
             />
 

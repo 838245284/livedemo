@@ -1,176 +1,176 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yunbao.mall">
+    package="com.myylook.mall">
 
     <application
         android:allowBackup="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.BuyerActivity"
+            android:name="com.myylook.mall.activity.BuyerActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.ShopApplyActivity"
+            android:name="com.myylook.mall.activity.ShopApplyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <activity
-            android:name=".activity.ManageClassActivity"
+            android:name="com.myylook.mall.activity.ManageClassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ShopApplyBondActivity"
+            android:name="com.myylook.mall.activity.ShopApplyBondActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ShopApplyResultActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".activity.SellerActivity"
+            android:name="com.myylook.mall.activity.ShopApplyResultActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.ChooseGoodsClassActivity"
+            android:name="com.myylook.mall.activity.SellerActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.myylook.mall.activity.ChooseGoodsClassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerAddGoodsActivity"
+            android:name="com.myylook.mall.activity.SellerAddGoodsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <activity
-            android:name=".activity.SellerManageGoodsActivity"
+            android:name="com.myylook.mall.activity.SellerManageGoodsActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.GoodsDetailActivity"
+            android:name="com.myylook.mall.activity.GoodsDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsOutSideDetailActivity"
+            android:name="com.myylook.mall.activity.GoodsOutSideDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsEditSpecActivity"
+            android:name="com.myylook.mall.activity.GoodsEditSpecActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ShopDetailActivity"
+            android:name="com.myylook.mall.activity.ShopDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ShopCertActivity"
+            android:name="com.myylook.mall.activity.ShopCertActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerAddressActivity"
+            android:name="com.myylook.mall.activity.SellerAddressActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerAddressEditActivity"
+            android:name="com.myylook.mall.activity.SellerAddressEditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <activity
-            android:name=".activity.BuyerAddressActivity"
+            android:name="com.myylook.mall.activity.BuyerAddressActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.BuyerAddressEditActivity"
+            android:name="com.myylook.mall.activity.BuyerAddressEditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
-            android:name=".activity.ShopHomeActivity"
+            android:name="com.myylook.mall.activity.ShopHomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsRecordActivity"
+            android:name="com.myylook.mall.activity.GoodsRecordActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.GoodsMakeOrderActivity"
+            android:name="com.myylook.mall.activity.GoodsMakeOrderActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <activity
-            android:name=".activity.BuyerOrderActivity"
+            android:name="com.myylook.mall.activity.BuyerOrderActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.SellerOrderActivity"
+            android:name="com.myylook.mall.activity.SellerOrderActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.SellerSendActivity"
+            android:name="com.myylook.mall.activity.SellerSendActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.BuyerCommentActivity"
+            android:name="com.myylook.mall.activity.BuyerCommentActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.BuyerCommentAppendActivity"
+            android:name="com.myylook.mall.activity.BuyerCommentAppendActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.BuyerOrderDetailActivity"
+            android:name="com.myylook.mall.activity.BuyerOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerOrderDetailActivity"
+            android:name="com.myylook.mall.activity.SellerOrderDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BuyerRefundApplyActivity"
+            android:name="com.myylook.mall.activity.BuyerRefundApplyActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BuyerRefundDetailActivity"
+            android:name="com.myylook.mall.activity.BuyerRefundDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerRefundDetailActivity"
+            android:name="com.myylook.mall.activity.SellerRefundDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerRejectRefundActivity"
+            android:name="com.myylook.mall.activity.SellerRejectRefundActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BuyerRefundOfficialActivity"
+            android:name="com.myylook.mall.activity.BuyerRefundOfficialActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsCommentActivity"
+            android:name="com.myylook.mall.activity.GoodsCommentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BuyerAccountActivity"
+            android:name="com.myylook.mall.activity.BuyerAccountActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerAccountActivity"
+            android:name="com.myylook.mall.activity.SellerAccountActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.BuyerCashActivity"
+            android:name="com.myylook.mall.activity.BuyerCashActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerCashActivity"
+            android:name="com.myylook.mall.activity.SellerCashActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PayContentActivity1"
+            android:name="com.myylook.mall.activity.PayContentActivity1"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PayContentActivity2"
+            android:name="com.myylook.mall.activity.PayContentActivity2"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activity.PayContentPubActivity"
+            android:name="com.myylook.mall.activity.PayContentPubActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PayContentClassActivity"
+            android:name="com.myylook.mall.activity.PayContentClassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PayContentDetailActivity"
+            android:name="com.myylook.mall.activity.PayContentDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsSearchActivity"
+            android:name="com.myylook.mall.activity.GoodsSearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.OrderMessageActivity"
+            android:name="com.myylook.mall.activity.OrderMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsAddOutSideActivity"
+            android:name="com.myylook.mall.activity.GoodsAddOutSideActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsCollectActivity"
+            android:name="com.myylook.mall.activity.GoodsCollectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SetManageClassActivity"
+            android:name="com.myylook.mall.activity.SetManageClassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SellerAddPlatActivity"
+            android:name="com.myylook.mall.activity.SellerAddPlatActivity"
             android:screenOrientation="portrait" />
 
     </application>

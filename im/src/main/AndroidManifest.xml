@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.yunbao.im">
+          package="com.myylook.im">
 
 
     <!--接三方的时候,修改这里的包名-->
     <permission
-        android:name="com.yunbao.phonelive.permission.JPUSH_MESSAGE"
+        android:name="com.myylook.meikan.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature"/>
 
     <!--接三方的时候,修改这里的包名-->
@@ -16,26 +16,26 @@
         >
 
         <activity
-            android:name="com.yunbao.im.activity.ChatActivity"
+            android:name="com.myylook.im.activity.ChatActivity"
             android:screenOrientation="portrait"
             />
 
         <activity
-            android:name="com.yunbao.im.activity.SystemMessageActivity"
+            android:name="com.myylook.im.activity.SystemMessageActivity"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name="com.yunbao.im.activity.ChatRoomActivity"
+            android:name="com.myylook.im.activity.ChatRoomActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             />
         <activity
-            android:name="com.yunbao.im.activity.LocationActivity"
+            android:name="com.myylook.im.activity.LocationActivity"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name="com.yunbao.im.activity.ChatChooseImageActivity"
+            android:name="com.myylook.im.activity.ChatChooseImageActivity"
             android:screenOrientation="portrait"
             />
 
@@ -109,23 +109,23 @@
 
         <provider
             android:name="cn.jpush.android.service.DataProvider"
-            android:authorities="com.yunbao.phonelive.DataProvider"
+            android:authorities="com.myylook.meikan.DataProvider"
             android:exported="true"/>
 
         <provider
             android:name="cn.jpush.im.android.helpers.ipc.IMProvider"
-            android:authorities="com.yunbao.phonelive.IMProvider"
+            android:authorities="com.myylook.meikan.IMProvider"
             android:exported="false"/>
 
         <provider
             android:name="cn.jpush.android.service.DownloadProvider"
-            android:authorities="com.yunbao.phonelive.DownloadProvider"
+            android:authorities="com.myylook.meikan.DownloadProvider"
             android:exported="true"
             />
 
         <!--极光推送-->
         <receiver
-            android:name="com.yunbao.im.receiver.JPushReceiver"
+            android:name="com.myylook.im.receiver.JPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

@@ -6,7 +6,7 @@
 
     <include layout="@layout/view_title" />
 
-    <com.yunbao.common.custom.CommonRefreshView
+    <com.myylook.common.custom.CommonRefreshView
         android:id="@+id/refreshView"
         android:layout_width="match_parent"
         android:layout_height="0dp"

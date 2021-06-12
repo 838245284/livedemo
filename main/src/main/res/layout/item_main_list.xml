@@ -67,7 +67,7 @@
         android:textColor="@color/gray3"
         android:textSize="12sp" />
 
-    <com.yunbao.common.custom.MyRadioButton
+    <com.myylook.common.custom.MyRadioButton
         android:id="@+id/btn_follow"
         android:layout_width="wrap_content"
         android:layout_height="20dp"

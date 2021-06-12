@@ -8,7 +8,7 @@
     android:clipChildren="false"
     >
 
-    <com.yunbao.common.custom.MyViewPager
+    <com.myylook.common.custom.MyViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,14 +23,14 @@
         android:background="@color/white"
         >
 
-        <com.yunbao.common.custom.TabButtonGroup
+        <com.myylook.common.custom.TabButtonGroup
             android:id="@+id/tab_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             >
 
-            <com.yunbao.common.custom.TabButton
+            <com.myylook.common.custom.TabButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -43,7 +43,7 @@
                 app:tbn_tip="@string/main_home"
                 />
 
-            <com.yunbao.common.custom.TabButton
+            <com.myylook.common.custom.TabButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="60dp"
@@ -56,7 +56,7 @@
                 app:tbn_tip="@string/main_active"
                 />
 
-            <com.yunbao.common.custom.TabButton
+            <com.myylook.common.custom.TabButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -68,7 +68,7 @@
                 app:tbn_tip="@string/main_mall"
                 />
 
-            <com.yunbao.common.custom.TabButton
+            <com.myylook.common.custom.TabButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -80,7 +80,7 @@
                 app:tbn_tip="@string/main_me"
                 />
 
-        </com.yunbao.common.custom.TabButtonGroup>
+        </com.myylook.common.custom.TabButtonGroup>
 
         <ImageView
             android:id="@+id/btn_start"

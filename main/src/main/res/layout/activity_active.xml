@@ -192,7 +192,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <com.yunbao.common.custom.ActiveVoiceLayout
+                        <com.myylook.common.custom.ActiveVoiceLayout
                             android:id="@+id/voice_layout"
                             android:layout_width="180dp"
                             android:layout_height="36dp"

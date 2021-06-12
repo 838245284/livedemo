@@ -27,7 +27,7 @@
             android:textColor="@color/gray1"
             android:textSize="14sp" />
 
-        <com.yunbao.common.custom.StarCountView
+        <com.myylook.common.custom.StarCountView
             android:id="@+id/star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

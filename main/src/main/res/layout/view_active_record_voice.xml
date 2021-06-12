@@ -62,7 +62,7 @@
             android:visibility="invisible"
             />
 
-        <com.yunbao.common.custom.LineProgress
+        <com.myylook.common.custom.LineProgress
             android:id="@+id/line_progress"
             android:layout_width="match_parent"
             android:layout_height="6dp"

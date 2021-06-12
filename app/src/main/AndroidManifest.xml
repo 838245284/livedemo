@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.yunbao.phonelive">
+    package="com.myylook.meikan">
 
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -76,7 +76,7 @@
 
 
     <application
-        android:name="AppContext"
+        android:name="com.myylook.meikan.AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -86,7 +86,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
         <activity
-            android:name=".activity.LauncherActivity"
+            android:name="com.myylook.meikan.activity.LauncherActivity"
             android:theme="@style/LauncherAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,13 +97,13 @@
 
         <!--微信登录回调页面-->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.myylook.meikan.wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--微信支付回调页面-->
         <activity
-            android:name=".wxapi.WXPayEntryActivity"
+            android:name="com.myylook.meikan.wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />

@@ -36,7 +36,7 @@
         android:textSize="16sp"
         />
 
-    <com.yunbao.live.music.LrcTextView
+    <com.myylook.live.music.LrcTextView
         android:id="@+id/lrc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

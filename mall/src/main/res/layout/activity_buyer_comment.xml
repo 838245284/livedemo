@@ -126,7 +126,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.yunbao.common.custom.RatingBar
+                <com.myylook.common.custom.RatingBar
                     android:id="@+id/rating_bar"
                     android:layout_width="150dp"
                     android:layout_height="30dp"
@@ -261,7 +261,7 @@
                         android:textColor="@color/gray1"
                         android:textSize="15sp" />
 
-                    <com.yunbao.common.custom.RatingBar
+                    <com.myylook.common.custom.RatingBar
                         android:id="@+id/rating_bar_send"
                         android:layout_width="150dp"
                         android:layout_height="30dp"
@@ -290,7 +290,7 @@
                         android:textColor="@color/gray1"
                         android:textSize="15sp" />
 
-                    <com.yunbao.common.custom.RatingBar
+                    <com.myylook.common.custom.RatingBar
                         android:id="@+id/rating_bar_service"
                         android:layout_width="150dp"
                         android:layout_height="30dp"

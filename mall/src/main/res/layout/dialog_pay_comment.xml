@@ -17,7 +17,7 @@
         android:textStyle="bold" />
 
 
-    <com.yunbao.common.custom.RatingBar
+    <com.myylook.common.custom.RatingBar
         android:id="@+id/rating_bar"
         android:layout_width="150dp"
         android:layout_height="30dp"

@@ -11,7 +11,7 @@
         android:orientation="vertical"
         >
 
-        <com.yunbao.live.custom.GiftPageViewPager
+        <com.myylook.live.custom.GiftPageViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"

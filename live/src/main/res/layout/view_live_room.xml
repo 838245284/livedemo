@@ -174,7 +174,7 @@
         android:layout_toRightOf="@id/btn_guard" />
 
 
-    <com.yunbao.common.custom.DrawableTextView
+    <com.myylook.common.custom.DrawableTextView
         android:id="@+id/live_time"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
@@ -359,7 +359,7 @@
     </LinearLayout>
 
 
-    <com.yunbao.common.custom.MyFrameLayout2
+    <com.myylook.common.custom.MyFrameLayout2
         android:id="@+id/enter_room_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -392,7 +392,7 @@
                 app:riv_border_width="1dp"
                 app:riv_oval="true" />
 
-            <com.yunbao.live.custom.StarView
+            <com.myylook.live.custom.StarView
                 android:id="@+id/star"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
@@ -412,7 +412,7 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </RelativeLayout>
-    </com.yunbao.common.custom.MyFrameLayout2>
+    </com.myylook.common.custom.MyFrameLayout2>
 
     <TextView
         android:id="@+id/goods_float"

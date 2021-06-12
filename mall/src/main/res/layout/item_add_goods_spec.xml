@@ -97,7 +97,7 @@
         android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
-        <com.yunbao.common.custom.MyFrameLayout2
+        <com.myylook.common.custom.MyFrameLayout2
             android:id="@+id/btn_img"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                 android:src="@mipmap/close_01"
                 android:visibility="invisible" />
 
-        </com.yunbao.common.custom.MyFrameLayout2>
+        </com.myylook.common.custom.MyFrameLayout2>
 
         <FrameLayout
             android:layout_width="0dp"

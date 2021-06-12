@@ -6,7 +6,7 @@
     android:padding="1dp"
     >
 
-    <com.yunbao.beauty.custom.SquareImageView2
+    <com.myylook.beauty.custom.SquareImageView2
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="0dp"

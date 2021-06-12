@@ -12,7 +12,7 @@
         android:orientation="vertical"
         >
 
-        <com.yunbao.live.custom.GiftPageViewPager
+        <com.myylook.live.custom.GiftPageViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -86,7 +86,7 @@
 
             </RelativeLayout>
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/coin"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

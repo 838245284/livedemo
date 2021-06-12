@@ -12,7 +12,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.yunbao.beauty.ui.views.custom.TextSeekBarNew
+        <com.myylook.beauty.ui.views.custom.TextSeekBarNew
             android:id="@+id/tsb_beauty_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

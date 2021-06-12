@@ -29,7 +29,7 @@
         android:textSize="12sp"
         />
 
-    <com.yunbao.live.custom.MusicProgressTextView
+    <com.myylook.live.custom.MusicProgressTextView
         android:id="@+id/ptv"
         android:layout_width="40dp"
         android:layout_height="40dp"

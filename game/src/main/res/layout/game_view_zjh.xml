@@ -31,7 +31,7 @@
                 android:layout_weight="1"
                 >
 
-                <com.yunbao.game.custom.PokerView
+                <com.myylook.game.custom.PokerView
                     android:id="@+id/pokers_1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_weight="1"
                 >
 
-                <com.yunbao.game.custom.PokerView
+                <com.myylook.game.custom.PokerView
                     android:id="@+id/pokers_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -83,7 +83,7 @@
                 android:layout_weight="1"
                 >
 
-                <com.yunbao.game.custom.PokerView
+                <com.myylook.game.custom.PokerView
                     android:id="@+id/pokers_3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -147,7 +147,7 @@
                         android:src="@mipmap/icon_zjh_role_name_left"
                         />
 
-                    <com.yunbao.game.custom.GameBetCoinView
+                    <com.myylook.game.custom.GameBetCoinView
                         android:id="@+id/score_1"
                         android:layout_width="50dp"
                         android:layout_height="70dp"
@@ -198,7 +198,7 @@
                         android:src="@mipmap/icon_zjh_role_name_middle"
                         />
 
-                    <com.yunbao.game.custom.GameBetCoinView
+                    <com.myylook.game.custom.GameBetCoinView
                         android:id="@+id/score_2"
                         android:layout_width="50dp"
                         android:layout_height="70dp"
@@ -249,7 +249,7 @@
                         android:src="@mipmap/icon_zjh_role_name_right"
                         />
 
-                    <com.yunbao.game.custom.GameBetCoinView
+                    <com.myylook.game.custom.GameBetCoinView
                         android:id="@+id/score_3"
                         android:layout_width="50dp"
                         android:layout_height="70dp"

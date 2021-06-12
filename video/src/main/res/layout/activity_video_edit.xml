@@ -43,7 +43,7 @@
             android:translationY="-2dp"
             />
 
-        <com.yunbao.common.custom.DrawableTextView
+        <com.myylook.common.custom.DrawableTextView
             android:id="@+id/btn_music"
             android:layout_width="40dp"
             android:layout_height="50dp"
@@ -61,7 +61,7 @@
             app:dt_top_width="26dp"
             />
 
-        <com.yunbao.common.custom.DrawableTextView
+        <com.myylook.common.custom.DrawableTextView
             android:id="@+id/btn_music_volume"
             android:layout_width="40dp"
             android:layout_height="50dp"
@@ -88,7 +88,7 @@
             android:paddingRight="25dp"
             >
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_filter"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
@@ -106,7 +106,7 @@
                 app:dt_top_width="26dp"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_cut"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
@@ -124,7 +124,7 @@
                 app:dt_top_width="26dp"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_special"
                 android:layout_width="40dp"
                 android:layout_height="50dp"

@@ -34,7 +34,7 @@
         app:riv_oval="true"
         />
 
-    <com.yunbao.im.custom.MyImageView
+    <com.myylook.im.custom.MyImageView
         android:id="@+id/img"
         android:layout_width="120dp"
         android:layout_height="wrap_content"

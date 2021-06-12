@@ -1,143 +1,143 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yunbao.main">
+    package="com.myylook.main">
 
     <application
         android:allowBackup="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.LoginInvalidActivity"
+            android:name="com.myylook.main.activity.LoginInvalidActivity"
             android:theme="@style/dialog2" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="com.myylook.main.activity.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.myylook.main.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.UserHomeActivity"
+            android:name="com.myylook.main.activity.UserHomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SettingActivity"
+            android:name="com.myylook.main.activity.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SearchActivity"
+            android:name="com.myylook.main.activity.SearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.FollowActivity"
+            android:name="com.myylook.main.activity.FollowActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.FansActivity"
+            android:name="com.myylook.main.activity.FansActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.EditProfileActivity"
+            android:name="com.myylook.main.activity.EditProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.EditSexActivity"
+            android:name="com.myylook.main.activity.EditSexActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.EditNameActivity"
+            android:name="com.myylook.main.activity.EditNameActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.EditSignActivity"
+            android:name="com.myylook.main.activity.EditSignActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MyImpressActivity"
+            android:name="com.myylook.main.activity.MyImpressActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MyCoinActivity"
+            android:name="com.myylook.main.activity.MyCoinActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MyVideoActivity"
+            android:name="com.myylook.main.activity.MyVideoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MyProfitActivity"
+            android:name="com.myylook.main.activity.MyProfitActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.CashActivity"
+            android:name="com.myylook.main.activity.CashActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.LiveClassActivity"
+            android:name="com.myylook.main.activity.LiveClassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ModifyPwdActivity"
+            android:name="com.myylook.main.activity.ModifyPwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name="com.myylook.main.activity.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.FindPwdActivity"
+            android:name="com.myylook.main.activity.FindPwdActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.RecommendActivity"
+            android:name="com.myylook.main.activity.RecommendActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ThreeDistributActivity"
+            android:name="com.myylook.main.activity.ThreeDistributActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GoodsAddActivity"
+            android:name="com.myylook.main.activity.GoodsAddActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <activity
-            android:name=".activity.ShopActivity"
+            android:name="com.myylook.main.activity.ShopActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ShopGoodsActivity"
+            android:name="com.myylook.main.activity.ShopGoodsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.TestActivity"
+            android:name="com.myylook.main.activity.TestActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActivePubActivity"
+            android:name="com.myylook.main.activity.ActivePubActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MyActiveActivity"
+            android:name="com.myylook.main.activity.MyActiveActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveVideoPlayActivity"
+            android:name="com.myylook.main.activity.ActiveVideoPlayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveReportActivity"
+            android:name="com.myylook.main.activity.ActiveReportActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveDetailActivity"
+            android:name="com.myylook.main.activity.ActiveDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden" />
         <activity
-            android:name=".activity.ActiveVideoRecordActivity"
+            android:name="com.myylook.main.activity.ActiveVideoRecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.CancelAccountActivity"
+            android:name="com.myylook.main.activity.CancelAccountActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.CancelConditionActivity"
+            android:name="com.myylook.main.activity.CancelConditionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.RankActivity"
+            android:name="com.myylook.main.activity.RankActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MallClassActivity"
+            android:name="com.myylook.main.activity.MallClassActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.MallSearchActivity"
+            android:name="com.myylook.main.activity.MallSearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.DailyTaskActivity"
+            android:name="com.myylook.main.activity.DailyTaskActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveAllTopicActivity"
+            android:name="com.myylook.main.activity.ActiveAllTopicActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveChooseTopicActivity"
+            android:name="com.myylook.main.activity.ActiveChooseTopicActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveTopicActivity"
+            android:name="com.myylook.main.activity.ActiveTopicActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ActiveSearchTopicActivity"
+            android:name="com.myylook.main.activity.ActiveSearchTopicActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.LiveRecommendActivity"
+            android:name="com.myylook.main.activity.LiveRecommendActivity"
             android:screenOrientation="portrait" />
     </application>
 </manifest>

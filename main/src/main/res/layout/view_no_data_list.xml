@@ -6,13 +6,13 @@
     android:orientation="vertical">
 
 
-    <com.yunbao.common.custom.MyFrameLayout2
+    <com.myylook.common.custom.MyFrameLayout2
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:mfl_offestY="-110dp"
         app:mfl_ratio="1.13067">
 
-        <com.yunbao.common.custom.RatioImageView
+        <com.myylook.common.custom.RatioImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
@@ -21,7 +21,7 @@
             app:ri_ratio="1.13067" />
 
 
-    </com.yunbao.common.custom.MyFrameLayout2>
+    </com.myylook.common.custom.MyFrameLayout2>
 
 
     <TextView

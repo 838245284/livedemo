@@ -71,7 +71,7 @@
                     android:paddingRight="10dp"
                     android:src="@mipmap/icon_video_music_wave" />
 
-                <com.yunbao.video.custom.RangeSlider
+                <com.myylook.video.custom.RangeSlider
                     android:id="@+id/range_slider"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -107,7 +107,7 @@
                 android:textSize="13sp" />
         </RelativeLayout>
 
-        <com.yunbao.beauty.custom.TextSeekBar
+        <com.myylook.beauty.custom.TextSeekBar
             android:id="@+id/btn_origin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             app:progressVal="80"
             app:text2="@string/video_edit_origin" />
 
-        <com.yunbao.beauty.custom.TextSeekBar
+        <com.myylook.beauty.custom.TextSeekBar
             android:id="@+id/seek_bgm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

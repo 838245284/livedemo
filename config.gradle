@@ -9,7 +9,7 @@ ext {
     ]
 
     manifestPlaceholders = [
-            serverHost       : "https://nideyuming.com",
+            serverHost       : "https://ttq.btgoogle.cn/",
 
             //极光推送 IM
             jpushAppKey      : "bead65f9fc2c48b9f98",

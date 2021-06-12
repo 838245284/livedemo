@@ -13,7 +13,7 @@
         android:background="@drawable/bg_live_user"
         >
 
-        <com.yunbao.common.custom.RatioImageView
+        <com.myylook.common.custom.RatioImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@mipmap/icon_live_user_1"
@@ -118,7 +118,7 @@
                 android:background="@color/textColor"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/city"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

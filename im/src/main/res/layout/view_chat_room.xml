@@ -109,7 +109,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <com.yunbao.common.custom.DrawableCheckBox
+            <com.myylook.common.custom.DrawableCheckBox
                 android:id="@+id/btn_voice_record"
                 android:layout_width="46dp"
                 android:layout_height="46dp"
@@ -156,7 +156,7 @@
             </FrameLayout>
 
 
-            <com.yunbao.common.custom.DrawableCheckBox
+            <com.myylook.common.custom.DrawableCheckBox
                 android:id="@+id/btn_face"
                 android:layout_width="36dp"
                 android:layout_height="46dp"

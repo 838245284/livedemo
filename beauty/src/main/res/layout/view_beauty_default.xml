@@ -98,7 +98,7 @@
         android:visibility="visible"
         >
 
-        <com.yunbao.beauty.custom.TextSeekBar
+        <com.myylook.beauty.custom.TextSeekBar
             android:id="@+id/seek_meibai"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
             app:text2="@string/beauty_meibai"
             />
 
-        <com.yunbao.beauty.custom.TextSeekBar
+        <com.myylook.beauty.custom.TextSeekBar
             android:id="@+id/seek_mopi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             />
 
 
-        <com.yunbao.beauty.custom.TextSeekBar
+        <com.myylook.beauty.custom.TextSeekBar
             android:id="@+id/seek_hongrun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -76,7 +76,7 @@
         android:orientation="vertical"
         >
 
-        <com.yunbao.live.custom.MyRelativeLayout1
+        <com.myylook.live.custom.MyRelativeLayout1
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -185,7 +185,7 @@
 
             </LinearLayout>
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/live_class"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -202,7 +202,7 @@
                 />
 
 
-        </com.yunbao.live.custom.MyRelativeLayout1>
+        </com.myylook.live.custom.MyRelativeLayout1>
 
 
         <CheckBox
@@ -233,7 +233,7 @@
             android:orientation="horizontal"
             >
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_beauty"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
@@ -247,7 +247,7 @@
                 app:dt_left_width="22dp"
                 />
 
-            <com.yunbao.common.custom.DrawableTextView
+            <com.myylook.common.custom.DrawableTextView
                 android:id="@+id/btn_room_type"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"

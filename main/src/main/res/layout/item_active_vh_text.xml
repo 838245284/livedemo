@@ -178,7 +178,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
-            <com.yunbao.main.custom.ActiveLikeImage
+            <com.myylook.main.custom.ActiveLikeImage
                 android:id="@+id/like_icon"
                 android:layout_width="22dp"
                 android:layout_height="22dp"

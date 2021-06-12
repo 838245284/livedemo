@@ -26,7 +26,7 @@
         android:textColor="@color/textColor"
         android:textSize="14sp" />
 
-    <com.yunbao.common.custom.DrawableCheckBox
+    <com.myylook.common.custom.DrawableCheckBox
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="16dp"

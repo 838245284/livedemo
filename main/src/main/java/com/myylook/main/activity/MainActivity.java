@@ -552,12 +552,12 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
                     mHomeViewHolder.setAppBarLayoutListener(this);
                     vh = mHomeViewHolder;
                 } else if (position == 1) {
+                    mMallViewHolder = new MainMallViewHolder(mContext, parent);
+                    vh = mMallViewHolder;
+                } else if (position == 2) {
                     mActiveViewHolder = new MainActiveViewHolder(mContext, parent);
                     mActiveViewHolder.setAppBarLayoutListener(this);
                     vh = mActiveViewHolder;
-                } else if (position == 2) {
-                    mMallViewHolder = new MainMallViewHolder(mContext, parent);
-                    vh = mMallViewHolder;
                 } else if (position == 3) {
                     mMeViewHolder = new MainMeViewHolder(mContext, parent);
                     vh = mMeViewHolder;

@@ -4,22 +4,24 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.myylook.common.CommonAppConfig;
 import com.myylook.common.Constants;
 import com.myylook.common.adapter.RefreshAdapter;
 import com.myylook.common.custom.CommonRefreshView;
 import com.myylook.common.custom.ItemDecoration;
 import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
-import com.myylook.live.bean.LiveBean;
-import com.myylook.live.utils.LiveStorge;
+import com.myylook.common.utils.JsonUtil;
 import com.myylook.main.R;
-import com.myylook.main.adapter.MainHomeFollowAdapter;
+import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.main.http.MainHttpConsts;
 import com.myylook.main.http.MainHttpUtil;
+import com.myylook.video.activity.VideoPlayActivity;
+import com.myylook.video.bean.VideoBean;
+import com.myylook.video.http.VideoHttpUtil;
+import com.myylook.video.interfaces.VideoScrollDataHelper;
+import com.myylook.video.utils.VideoStorge;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,11 +29,11 @@ import java.util.List;
  * 首页 关注
  */
 
-public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<LiveBean> {
+public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoBean> {
 
     private CommonRefreshView mRefreshView;
-    private MainHomeFollowAdapter mAdapter;
-
+    private MainHomeVideoAdapter mAdapter;
+    private VideoScrollDataHelper mVideoScrollDataHelper;
 
     public MainHomeFollowViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
@@ -39,22 +41,22 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
 
     @Override
     protected int getLayoutId() {
-        return R.layout.view_main_home_follow;
+        return R.layout.layout_refreshlist;
     }
 
     @Override
     public void init() {
         mRefreshView = (CommonRefreshView) findViewById(R.id.refreshView);
-        mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_follow);
+        mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_video);
         mRefreshView.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false));
         ItemDecoration decoration = new ItemDecoration(mContext, 0x00000000, 5, 0);
         decoration.setOnlySetItemOffsetsButNoDraw(true);
         mRefreshView.setItemDecoration(decoration);
-        mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<LiveBean>() {
+        mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoBean>() {
             @Override
-            public RefreshAdapter<LiveBean> getAdapter() {
+            public RefreshAdapter<VideoBean> getAdapter() {
                 if (mAdapter == null) {
-                    mAdapter = new MainHomeFollowAdapter(mContext);
+                    mAdapter = new MainHomeVideoAdapter(mContext);
                     mAdapter.setOnItemClickListener(MainHomeFollowViewHolder.this);
                 }
                 return mAdapter;
@@ -62,23 +64,18 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
 
             @Override
             public void loadData(int p, HttpCallback callback) {
-                MainHttpUtil.getFollow(p, callback);
+                VideoHttpUtil.getFollowVideoList(p,callback);
             }
 
             @Override
-            public List<LiveBean> processData(String[] info) {
-                if (info.length > 0) {
-                    JSONObject obj = JSON.parseObject(info[0]);
-                    return JSON.parseArray(obj.getString("list"), LiveBean.class);
-                }
-                return null;
+            public List<VideoBean> processData(String[] info) {
+//                Log.e("TAG", "processData: "+Arrays.toString(info) );
+                return JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
             }
 
             @Override
-            public void onRefreshSuccess(List<LiveBean> adapterItemList, int allItemCount) {
-                if(CommonAppConfig.LIVE_ROOM_SCROLL){
-                    LiveStorge.getInstance().put(Constants.LIVE_FOLLOW, adapterItemList);
-                }
+            public void onRefreshSuccess(List<VideoBean> adapterItemList, int allItemCount) {
+                VideoStorge.getInstance().put(Constants.VIDEO_FOLLOW, adapterItemList);
             }
 
             @Override
@@ -87,7 +84,7 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
             }
 
             @Override
-            public void onLoadMoreSuccess(List<LiveBean> loadItemList, int loadItemCount) {
+            public void onLoadMoreSuccess(List<VideoBean> loadItemList, int loadItemCount) {
 
             }
 
@@ -106,8 +103,22 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
     }
 
     @Override
-    public void onItemClick(LiveBean bean, int position) {
-        watchLive(bean, Constants.LIVE_FOLLOW, position);
+    public void onItemClick(VideoBean bean, int position) {
+        int page = 1;
+        if (mRefreshView != null) {
+            page = mRefreshView.getPageCount();
+        }
+        if (mVideoScrollDataHelper == null) {
+            mVideoScrollDataHelper = new VideoScrollDataHelper() {
+
+                @Override
+                public void loadData(int p, HttpCallback callback) {
+                    VideoHttpUtil.getFollowVideoList(p,callback);
+                }
+            };
+        }
+        VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
+        VideoPlayActivity.forward(mContext, position, Constants.VIDEO_HOME, page);
     }
 
 

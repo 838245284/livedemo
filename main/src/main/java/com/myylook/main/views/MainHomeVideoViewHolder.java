@@ -8,29 +8,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.myylook.common.CommonAppConfig;
-import com.myylook.common.Constants;
 import com.myylook.common.bean.ConfigBean;
 import com.myylook.common.bean.VideoClassBean;
 import com.myylook.common.custom.CommonRefreshView;
-import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
 import com.myylook.common.utils.WordUtil;
 import com.myylook.main.R;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.main.adapter.MainHomeVideoClassAdapter;
 import com.myylook.main.fragment.TabFragment;
-import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
 import com.myylook.video.interfaces.VideoScrollDataHelper;
-import com.myylook.video.utils.VideoStorge;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -141,7 +136,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                 // 再次选中tab
             }
         });
-        mClassAdapter = new MainHomeVideoClassAdapter(mContext, videoClassList);
+       /* mClassAdapter = new MainHomeVideoClassAdapter(mContext, videoClassList);
         mClassAdapter.setOnItemClickListener(new OnItemClickListener<VideoClassBean>() {
             @Override
             public void onItemClick(VideoClassBean bean, int position) {
@@ -150,7 +145,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                     mRefreshView.initData();
                 }
             }
-        });
+        });*/
 //        EventBus.getDefault().register(this);
     }
 
@@ -161,7 +156,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
             VideoClassBean videoClassBean = videoClassList.get(i);
             TabFragment tabFragment = new TabFragment();
             int id = videoClassList.get(i).getId();
-            Log.e(TAG, "initTabData: "+id+", name:"+ videoClassBean.getName() );
+//            Log.e(TAG, "initTabData: "+id+", name:"+ videoClassBean.getName() );
             Bundle bundle = new Bundle();
             bundle.putInt("id", id);
             tabFragment.setArguments(bundle);
@@ -194,7 +189,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 
     @Override
     public void onItemClick(VideoBean bean, int position) {
-        int page = 1;
+        /*int page = 1;
         if (mRefreshView != null) {
             page = mRefreshView.getPageCount();
         }
@@ -212,7 +207,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
             };
         }
         VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
-        VideoPlayActivity.forward(mContext, position, Constants.VIDEO_HOME, page);
+        VideoPlayActivity.forward(mContext, position, Constants.VIDEO_HOME, page);*/
     }
 
     @Override
@@ -226,7 +221,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        release();
+//        release();
     }
 
 }

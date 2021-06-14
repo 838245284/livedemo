@@ -7,6 +7,7 @@ package com.myylook.video.http;
 public class VideoHttpConsts {
     public static final String GET_HOME_VIDEO_LIST = "getHomeVideoList";
     public static final String GET_HOME_VIDEO_CLASS_LIST = "getHomeVideoClassList";
+    public static final String GET_ATTENTION_VIDEO = "getAttentionVideo";
     public static final String GET_VIDEO_COMMENT_LIST = "getVideoCommentList";
     public static final String SET_COMMENT_LIKE = "setCommentLike";
     public static final String SET_COMMENT = "setComment";

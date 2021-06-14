@@ -47,6 +47,17 @@ public class VideoHttpUtil {
                 .params("p", p)
                 .execute(callback);
     }
+    /**
+     * 获取首页关注视频列表
+     */
+    public static void getFollowVideoList(int p, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.getAttentionVideo", VideoHttpConsts.GET_ATTENTION_VIDEO)
+//                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("uid", "43458")
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("p", p)
+                .execute(callback);
+    }
 
 
     /**

@@ -20,9 +20,12 @@ import com.myylook.common.utils.JsonUtil;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
+import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
 import com.myylook.video.interfaces.VideoScrollDataHelper;
 import com.myylook.video.utils.VideoStorge;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
 import java.util.List;
@@ -159,5 +162,14 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
     public void onDestroyView() {
         super.onDestroyView();
         isFirstLoadData = true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_LIST);
+        VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_CLASS_LIST);
+        EventBus.getDefault().unregister(this);
+        mVideoScrollDataHelper = null;
     }
 }

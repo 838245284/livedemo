@@ -173,6 +173,7 @@ public class Constants {
     public static final int JPUSH_TYPE_MESSAGE = 2;//消息
 
     public static final String VIDEO_HOME = "videoHome";
+    public static final String VIDEO_FOLLOW = "videoFollow";
     public static final String VIDEO_USER = "videoUser_";
     public static final String VIDEO_KEY = "videoKey";
     public static final String VIDEO_POSITION = "videoPosition";

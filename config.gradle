@@ -12,19 +12,19 @@ ext {
             serverHost       : "https://ttq.btgoogle.cn/",
 
             //极光推送 IM
-            jpushAppKey      : "bead65f9fc2c48b9f98",
+            jpushAppKey      : "5f004cb3bf71963954187190",
 
             //腾讯地图
-            txMapAppKey      : "2E7BZ-TFPU-IAVMX-GUGPK-WMB5N",
-            txMapAppSecret   : "Q1t6fyfWkkdVhtdyBKElomMKqg",
+            txMapAppKey      : "KM4BZ-C7KK2-TWXUH-CHGB6-6ZLXJ-JBF7P",
+            txMapAppSecret   : "XxXDrjBFpgjgOaAnv3olrgvmsS43Nfu5",
             //腾讯bugly
-            buglyAppId       : "08c36143",
+            buglyAppId       : "2faff968e6",
             //百度语音识别
-            baiduAppId       : "116109",
-            baiduAppKey      : "OvQAiVlZDqwkn1acMBPOp",
-            baiduAppSecretKey: "KMaltKRqBUG7jgU3FzQBSk9YM4Sre",
+            baiduAppId       : "24363290",
+            baiduAppKey      : "DLFVb4TGhxUZAPZGUdITb1Rw",
+            baiduAppSecretKey: "ekse89No67UFgeGNKhwEDCQxsGveXW4F",
             //友盟统计
-            umengAppKey      : "5bff3f04b52652000b1e"
+            umengAppKey      : "60c4bd21e044530ff0a23a15"
 
     ]
 

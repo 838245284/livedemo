@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -74,7 +73,7 @@ public class TabButton extends LinearLayout {
                 }
             }
         }
-        mAnimator = ValueAnimator.ofFloat(1, mDrawaleArrayLength - 1);
+       /* mAnimator = ValueAnimator.ofFloat(1, mDrawaleArrayLength - 1);
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -89,7 +88,7 @@ public class TabButton extends LinearLayout {
             }
         });
         mAnimator.setDuration(500);
-        mAnimator.setInterpolator(new LinearInterpolator());
+        mAnimator.setInterpolator(new LinearInterpolator());*/
     }
 
     @Override
@@ -99,7 +98,7 @@ public class TabButton extends LinearLayout {
         setGravity(Gravity.CENTER_HORIZONTAL);
         mImg = new ImageView(mContext);
         LayoutParams params1 = new LayoutParams(mIconSize, mIconSize);
-        params1.setMargins(0, dp2px(4), 0, 0);
+        params1.setMargins(0, dp2px(8), 0, 0);
         mImg.setLayoutParams(params1);
         if (mDrawables != null && mDrawaleArrayLength > 0) {
             if (mChecked) {
@@ -124,6 +123,9 @@ public class TabButton extends LinearLayout {
             if (mChecked) {
                 if (mText != null) {
                     mText.setTextColor(mTextColorChecked);
+                }
+                if (mImg != null) {
+                    mImg.setImageDrawable(mDrawables[1]);
                 }
                 if (mAnimator != null) {
                     mAnimator.start();

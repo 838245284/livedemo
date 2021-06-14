@@ -2,14 +2,11 @@ package com.myylook.main.views;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.myylook.common.custom.HomeIndicatorTitle;
-import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.WordUtil;
 import com.myylook.main.R;
 
@@ -28,7 +25,7 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
     private MainHomeLiveViewHolder mLiveViewHolder;
     private MainHomeVideoViewHolder mVideoViewHolder;
     private MainHomeNearViewHolder mNearViewHolder;
-    private ImageView[] mIcons;
+//    private ImageView[] mIcons;
 
 
     public MainHomeViewHolder(Context context, ViewGroup parentView) {
@@ -43,8 +40,9 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
     @Override
     public void init() {
         setStatusHeight();
-        mIcons = new ImageView[4];
+//        mIcons = new ImageView[4];
         super.init();
+
     }
 
     @Override
@@ -60,18 +58,18 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
                     return;
                 }
                 if (position == 0) {
-                    mFollowViewHolder = new MainHomeFollowViewHolder(mContext, parent);
-                    vh = mFollowViewHolder;
-                } else if (position == 1) {
-                    mLiveViewHolder = new MainHomeLiveViewHolder(mContext, parent);
-                    vh = mLiveViewHolder;
-                } else if (position == 2) {
                     mVideoViewHolder = new MainHomeVideoViewHolder(mContext, parent);
                     vh = mVideoViewHolder;
-                } else if (position == 3) {
+                } else if (position == 1) {
+                    mFollowViewHolder = new MainHomeFollowViewHolder(mContext, parent);
+                    vh = mFollowViewHolder;
+                } else if (position == 2) {
+                    mLiveViewHolder = new MainHomeLiveViewHolder(mContext, parent);
+                    vh = mLiveViewHolder;
+                } /*else if (position == 3) {
                     mNearViewHolder = new MainHomeNearViewHolder(mContext, parent);
                     vh = mNearViewHolder;
-                }
+                }*/
                 if (vh == null) {
                     return;
                 }
@@ -83,7 +81,7 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
         if (vh != null) {
             vh.loadData();
         }
-        if (mIcons != null) {
+        /*if (mIcons != null) {
             for (int i = 0, len = mIcons.length; i < len; i++) {
                 View v = mIcons[i];
                 if (v != null) {
@@ -98,21 +96,20 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
                     }
                 }
             }
-        }
+        }*/
     }
 
     @Override
     protected int getPageCount() {
-        return 4;
+        return 3;
     }
 
     @Override
     protected String[] getTitles() {
         return new String[]{
+                WordUtil.getString(R.string.video),
                 WordUtil.getString(R.string.follow),
                 WordUtil.getString(R.string.live),
-                WordUtil.getString(R.string.video),
-                WordUtil.getString(R.string.near)
         };
     }
 
@@ -138,7 +135,7 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
             }
         });
 
-        ImageView imageView = mIcons[index];
+        /*ImageView imageView = mIcons[index];
         if (imageView == null) {
             imageView = new ImageView(mContext);
             int dp14 = DpUtil.dp2px(14);
@@ -158,10 +155,9 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
             imageView.setVisibility(View.INVISIBLE);
             mIcons[index] = imageView;
             indicatorTitle.addView(imageView);
-        }
+        }*/
 
         return indicatorTitle;
     }
-
 
 }

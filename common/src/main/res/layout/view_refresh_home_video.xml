@@ -16,7 +16,6 @@
         app:srlTextRefreshing="@string/refresh_header_refreshing"
         app:srlTextRelease="@string/refresh_header_release"
         app:srlTextUpdate="@string/refresh_header_update"
-        android:layout_marginTop="34dp"
         />
 
     <FrameLayout

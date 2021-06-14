@@ -347,9 +347,9 @@
 
     <string name="main_home">首页</string>
     <string name="main_near">附近</string>
-    <string name="main_active">动态</string>
+    <string name="main_active">教学</string>
     <string name="main_list">排行</string>
-    <string name="main_mall">商城</string>
+    <string name="main_mall">动态</string>
     <string name="main_me">我的</string>
     <string name="main_live_type_normal">普通房间</string>
     <string name="main_live_type_pay">付费房间</string>
@@ -1181,4 +1181,6 @@
     <string name="mall_410">取消代卖</string>
     <string name="mall_411">确定取消代卖该商品？</string>
     <string name="mall_412">请前往个人中心-联系我们中联系平台</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

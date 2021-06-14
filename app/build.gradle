@@ -4,10 +4,10 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
     signingConfigs {
         release {
-            keyAlias 'phonelive'
-            keyPassword 'phonelive'
-            storeFile file('../yunbao.jks')
-            storePassword 'phonelive'
+            keyAlias 'mk'
+            keyPassword '123456'
+            storeFile file('../meikan.jks')
+            storePassword '123456'
         }
     }
 

@@ -23,4 +23,6 @@
     <color name="pk_red">#f03a40</color>
     <color name="pk_blue">#2a92f7</color>
     <color name="black1">#e6323232</color>
+    <color name="bottomBg">#ffececec</color>
+    <color name="line">#ffc2c2c2</color>
 </resources>

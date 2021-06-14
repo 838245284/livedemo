@@ -8,28 +8,21 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
+        android:layout_height="55dp"
+        android:background="@color/white"
         android:fadingEdge="none"
         app:elevation="0dp"
         app:layout_behavior="com.myylook.common.custom.FixAppBarLayoutBehavior">
 
         <LinearLayout
-            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/fl_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="19dp" />
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
-                >
+                android:layout_height="55dp">
 
                 <ImageView
                     android:id="@+id/btn_msg"
@@ -76,19 +69,20 @@
 
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/indicator"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="37dp"
+                    android:layout_centerInParent="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/btn_search" />
+                    android:layout_marginRight="10dp" />
 
 
                 <View
-                    style="@style/line2"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/line"/>
             </RelativeLayout>
         </LinearLayout>
-
 
     </android.support.design.widget.AppBarLayout>
 

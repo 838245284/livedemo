@@ -1,41 +1,40 @@
 package com.myylook.main.views;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.myylook.common.CommonAppConfig;
 import com.myylook.common.Constants;
-import com.myylook.common.adapter.RefreshAdapter;
 import com.myylook.common.bean.ConfigBean;
 import com.myylook.common.bean.VideoClassBean;
 import com.myylook.common.custom.CommonRefreshView;
-import com.myylook.common.custom.ItemDecoration;
 import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
-import com.myylook.common.utils.JsonUtil;
 import com.myylook.common.utils.WordUtil;
 import com.myylook.main.R;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.main.adapter.MainHomeVideoClassAdapter;
+import com.myylook.main.fragment.TabFragment;
 import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
-import com.myylook.video.event.VideoDeleteEvent;
-import com.myylook.video.event.VideoScrollPageEvent;
 import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
 import com.myylook.video.interfaces.VideoScrollDataHelper;
 import com.myylook.video.utils.VideoStorge;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -49,11 +48,15 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
     private CommonRefreshView mRefreshView;
     private MainHomeVideoAdapter mAdapter;
     private VideoScrollDataHelper mVideoScrollDataHelper;
-    private RecyclerView mClassRecyclerView;
+    //    private RecyclerView mClassRecyclerView;
     private MainHomeVideoClassAdapter mClassAdapter;
     private static final int ID_RECOMMEND = -1;
     private int mVideoClassId = ID_RECOMMEND;
-
+    protected TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ArrayList<FrameLayout> mViewList;
+    private List<TabFragment> fragments;
+    private List<VideoClassBean> videoClassList;
 
     public MainHomeVideoViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
@@ -66,10 +69,8 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 
     @Override
     public void init() {
-        mClassRecyclerView = findViewById(R.id.recyclerView_class);
-        mClassRecyclerView.setHasFixedSize(true);
-        mClassRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        List<VideoClassBean> videoClassList = new ArrayList<>();
+        viewPager = findViewById(R.id.vp_video);
+        videoClassList = new ArrayList<>();
         videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), true));
         ConfigBean configBean = CommonAppConfig.getInstance().getConfig();
         if (configBean != null) {
@@ -78,6 +79,68 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                 videoClassList.addAll(list);
             }
         }
+        tabLayout = findViewById(R.id.tabLayout);
+        initTabData(videoClassList);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mViewList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            FrameLayout frameLayout = new FrameLayout(mContext);
+            frameLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mViewList.add(frameLayout);
+        }
+        FragmentActivity activity = (FragmentActivity) mContext;
+        viewPager.setAdapter(new FragmentStatePagerAdapter(activity.getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int i) {
+                return fragments.get(i);
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.size();
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return videoClassList.get(position).getName();
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                viewPager.setCurrentItem(position);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // 未选中tab
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // 再次选中tab
+            }
+        });
         mClassAdapter = new MainHomeVideoClassAdapter(mContext, videoClassList);
         mClassAdapter.setOnItemClickListener(new OnItemClickListener<VideoClassBean>() {
             @Override
@@ -88,81 +151,31 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                 }
             }
         });
-        mClassRecyclerView.setAdapter(mClassAdapter);
+//        EventBus.getDefault().register(this);
+    }
 
-        mRefreshView = (CommonRefreshView) findViewById(R.id.refreshView);
-        mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_video);
-        mRefreshView.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false));
-        ItemDecoration decoration = new ItemDecoration(mContext, 0x00000000, 5, 0);
-        decoration.setOnlySetItemOffsetsButNoDraw(true);
-        mRefreshView.setItemDecoration(decoration);
-        mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoBean>() {
-            @Override
-            public RefreshAdapter<VideoBean> getAdapter() {
-                if (mAdapter == null) {
-                    mAdapter = new MainHomeVideoAdapter(mContext);
-                    mAdapter.setOnItemClickListener(MainHomeVideoViewHolder.this);
-                    mAdapter.setActionListener(new MainHomeVideoAdapter.ActionListener() {
-                        @Override
-                        public void onScrollYChanged(int scrollY) {
-                            if (mClassRecyclerView != null) {
-                                mClassRecyclerView.setTranslationY(scrollY);
-                            }
-                        }
-                    });
-                }
-                return mAdapter;
-            }
-
-            @Override
-            public void loadData(int p, HttpCallback callback) {
-                if (mVideoClassId == ID_RECOMMEND) {
-                    VideoHttpUtil.getHomeVideoList(p, callback);
-                } else {
-                    VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
-                }
-            }
-
-            @Override
-            public List<VideoBean> processData(String[] info) {
-                return JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
-
-            }
-
-            @Override
-            public void onRefreshSuccess(List<VideoBean> list, int listCount) {
-                VideoStorge.getInstance().put(Constants.VIDEO_HOME, list);
-            }
-
-            @Override
-            public void onRefreshFailure() {
-
-            }
-
-            @Override
-            public void onLoadMoreSuccess(List<VideoBean> loadItemList, int loadItemCount) {
-
-            }
-
-            @Override
-            public void onLoadMoreFailure() {
-
-            }
-        });
-        EventBus.getDefault().register(this);
+    private static final String TAG = "MainHomeVideoViewHolder";
+    private void initTabData(List<VideoClassBean> videoClassList) {
+        fragments = new ArrayList<>();
+        for (int i = 0; i < videoClassList.size(); i++) {
+            VideoClassBean videoClassBean = videoClassList.get(i);
+            TabFragment tabFragment = new TabFragment();
+            int id = videoClassList.get(i).getId();
+            Log.e(TAG, "initTabData: "+id+", name:"+ videoClassBean.getName() );
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", id);
+            tabFragment.setArguments(bundle);
+            fragments.add(tabFragment);
+            tabLayout.addTab(tabLayout.newTab());
+            tabLayout.getTabAt(i).setText(videoClassBean.getName());
+        }
     }
 
     @Override
     public void loadData() {
-        if (!isFirstLoadData()) {
-            return;
-        }
-        if (mRefreshView != null) {
-            mRefreshView.initData();
-        }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+   /* @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoScrollPageEvent(VideoScrollPageEvent e) {
         if (Constants.VIDEO_HOME.equals(e.getKey()) && mRefreshView != null) {
             mRefreshView.setPageCount(e.getPage());
@@ -177,7 +190,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                 mRefreshView.showEmpty();
             }
         }
-    }
+    }*/
 
     @Override
     public void onItemClick(VideoBean bean, int position) {

@@ -14,7 +14,7 @@
             android:launchMode="singleTask"
             android:noHistory="true">
             <intent-filter>
-                <data android:scheme="tencent101551222"/>
+                <data android:scheme="tencent1109063367"/>
                 <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>

@@ -5,8 +5,8 @@
 	<QQ
 		Id="7"
 		SortId="7"
-		AppId="1011222"
-		AppKey="075999fa87f515a1417166e73b80"
+		AppId="1109063367"
+		AppKey="z0fhySwwZ45GW4yI"
 		ShareByAppClient="true"
 		Enable="true" />
     <QZone
@@ -18,8 +18,8 @@
     <Wechat
         Id="4"
         SortId="4"
-        AppId="wxe1d27a05c9ca4"
-        AppSecret="c208e5e91f6c7d1589022cdb7e04"
+        AppId="wxb6321432a74b5173"
+        AppSecret="547b2b7e766f89c1a3f859dad9ce3922"
 		userName="gh_afb2019c9"
 		path="/page/API/pages/share/share"
         BypassApproval="false"
@@ -29,15 +29,15 @@
     <WechatMoments
         Id="5"
         SortId="5"
-        AppId="wxe1d27a5c9ca4"
-        AppSecret="c208e5e911c7d1589022cdb7e04"
+        AppId="wxb6321432a74b5173"
+        AppSecret="547b2b7e766f89c1a3f859dad9ce3922"
         BypassApproval="false"
         Enable="true" />
 	<WechatFavorite
         Id="6"
         SortId="6"
-        AppId="wxe1d27af79ca4"
-        AppSecret="c208e5e911cc7d1589022cdb7e04"
+        AppId="wxb6321432a74b5173"
+        AppSecret="547b2b7e766f89c1a3f859dad9ce3922"
         Enable="true" />
     <Facebook
         Id="8"

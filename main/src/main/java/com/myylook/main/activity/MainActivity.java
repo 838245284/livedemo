@@ -1,8 +1,6 @@
 package com.myylook.main.activity;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Context;
@@ -149,7 +147,7 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
         mViewHolders = new AbsMainViewHolder[4];
         mDp70 = DpUtil.dp2px(70);
         mBottom = findViewById(R.id.bottom);
-        mUpAnimator = ObjectAnimator.ofFloat(mBottom, "translationY", mDp70, 0);
+       /* mUpAnimator = ObjectAnimator.ofFloat(mBottom, "translationY", mDp70, 0);
         mDownAnimator = ObjectAnimator.ofFloat(mBottom, "translationY", 0, mDp70);
         mUpAnimator.setDuration(250);
         mDownAnimator.setDuration(250);
@@ -178,7 +176,7 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
                 mShowed = false;
                 mHided = true;
             }
-        });
+        });*/
         mProcessResultUtil = new ProcessResultUtil(this);
         EventBus.getDefault().register(this);
         checkVersion();
@@ -432,7 +430,7 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
                 int notificationType = ImPushUtil.getInstance().getNotificationType();
                 if (notificationType == Constants.JPUSH_TYPE_LIVE) {
                     if (mHomeViewHolder != null) {
-                        mHomeViewHolder.setCurrentPage(0);
+                        mHomeViewHolder.setCurrentPage(2);
                     }
                 } else if (notificationType == Constants.JPUSH_TYPE_MESSAGE) {
                     if (mHomeViewHolder != null) {
@@ -442,7 +440,7 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
                 ImPushUtil.getInstance().setNotificationType(Constants.JPUSH_TYPE_NONE);
             } else {
                 if (mHomeViewHolder != null) {
-                    mHomeViewHolder.setCurrentPage(1);
+                    mHomeViewHolder.setCurrentPage(0);
                 }
             }
         }

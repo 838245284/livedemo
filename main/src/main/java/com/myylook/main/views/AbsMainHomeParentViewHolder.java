@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.myylook.common.adapter.ViewPagerAdapter;
+import com.myylook.common.bean.VideoClassBean;
 import com.myylook.common.utils.DpUtil;
 import com.myylook.im.utils.ImMessageUtil;
 import com.myylook.main.R;
@@ -46,6 +47,8 @@ public abstract class AbsMainHomeParentViewHolder extends AbsMainViewHolder {
     private boolean mPaused;
     protected List<FrameLayout> mViewList;
     private int mAppLayoutOffestY;
+
+    List<VideoClassBean> videoClassList;
 
     public AbsMainHomeParentViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
@@ -114,6 +117,7 @@ public abstract class AbsMainHomeParentViewHolder extends AbsMainViewHolder {
 
             }
         });
+//        tabLayout.setupWithViewPager(mViewPager);
         mIndicator = (MagicIndicator) findViewById(R.id.indicator);
         final String[] titles = getTitles();
         CommonNavigator commonNavigator = new CommonNavigator(mContext);

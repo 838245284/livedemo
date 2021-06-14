@@ -32,9 +32,9 @@ public class AppContext extends CommonAppContext {
         super.onCreate();
         sInstance = this;
         //腾讯云直播鉴权url
-        String liveLicenceUrl = "http://license.vod2.myqcloud.com/license/v1/965138f70be0dbc346995a8/TXLiveSDK.licence";
+        String liveLicenceUrl = "http://license.vod2.myqcloud.com/license/v1/1ebb5a4157a9a818802d468d603bee65/TXUgcSDK.licence";
         //腾讯云直播鉴权key
-        String liveKey = "7410cc8a1fc4cb14b8ba0aa9";
+        String liveKey = "826969b36cd7fee009f3d74eb5b6d888";
         //腾讯云视频鉴权url
         String ugcLicenceUrl = "http://license.vod2.myqcloud.com/license/v1/26a8cf861fa26e80ca417516c/TXUgcSDK.licence";
         //腾讯云视频鉴权key

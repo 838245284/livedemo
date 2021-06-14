@@ -3,14 +3,17 @@ package com.myylook.video.upload;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
 import com.myylook.common.bean.ConfigBean;
 import com.myylook.common.http.HttpCallback;
 import com.myylook.common.utils.L;
 import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
+import com.qiniu.android.common.ServiceAddress;
+import com.qiniu.android.common.Zone;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
 
 import org.json.JSONObject;
 
@@ -112,10 +115,9 @@ public class VideoUploadQnImpl implements VideoUploadStrategy {
             return;
         }
         if (mUploadManager == null) {
-//            Zone zone = new Zone(new ServiceAddress("http://upload-z2.qiniup.com"),
-//                    new ServiceAddress("http://up-z2.qiniup.com"));
-//            Configuration configuration = new Configuration.Builder().zone(zone).build();
-            mUploadManager = new UploadManager();
+            Zone zone = new Zone(new ServiceAddress("http://upload-z2.qiniup.com"), new ServiceAddress("http://up-z2.qiniup.com"));
+            Configuration configuration = new Configuration.Builder().zone(zone).build();
+            mUploadManager = new UploadManager(configuration);
         }
         mUploadManager.put(file, file.getName(), mToken, handler, null);
     }

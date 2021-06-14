@@ -31,6 +31,7 @@ repositories {
     }
 }
 dependencies {
+    implementation 'com.android.support:support-v4:28.0.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile rootProject.ext.dependencies["appcompat-v7"]
     compile rootProject.ext.dependencies["recyclerview-v7"]

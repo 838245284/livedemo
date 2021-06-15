@@ -24,7 +24,7 @@ import java.util.List;
 public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
 
 
-    private View.OnClickListener mOnClickListener;
+    protected View.OnClickListener mOnClickListener;
     private int mTotalY;
     private int mLastTotalY;
 
@@ -49,17 +49,16 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 || position == 1) {
-            return -1;
-        }
-        return 0;
+        return mList != null ? mList.get(position).getItemType() : 0;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == -1) {
-            return new Vh(mInflater.inflate(R.layout.item_main_home_video_2, parent, false));
+        if (viewType == VideoBean.ITEM_TYPE_SHORT_VIDEO) {
+            return new Vh(mInflater.inflate(R.layout.item_main_home_video, parent, false));
+        } else if (viewType == VideoBean.ITEM_TYPE_LONG_VIDEO) {
+            return new VideoLongVh(mInflater.inflate(R.layout.item_main_home_video_long, parent, false));
         }
         return new Vh(mInflater.inflate(R.layout.item_main_home_video, parent, false));
     }
@@ -72,7 +71,11 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder vh, int position, @NonNull List payloads) {
         Object payload = payloads.size() > 0 ? payloads.get(0) : null;
-        ((Vh) vh).setData(mList.get(position), position, payload);
+        if (vh instanceof Vh) {
+            ((Vh) vh).setData(mList.get(position), position, payload);
+        } else if (vh instanceof VideoLongVh) {
+            ((VideoLongVh) vh).setData(mList.get(position), position, payload);
+        }
     }
 
     /**
@@ -114,7 +117,7 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
             itemView.setOnClickListener(mOnClickListener);
         }
 
-        void setData(VideoBean bean, int position, Object payload) {
+        protected void setData(VideoBean bean, int position, Object payload) {
             itemView.setTag(position);
             ImgLoader.display(mContext, bean.getThumb(), mCover);
             mTitle.setText(bean.getTitle());
@@ -127,6 +130,54 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
         }
     }
 
+
+    class VideoLongVh extends RecyclerView.ViewHolder {
+
+        ImageView mCover;
+        ImageView mAvatar;
+        TextView mName;
+        TextView mTitle;
+        TextView mNum;
+        private final TextView mTopic;
+        private final TextView mCollectionNum;
+        private final TextView mLikeNum;
+        private final TextView mTag;
+        private final TextView mTime;
+
+        public VideoLongVh(View itemView) {
+            super(itemView);
+            mCover = (ImageView) itemView.findViewById(R.id.cover);
+            mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
+            mName = (TextView) itemView.findViewById(R.id.name);
+            mTitle = (TextView) itemView.findViewById(R.id.title);
+            mNum = (TextView) itemView.findViewById(R.id.num);
+            mTopic = (TextView) itemView.findViewById(R.id.topic);
+            mLikeNum = (TextView) itemView.findViewById(R.id.like_num);
+            mCollectionNum = (TextView) itemView.findViewById(R.id.collection_num);
+            mTag = (TextView) itemView.findViewById(R.id.tag);
+            mTime = (TextView) itemView.findViewById(R.id.time);
+
+            itemView.setOnClickListener(mOnClickListener);
+        }
+
+        void setData(VideoBean bean, int position, Object payload) {
+            itemView.setTag(position);
+            ImgLoader.display(mContext, bean.getThumb(), mCover);
+            mTitle.setText(bean.getTitle());
+            mNum.setText(bean.getViewNum());
+            UserBean userBean = bean.getUserBean();
+            if (userBean != null) {
+                ImgLoader.display(mContext, userBean.getAvatar(), mAvatar);
+                mName.setText(userBean.getUserNiceName());
+            }
+
+            mTopic.setText(bean.getCity()); //
+            mCollectionNum.setText(bean.getCommentNum()); //
+            mLikeNum.setText(bean.getLikeNum());
+            mTag.setText(bean.getLikeNum());  //
+            mTime.setText(bean.getDatetime()); //
+        }
+    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

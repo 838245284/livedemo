@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.myylook.common.Constants;
 import com.myylook.common.R;
@@ -16,6 +18,7 @@ import com.myylook.common.custom.CommonRefreshView;
 import com.myylook.common.custom.ItemDecoration;
 import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
+import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.JsonUtil;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.video.activity.VideoPlayActivity;
@@ -28,7 +31,11 @@ import com.myylook.video.utils.VideoStorge;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import kotlin.collections.CollectionsKt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,7 +47,14 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
     private CommonRefreshView mRefreshView;
     private MainHomeVideoAdapter mAdapter;
     private static final int ID_RECOMMEND = -1;
+    private static final int ID_SHORT_VIDEO = -2;
+
     private int mVideoClassId = ID_RECOMMEND;
+    /**
+     * 视频类型 1：短视频 2：长视频
+     */
+    private int mItemType = VideoBean.ITEM_TYPE_SHORT_VIDEO;
+
     private VideoScrollDataHelper mVideoScrollDataHelper;
     private boolean isFirstLoadData = true;
 
@@ -53,7 +67,7 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.layout_refreshlist, container, false);
     }
 
@@ -66,12 +80,23 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mVideoClassId = getArguments().getInt("id");
+        mItemType = getArguments().getInt("type", VideoBean.ITEM_TYPE_SHORT_VIDEO);
         mRefreshView = view.findViewById(R.id.refreshView);
         mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_video);
-        mRefreshView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
-        ItemDecoration decoration = new ItemDecoration(getContext(), 0x00000000, 5, 0);
-        decoration.setOnlySetItemOffsetsButNoDraw(true);
-        mRefreshView.setItemDecoration(decoration);
+
+        if (mItemType == VideoBean.ITEM_TYPE_SHORT_VIDEO) {
+            mRefreshView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+            ItemDecoration decoration = new ItemDecoration(getContext(), 0x00000000, 5, 0);
+            decoration.setOnlySetItemOffsetsButNoDraw(true);
+            mRefreshView.setItemDecoration(decoration);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.leftMargin = DpUtil.dp2px(5);
+            layoutParams.rightMargin = DpUtil.dp2px(5);
+            mRefreshView.setLayoutParams(layoutParams);
+        } else if (mItemType == VideoBean.ITEM_TYPE_LONG_VIDEO) {
+            mRefreshView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mRefreshView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
         mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoBean>() {
             @Override
             public RefreshAdapter<VideoBean> getAdapter() {
@@ -86,6 +111,8 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
             public void loadData(int p, HttpCallback callback) {
                 if (mVideoClassId == ID_RECOMMEND) {
                     VideoHttpUtil.getHomeVideoList(p, callback);
+                } else if (mVideoClassId == ID_SHORT_VIDEO) {
+                    VideoHttpUtil.getHomeShortVideoList(p, callback);
                 } else {
                     VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
                 }
@@ -93,7 +120,13 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
 
             @Override
             public List<VideoBean> processData(String[] info) {
-                return JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
+                List<VideoBean> list = JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
+                if (list != null && !list.isEmpty()) {
+                    for (VideoBean videoBean : list) {
+                        videoBean.setItemType(mItemType);
+                    }
+                }
+                return list;
 
             }
 
@@ -148,6 +181,8 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
                 public void loadData(int p, HttpCallback callback) {
                     if (mVideoClassId == ID_RECOMMEND) {
                         VideoHttpUtil.getHomeVideoList(p, callback);
+                    } else if (mVideoClassId == ID_SHORT_VIDEO) {
+                        VideoHttpUtil.getHomeShortVideoList(p, callback);
                     } else {
                         VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
                     }

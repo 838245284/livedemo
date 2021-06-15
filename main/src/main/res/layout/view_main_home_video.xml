@@ -3,13 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
+    <!--    <android.support.design.widget.TabLayout-->
+    <!--        android:id="@+id/tabLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="35dp"-->
+    <!--        app:tabMode="scrollable"-->
+    <!--        app:tabIndicator="@null"-->
+    <!--        app:tabTextColor="@color/tab_unselect"-->
+    <!--        app:tabSelectedTextColor="@color/tab_select"/>-->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        app:tabSelectedTextColor="@color/red"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/indicator"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"/>
+
+        <FrameLayout
+            android:id="@+id/btn_more"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_width="wrap_content"
+            android:paddingRight="11dp"
+            android:paddingLeft="11dp"
+            android:layout_height="35dp">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@mipmap/ic_main_video_more"
+                />
+        </FrameLayout>
+
+    </LinearLayout>
+
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_video"
         android:layout_width="match_parent"

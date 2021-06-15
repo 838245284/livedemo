@@ -3,11 +3,13 @@ package com.myylook.main.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -17,15 +19,27 @@ import com.myylook.common.bean.ConfigBean;
 import com.myylook.common.bean.VideoClassBean;
 import com.myylook.common.custom.CommonRefreshView;
 import com.myylook.common.interfaces.OnItemClickListener;
+import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.WordUtil;
 import com.myylook.main.R;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.main.adapter.MainHomeVideoClassAdapter;
+import com.myylook.main.dialog.MainStartDialogFragment;
 import com.myylook.main.fragment.TabFragment;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
 import com.myylook.video.interfaces.VideoScrollDataHelper;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,7 +52,8 @@ import java.util.List;
  * 首页视频
  */
 
-public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoBean> {
+public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoBean>,
+        View.OnClickListener {
 
     private CommonRefreshView mRefreshView;
     private MainHomeVideoAdapter mAdapter;
@@ -46,12 +61,15 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
     //    private RecyclerView mClassRecyclerView;
     private MainHomeVideoClassAdapter mClassAdapter;
     private static final int ID_RECOMMEND = -1;
+    private static final int ID_SHORT_VIDEO = -2;
     private int mVideoClassId = ID_RECOMMEND;
-    protected TabLayout tabLayout;
     private ViewPager viewPager;
     private ArrayList<FrameLayout> mViewList;
     private List<TabFragment> fragments;
     private List<VideoClassBean> videoClassList;
+    private MagicIndicator mIndicator;
+    private View mBtnMore;
+
 
     public MainHomeVideoViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
@@ -66,7 +84,8 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
     public void init() {
         viewPager = findViewById(R.id.vp_video);
         videoClassList = new ArrayList<>();
-        videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), true));
+        videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoBean.ITEM_TYPE_SHORT_VIDEO, false));
+        videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), VideoBean.ITEM_TYPE_LONG_VIDEO, true));
         ConfigBean configBean = CommonAppConfig.getInstance().getConfig();
         if (configBean != null) {
             List<VideoClassBean> list = JSON.parseArray(configBean.getVideoClass(), VideoClassBean.class);
@@ -74,9 +93,14 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                 videoClassList.addAll(list);
             }
         }
-        tabLayout = findViewById(R.id.tabLayout);
+
+
+        mIndicator = (MagicIndicator) findViewById(R.id.indicator);
+        mBtnMore = findViewById(R.id.btn_more);
+        mBtnMore.setOnClickListener(this);
+
         initTabData(videoClassList);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
         mViewList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             FrameLayout frameLayout = new FrameLayout(mContext);
@@ -118,24 +142,29 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 
             }
         });
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                viewPager.setCurrentItem(position);
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                // 未选中tab
-            }
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // 再次选中tab
-            }
-        });
+        initIndicator();
+
+
+//        tabLayout.setupWithViewPager(viewPager);
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                int position = tab.getPosition();
+//                viewPager.setCurrentItem(position);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                // 未选中tab
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//                // 再次选中tab
+//            }
+//        });
        /* mClassAdapter = new MainHomeVideoClassAdapter(mContext, videoClassList);
         mClassAdapter.setOnItemClickListener(new OnItemClickListener<VideoClassBean>() {
             @Override
@@ -149,20 +178,64 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 //        EventBus.getDefault().register(this);
     }
 
+    private void initIndicator() {
+        mBtnMore.setVisibility(videoClassList != null && videoClassList.size() > 6 ? View.VISIBLE : View.GONE);
+
+        CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+
+            @Override
+            public int getCount() {
+                return videoClassList.size();
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                SimplePagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
+                simplePagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.tab_unselect));
+                simplePagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.tab_select));
+                simplePagerTitleView.setText(videoClassList.get(index).getName());
+                simplePagerTitleView.setTextSize(14);
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (viewPager != null) {
+                            viewPager.setCurrentItem(index);
+                        }
+                    }
+                });
+                return simplePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setXOffset(DpUtil.dp2px(13));
+                linePagerIndicator.setRoundRadius(DpUtil.dp2px(2));
+                linePagerIndicator.setColors(ContextCompat.getColor(mContext, R.color.white));
+                return linePagerIndicator;
+            }
+        });
+        mIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(mIndicator, viewPager);
+    }
+
     private static final String TAG = "MainHomeVideoViewHolder";
+
     private void initTabData(List<VideoClassBean> videoClassList) {
         fragments = new ArrayList<>();
         for (int i = 0; i < videoClassList.size(); i++) {
             VideoClassBean videoClassBean = videoClassList.get(i);
             TabFragment tabFragment = new TabFragment();
             int id = videoClassList.get(i).getId();
+            int type = videoClassList.get(i).getType();
 //            Log.e(TAG, "initTabData: "+id+", name:"+ videoClassBean.getName() );
             Bundle bundle = new Bundle();
             bundle.putInt("id", id);
+            bundle.putInt("type", type);
             tabFragment.setArguments(bundle);
             fragments.add(tabFragment);
-            tabLayout.addTab(tabLayout.newTab());
-            tabLayout.getTabAt(i).setText(videoClassBean.getName());
         }
     }
 
@@ -224,4 +297,9 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 //        release();
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_more) {
+        }
+    }
 }

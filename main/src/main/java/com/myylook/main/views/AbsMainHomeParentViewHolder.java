@@ -139,7 +139,7 @@ public abstract class AbsMainHomeParentViewHolder extends AbsMainViewHolder {
                 linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 linePagerIndicator.setXOffset(DpUtil.dp2px(5));
                 linePagerIndicator.setRoundRadius(DpUtil.dp2px(2));
-                linePagerIndicator.setColors(ContextCompat.getColor(mContext, R.color.global));
+                linePagerIndicator.setColors(ContextCompat.getColor(mContext, R.color.tab_select));
                 return linePagerIndicator;
             }
         });

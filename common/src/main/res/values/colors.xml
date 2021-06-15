@@ -25,4 +25,7 @@
     <color name="black1">#e6323232</color>
     <color name="bottomBg">#ffececec</color>
     <color name="line">#ffc2c2c2</color>
+    <color name="tab_select">#323232</color>
+    <color name="tab_unselect">#919090</color>
+
 </resources>

@@ -450,6 +450,7 @@
     <string name="red_pack_23">单个金额</string>
     <string name="red_pack_24">总金额</string>
 
+    <string name="short_video">短视频</string>
     <string name="recommend">推荐</string>
     <string name="recommend_skip">跳过</string>
     <string name="recommend_enter">点击进入</string>
@@ -1183,4 +1184,5 @@
     <string name="mall_412">请前往个人中心-联系我们中联系平台</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tip_text">占位符</string>
 </resources>

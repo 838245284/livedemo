@@ -126,22 +126,6 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
             }
         });
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
 
 
         initIndicator();
@@ -234,6 +218,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
             Bundle bundle = new Bundle();
             bundle.putInt("id", id);
             bundle.putInt("type", type);
+            bundle.putString("index", String.valueOf(i));
             tabFragment.setArguments(bundle);
             fragments.add(tabFragment);
         }

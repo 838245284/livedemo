@@ -393,7 +393,7 @@ public class VideoBean implements Parcelable {
                 ",href='" + href + '\'' +
                 ",id='" + id + '\'' +
                 ",uid='" + uid + '\'' +
-                ",userNiceName='" + userBean.getUserNiceName() + '\'' +
+//                ",userNiceName='" + userBean.getUserNiceName() + '\'' +
                 ",thumb='" + thumb + '\'' +
                 '}';
     }

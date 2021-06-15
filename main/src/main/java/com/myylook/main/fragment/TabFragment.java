@@ -6,11 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.google.gson.jpush.Gson;
+import com.google.gson.jpush.reflect.TypeToken;
 import com.myylook.common.Constants;
 import com.myylook.common.R;
 import com.myylook.common.adapter.RefreshAdapter;
@@ -20,6 +23,7 @@ import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
 import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.JsonUtil;
+import com.myylook.common.utils.LogUtil;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
@@ -31,11 +35,7 @@ import com.myylook.video.utils.VideoStorge;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-
-import kotlin.collections.CollectionsKt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,6 +57,10 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
 
     private VideoScrollDataHelper mVideoScrollDataHelper;
     private boolean isFirstLoadData = true;
+
+    private static final String TAG = "TabFragment";
+    private String index;
+    private List<VideoBean> list;
 
     public static TabFragment newInstance(String label) {
         Bundle args = new Bundle();
@@ -80,6 +84,7 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mVideoClassId = getArguments().getInt("id");
+        index = getArguments().getString("index");
         mItemType = getArguments().getInt("type", VideoBean.ITEM_TYPE_SHORT_VIDEO);
         mRefreshView = view.findViewById(R.id.refreshView);
         mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_video);
@@ -120,11 +125,13 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
 
             @Override
             public List<VideoBean> processData(String[] info) {
-                List<VideoBean> list = JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
+                list = JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
+                Gson gson=new Gson();
                 if (list != null && !list.isEmpty()) {
                     for (VideoBean videoBean : list) {
                         videoBean.setItemType(mItemType);
                     }
+                    VideoStorge.getInstance().put(String.valueOf(index), list);
                 }
                 return list;
 
@@ -132,7 +139,7 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
 
             @Override
             public void onRefreshSuccess(List<VideoBean> list, int listCount) {
-                VideoStorge.getInstance().put(Constants.VIDEO_HOME, list);
+
             }
 
             @Override
@@ -189,8 +196,9 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoBe
                 }
             };
         }
+
         VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
-        VideoPlayActivity.forward(getContext(), position, Constants.VIDEO_HOME, page);
+        VideoPlayActivity.forward(getContext(), position, index, page);
     }
 
     @Override

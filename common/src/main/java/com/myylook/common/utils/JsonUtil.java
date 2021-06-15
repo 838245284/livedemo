@@ -1,5 +1,7 @@
 package com.myylook.common.utils;
 
+import android.util.Log;
+
 import java.util.List;
 import java.util.Map;
 import com.alibaba.fastjson.JSON;
@@ -42,6 +44,7 @@ public class JsonUtil {
         try {
             return JSON.parseArray(jsonData, clazz);
         }catch (Exception e){
+            Log.e("TAG", "getJsonToList: "+e.getMessage());
             e.printStackTrace();
         }
         return null;

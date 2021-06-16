@@ -27,6 +27,7 @@ import com.myylook.main.adapter.MainHomeVideoClassAdapter;
 import com.myylook.main.dialog.MainStartDialogFragment;
 import com.myylook.main.fragment.TabFragment;
 import com.myylook.video.bean.VideoBean;
+import com.myylook.video.bean.VideoWithAds;
 import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
 import com.myylook.video.interfaces.VideoScrollDataHelper;
@@ -84,8 +85,8 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
     public void init() {
         viewPager = findViewById(R.id.vp_video);
         videoClassList = new ArrayList<>();
-        videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoBean.ITEM_TYPE_SHORT_VIDEO, false));
-        videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), VideoBean.ITEM_TYPE_LONG_VIDEO, true));
+        videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoWithAds.ITEM_TYPE_SHORT_VIDEO, false));
+        videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), VideoWithAds.ITEM_TYPE_LONG_VIDEO, true));
         ConfigBean configBean = CommonAppConfig.getInstance().getConfig();
         if (configBean != null) {
             List<VideoClassBean> list = JSON.parseArray(configBean.getVideoClass(), VideoClassBean.class);
@@ -125,41 +126,8 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
                 return videoClassList.get(position).getName();
             }
         });
-
-
-
         initIndicator();
 
-
-//        tabLayout.setupWithViewPager(viewPager);
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                int position = tab.getPosition();
-//                viewPager.setCurrentItem(position);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                // 未选中tab
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//                // 再次选中tab
-//            }
-//        });
-       /* mClassAdapter = new MainHomeVideoClassAdapter(mContext, videoClassList);
-        mClassAdapter.setOnItemClickListener(new OnItemClickListener<VideoClassBean>() {
-            @Override
-            public void onItemClick(VideoClassBean bean, int position) {
-                mVideoClassId = bean.getId();
-                if (mRefreshView != null) {
-                    mRefreshView.initData();
-                }
-            }
-        });*/
-//        EventBus.getDefault().register(this);
     }
 
     private void initIndicator() {
@@ -210,7 +178,6 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
     private void initTabData(List<VideoClassBean> videoClassList) {
         fragments = new ArrayList<>();
         for (int i = 0; i < videoClassList.size(); i++) {
-            VideoClassBean videoClassBean = videoClassList.get(i);
             TabFragment tabFragment = new TabFragment();
             int id = videoClassList.get(i).getId();
             int type = videoClassList.get(i).getType();

@@ -548,7 +548,7 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
                     return;
                 }
                 if (position == 0) {
-                    mHomeViewHolder = new MainHomeViewHolder(mContext, parent);
+                    mHomeViewHolder = new MainHomeViewHolder(mContext, parent,0);
                     mHomeViewHolder.setAppBarLayoutListener(this);
                     vh = mHomeViewHolder;
                 } else if (position == 1) {

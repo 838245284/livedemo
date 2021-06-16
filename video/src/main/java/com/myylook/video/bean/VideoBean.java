@@ -13,8 +13,7 @@ import com.myylook.common.bean.UserBean;
 public class VideoBean implements Parcelable {
 
 
-    public static final int ITEM_TYPE_SHORT_VIDEO = 1;
-    public static final int ITEM_TYPE_LONG_VIDEO = 2;
+
 
 
     private String id;
@@ -45,20 +44,13 @@ public class VideoBean implements Parcelable {
     private int mType;// type  绑定的内容类型 0 没绑定 1 商品 2 付费内容
     private int mGoodsType;//0站内商品 1站外商品
 
-    private int itemType;
+
 
 
     public VideoBean() {
 
     }
 
-    public int getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(int itemType) {
-        this.itemType = itemType;
-    }
 
     public String getId() {
         return id;

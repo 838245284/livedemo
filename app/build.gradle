@@ -67,4 +67,5 @@ dependencies {
     //短视频
     compile project(':video')
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    implementation 'com.pangle.cn:ads-sdk:3.5.0.6'
 }

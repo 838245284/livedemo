@@ -43,5 +43,7 @@ dependencies {
     compile project(':video')
     //商城
     compile project(':mall')
+    compile project(':common')
+    implementation 'com.pangle.cn:ads-sdk:3.5.0.6'
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
 }

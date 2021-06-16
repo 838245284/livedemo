@@ -38,4 +38,5 @@ dependencies {
     compile project(':common')
     //萌颜
     compile project(':beauty')
+    implementation 'com.pangle.cn:ads-sdk:3.5.0.6'
 }

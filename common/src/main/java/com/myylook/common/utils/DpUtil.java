@@ -1,5 +1,7 @@
 package com.myylook.common.utils;
 
+import android.content.Context;
+
 import com.myylook.common.CommonAppContext;
 
 /**
@@ -17,5 +19,9 @@ public class DpUtil {
 
     public static int dp2px(int dpVal) {
         return (int) (scale * dpVal + 0.5f);
+    }
+
+    public static int px2dip( float pxValue) {
+        return (int) (pxValue / scale + 0.5f);
     }
 }

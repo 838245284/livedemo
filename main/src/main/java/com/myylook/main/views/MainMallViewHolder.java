@@ -37,7 +37,7 @@ import com.myylook.mall.bean.GoodsSimpleBean;
 import java.util.List;
 
 /**
- * 首页 商城
+ * 首页 教學
  */
 public class MainMallViewHolder extends AbsMainViewHolder implements OnItemClickListener<GoodsSimpleBean>, View.OnClickListener {
 

@@ -1,17 +1,38 @@
 package com.myylook.main.views;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.myylook.common.CommonAppConfig;
+import com.myylook.common.bean.ConfigBean;
+import com.myylook.common.bean.VideoClassBean;
+import com.myylook.common.utils.WordUtil;
+import com.myylook.main.fragment.TabFragment;
+import com.myylook.main.fragment.TabTeachFragment;
+import com.myylook.video.bean.VideoBean;
+import com.myylook.video.bean.VideoWithAds;
+import com.myylook.video.http.VideoHttpConsts;
+import com.myylook.video.http.VideoHttpUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
@@ -34,24 +55,34 @@ import com.myylook.mall.activity.GoodsDetailActivity;
 import com.myylook.mall.bean.GoodsHomeClassBean;
 import com.myylook.mall.bean.GoodsSimpleBean;
 
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 首页 教學
  */
-public class MainMallViewHolder extends AbsMainViewHolder implements OnItemClickListener<GoodsSimpleBean>, View.OnClickListener {
+public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoBean>, View.OnClickListener {
 
-    private CommonRefreshView mRefreshView;
-    private MainMallAdapter mAdapter;
-    private Banner mBanner;
-    private View mBannerWrap;
-    private boolean mBannerNeedUpdate;
-    private List<BannerBean> mBannerList;
-    private List<GoodsHomeClassBean> mClassList;
-    private RecyclerView mRecyclerViewClass;
-    private boolean mClassShowed;
-    private View mScrollIndicator;
-    private int mDp25;
+    private static final int ID_RECOMMEND = -1;
+    private static final int ID_SHORT_VIDEO = -2;
+    private ViewPager viewPager;
+    private List<TabTeachFragment> fragments;
+    private List<VideoClassBean> videoClassList;
+    private MagicIndicator mIndicator;
+    private View mBtnMore;
+
 
     public MainMallViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
@@ -59,213 +90,189 @@ public class MainMallViewHolder extends AbsMainViewHolder implements OnItemClick
 
     @Override
     protected int getLayoutId() {
-        return R.layout.view_main_mall;
+        return R.layout.view_main_home_video;
     }
 
     @Override
     public void init() {
-        setStatusHeight();
-        findViewById(R.id.btn_search).setOnClickListener(this);
-        mRefreshView = findViewById(R.id.refreshView);
-        mRefreshView.setEmptyLayoutId(R.layout.view_no_data_main_mall);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (position == 0) {
-                    return 2;
-                }
-                return 1;
+        viewPager = findViewById(R.id.vp_video);
+        /*videoClassList = new ArrayList<>();
+        videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoWithAds.ITEM_TYPE_SHORT_VIDEO, false));
+        videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), VideoWithAds.ITEM_TYPE_LONG_VIDEO, true));
+        ConfigBean configBean = CommonAppConfig.getInstance().getConfig();
+        if (configBean != null) {
+            List<VideoClassBean> list = JSON.parseArray(configBean.getVideoClass(), VideoClassBean.class);
+            if (list != null && list.size() > 0) {
+                videoClassList.addAll(list);
             }
-        });
-        mRefreshView.setLayoutManager(gridLayoutManager);
-        ItemDecoration decoration = new ItemDecoration(mContext, 0x00000000, 10, 0);
-        decoration.setOnlySetItemOffsetsButNoDraw(true);
-        mRefreshView.setItemDecoration(decoration);
-        mAdapter = new MainMallAdapter(mContext);
-        mAdapter.setOnItemClickListener(this);
-        mRefreshView.setRecyclerViewAdapter(mAdapter);
-        mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<GoodsSimpleBean>() {
+        }
+
+
+        mIndicator = (MagicIndicator) findViewById(R.id.indicator);
+        mBtnMore = findViewById(R.id.btn_more);
+        mBtnMore.setOnClickListener(this);*/
+
+        initTabData(videoClassList);
+
+        FragmentActivity activity = (FragmentActivity) mContext;
+        List<FrameLayout> mviews = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            FrameLayout frameLayout = new FrameLayout(mContext);
+            frameLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mviews.add(frameLayout);
+        }
+        viewPager.setAdapter(new MyViewPagerAdapter(mviews));
+        /*viewPager.setAdapter(new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
             @Override
-            public RefreshAdapter<GoodsSimpleBean> getAdapter() {
-                return null;
+            public Fragment getItem(int i) {
+                return fragments.get(i);
             }
 
             @Override
-            public void loadData(int p, HttpCallback callback) {
-                MainHttpUtil.getHomeGoodsList(p, callback);
+            public int getCount() {
+                return fragments.size();
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return "pos"+position;
+            }
+        });*/
+//        initIndicator();
+
+    }
+
+    public class MyViewPagerAdapter extends PagerAdapter {
+        private List<FrameLayout> mListViews;
+        public MyViewPagerAdapter(List<FrameLayout> mListViews) {
+            this.mListViews = mListViews;//构造方法，参数是我们的页卡，这样比较方便。
+        }
+        //直接继承PagerAdapter，至少必须重写下面的四个方法，否则会报错
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object)  {
+            container.removeView(mListViews.get(position));//删除页卡
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position){
+            //这个方法用来实例化页卡
+            container.addView(mListViews.get(position), 0);//添加页卡
+            return mListViews.get(position);
+        }
+        @Override
+        public int getCount() {
+            return  mListViews.size();//返回页卡的数量
+        }
+
+        @Override
+        public boolean isViewFromObject(View arg0, Object arg1) {
+            return arg0==arg1;//官方提示这样写
+        }
+    }
+
+    private void initIndicator() {
+        mBtnMore.setVisibility(videoClassList != null && videoClassList.size() > 6 ? View.VISIBLE : View.GONE);
+
+        CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+
+            @Override
+            public int getCount() {
+                return videoClassList.size();
             }
 
             @Override
-            public List<GoodsSimpleBean> processData(String[] info) {
-                JSONObject obj = JSON.parseObject(info[0]);
-                mBannerNeedUpdate = false;
-                List<BannerBean> bannerList = JSON.parseArray(obj.getString("slide"), BannerBean.class);
-                if (bannerList != null && bannerList.size() > 0) {
-                    if (mBannerList == null || mBannerList.size() != bannerList.size()) {
-                        mBannerNeedUpdate = true;
-                    } else {
-                        for (int i = 0; i < mBannerList.size(); i++) {
-                            BannerBean bean = mBannerList.get(i);
-                            if (bean == null || !bean.isEqual(bannerList.get(i))) {
-                                mBannerNeedUpdate = true;
-                                break;
-                            }
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                SimplePagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
+                simplePagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.tab_unselect));
+                simplePagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.tab_select));
+                simplePagerTitleView.setText(videoClassList.get(index).getName());
+                simplePagerTitleView.setTextSize(14);
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (viewPager != null) {
+                            viewPager.setCurrentItem(index);
                         }
                     }
-                }
-                mBannerList = bannerList;
-                mClassList = JSON.parseArray(obj.getString("shoptwoclass"), GoodsHomeClassBean.class);
-                return JSON.parseArray(obj.getString("list"), GoodsSimpleBean.class);
+                });
+                return simplePagerTitleView;
             }
 
             @Override
-            public void onRefreshSuccess(List<GoodsSimpleBean> list, int listCount) {
-                showBanner();
-                showClass();
-            }
-
-            @Override
-            public void onRefreshFailure() {
-
-            }
-
-            @Override
-            public void onLoadMoreSuccess(List<GoodsSimpleBean> loadItemList, int loadItemCount) {
-
-            }
-
-            @Override
-            public void onLoadMoreFailure() {
-
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setXOffset(DpUtil.dp2px(13));
+                linePagerIndicator.setRoundRadius(DpUtil.dp2px(2));
+                linePagerIndicator.setColors(ContextCompat.getColor(mContext, R.color.white));
+                return linePagerIndicator;
             }
         });
-        View headView = mAdapter.getHeadView();
-        mScrollIndicator = headView.findViewById(R.id.scroll_indicator);
-        mDp25 = DpUtil.dp2px(25);
-        mBannerWrap = headView.findViewById(R.id.banner_wrap);
-        mBanner = (Banner) headView.findViewById(R.id.banner);
-        mBanner.setImageLoader(new ImageLoader() {
-            @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                ImgLoader.display(mContext, ((BannerBean) path).getImageUrl(), imageView);
-            }
-        });
-        mBanner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(int p) {
-                if (mBannerList != null) {
-                    if (p >= 0 && p < mBannerList.size()) {
-                        BannerBean bean = mBannerList.get(p);
-                        if (bean != null) {
-                            String link = bean.getLink();
-                            if (!TextUtils.isEmpty(link)) {
-                                WebViewActivity.forward(mContext, link, false);
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        mRecyclerViewClass = headView.findViewById(R.id.recyclerView_class);
-        mRecyclerViewClass.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (mScrollIndicator != null) {
-                    mScrollIndicator.setTranslationX(mDp25 * computeScrollPercent());
-                }
-            }
-        });
+        mIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(mIndicator, viewPager);
     }
 
-    /**
-     * 计算滑动的百分比
-     */
-    private float computeScrollPercent() {
-        if (mRecyclerViewClass != null) {
-            //当前RcyclerView显示区域的高度。水平列表屏幕从左侧到右侧显示范围
-            int extent = mRecyclerViewClass.computeHorizontalScrollExtent();
-            //整体的高度，注意是整体，包括在显示区域之外的
-            int range = mRecyclerViewClass.computeHorizontalScrollRange();
-            //已经向下滚动的距离，为0时表示已处于顶部
-            float offset = mRecyclerViewClass.computeHorizontalScrollOffset();
-            //已经滚动的百分比 0~1
-            float percent = offset / (range - extent);
-            if (percent > 1) {
-                percent = 1;
-            }
-            return percent;
-        }
-        return 0;
-    }
+    private static final String TAG = "MainHomeVideoViewHolder";
 
-
-    private void showBanner() {
-        if (mBanner == null || mBannerWrap == null) {
-            return;
-        }
-        if (mBannerList == null || mBannerList.size() == 0) {
-            mBannerWrap.setVisibility(View.GONE);
-            return;
-        }
-        if (mBannerNeedUpdate) {
-            mBanner.update(mBannerList);
+    private void initTabData(List<VideoClassBean> videoClassList) {
+        fragments = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            TabTeachFragment tabFragment = new TabTeachFragment();
+            /*int id = videoClassList.get(i).getId();
+            int type = videoClassList.get(i).getType();
+//            Log.e(TAG, "initTabData: "+id+", name:"+ videoClassBean.getName() );
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", id);
+            bundle.putInt("type", type);
+            bundle.putString("index", String.valueOf(i));
+            tabFragment.setArguments(bundle);*/
+            fragments.add(tabFragment);
         }
     }
-
-
-    private void showClass() {
-        if (mRecyclerViewClass == null) {
-            return;
-        }
-        if (mClassList == null || mClassList.size() == 0) {
-            mRecyclerViewClass.setVisibility(View.GONE);
-            return;
-        }
-        if (mClassShowed) {
-            return;
-        }
-        mClassShowed = true;
-        int size = mClassList.size();
-        if (size <= 12) {
-            mRecyclerViewClass.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        } else {
-            mRecyclerViewClass.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.HORIZONTAL, false));
-        }
-        MainMallClassAdapter adapter = new MainMallClassAdapter(mContext, mClassList);
-        mRecyclerViewClass.setAdapter(adapter);
-    }
-
-    @Override
-    public void onItemClick(GoodsSimpleBean bean, int position) {
-        GoodsDetailActivity.forward(mContext, bean.getId(), false, bean.getType());
-    }
-
 
     @Override
     public void loadData() {
-        if (isFirstLoadData() && mRefreshView != null) {
-            mRefreshView.initData();
+    }
+
+   /* @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoScrollPageEvent(VideoScrollPageEvent e) {
+        if (Constants.VIDEO_HOME.equals(e.getKey()) && mRefreshView != null) {
+            mRefreshView.setPageCount(e.getPage());
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onVideoDeleteEvent(VideoDeleteEvent e) {
+        if (mAdapter != null) {
+            mAdapter.deleteVideo(e.getVideoId());
+            if (mAdapter.getItemCount() == 0 && mRefreshView != null) {
+                mRefreshView.showEmpty();
+            }
+        }
+    }*/
 
     @Override
-    public void onDestroy() {
-        MainHttpUtil.cancel(MainHttpConsts.GET_HOME_GOODS_LIST);
-        super.onDestroy();
+    public void onItemClick(VideoBean bean, int position) {
     }
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.btn_search) {
-            MallSearchActivity.forward(mContext);
+    public void release() {
+        VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_LIST);
+        VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_CLASS_LIST);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        release();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btn_more) {
         }
     }
 }

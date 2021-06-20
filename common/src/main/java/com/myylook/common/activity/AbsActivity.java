@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by cxf on 2017/8/3.
  */
 
-public abstract class AbsActivity extends AppCompatActivity {
+public abstract class AbsActivity extends FragmentActivity {
 
     protected String mTag;
     protected Context mContext;

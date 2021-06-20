@@ -47,12 +47,36 @@ public class VideoHttpUtil {
                 .params("p", p)
                 .execute(callback);
     }
+    /**
+     * 获取教学推荐列表
+     */
+    public static void getTeachVideoList(int p, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.getChangJxVideo", VideoHttpConsts.GET_TEACH_VIDEO_LIST)
+//        HttpClient.getInstance().get("Video.GetVideoList", VideoHttpConsts.GET_HOME_VIDEO_LIST)
+                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("p", p)
+                .execute(callback);
+    }
+
 
     /**
      * 获取首页视频分类列表
      */
     public static void getHomeVideoClassList(int videoClassId, int p, HttpCallback callback) {
         HttpClient.getInstance().get("Video.getClassVideo", VideoHttpConsts.GET_HOME_VIDEO_CLASS_LIST)
+                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("videoclassid", videoClassId)
+                .params("p", p)
+                .execute(callback);
+    }
+
+    /**
+     * 获取教学视频分类列表
+     */
+    public static void getTeachVideoClassList(int videoClassId, int p, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.getJxVideo", VideoHttpConsts.GET_TEACH_VIDEO_CLASS_LIST)
                 .params("uid", CommonAppConfig.getInstance().getUid())
                 .params("token", CommonAppConfig.getInstance().getToken())
                 .params("videoclassid", videoClassId)
@@ -89,6 +113,16 @@ public class VideoHttpUtil {
      */
     public static void setVideoLike(String tag, String videoid, HttpCallback callback) {
         HttpClient.getInstance().get("Video.AddLike", tag)
+                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("videoid", videoid)
+                .execute(callback);
+    }
+    /**
+     * 视频收藏
+     */
+    public static void setVideoCollection(String tag, String videoid, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.VideoAction", tag)
                 .params("uid", CommonAppConfig.getInstance().getUid())
                 .params("token", CommonAppConfig.getInstance().getToken())
                 .params("videoid", videoid)

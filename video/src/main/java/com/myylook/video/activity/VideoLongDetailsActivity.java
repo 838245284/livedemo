@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -16,6 +18,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.TTAdNative;
+import com.bytedance.sdk.openadsdk.TTAdSdk;
+import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.myylook.common.CommonAppConfig;
 import com.myylook.common.Constants;
 import com.myylook.common.HtmlConfig;
@@ -32,12 +38,15 @@ import com.myylook.common.mob.MobBean;
 import com.myylook.common.mob.MobCallback;
 import com.myylook.common.mob.MobShareUtil;
 import com.myylook.common.mob.ShareData;
+import com.myylook.common.utils.DensityUtils;
 import com.myylook.common.utils.JsonUtil;
 import com.myylook.common.utils.LogUtil;
 import com.myylook.common.utils.RouteUtil;
 import com.myylook.common.utils.StringUtil;
 import com.myylook.common.utils.TextViewUtils;
 import com.myylook.common.utils.ToastUtil;
+import com.myylook.live.activity.LiveAudienceActivity;
+import com.myylook.live.dialog.LiveGiftDialogFragment;
 import com.myylook.video.R;
 import com.myylook.video.adapter.VideoRecommendAdapter;
 import com.myylook.video.bean.VideoBean;
@@ -63,6 +72,7 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,6 +94,9 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
     private TextView mTvUserName;
     private TextView mTvCount;
     private TextView mBtnFollow;
+
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private TTAdNative mTTAdNative;
 
     public static void forward(Context context, VideoBean videoBean) {
         Intent intent = new Intent(context, VideoLongDetailsActivity.class);
@@ -114,7 +127,7 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
 
     @Override
     protected void main() {
-
+        super.main();
         Intent intent = getIntent();
         mVideoBean = intent.getParcelableExtra(Constants.VIDEO_BEAN);
 
@@ -128,7 +141,7 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
         mRefreshView = findViewById(R.id.refreshView);
         findViewById(R.id.input_tip).setOnClickListener(this);
         findViewById(R.id.btn_face).setOnClickListener(this);
-
+        initAds();
         initVideo();
 
         initHeadView();
@@ -217,6 +230,17 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
 
             @Override
             public void onRefreshSuccess(List<VideoWithAds> list, int listCount) {
+                if (list == null || list.isEmpty()) {
+                    return;
+                }
+//                int space = list.get(0).itemType == VideoWithAds.ITEM_TYPE_SHORT_VIDEO ? 10 : 5;
+                int space = 5;
+                int size = list.size();
+                for (int i = 0; i < size; i += space) {
+                    if (i != 0 && i % space == 0) {
+                        loadListAd(space, i);
+                    }
+                }
             }
 
             @Override
@@ -234,6 +258,88 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
 
             }
         });
+
+    }
+
+    private void loadListAd(int type, final int position) {
+        float expressViewWidth;
+        float expressViewHeight;
+        String code;
+        if(type==10){
+            expressViewWidth = DensityUtils.getScreenWdp(mContext) / 2 - 12;
+            expressViewHeight = expressViewWidth * 16f / 9 + 7;
+            code = "946218632";
+        }else{
+            expressViewWidth = DensityUtils.getScreenWdp(mContext);
+            expressViewHeight = expressViewWidth * 3f /4;
+            code = "946243418";
+        }
+        //step4:创建feed广告请求类型参数AdSlot,具体参数含义参考文档
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId(code)
+                .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
+                .setAdType(AdSlot.TYPE_FEED)
+                .setAdCount(1) //请求广告数量为1到3条
+                .build();
+        //step5:请求广告，调用feed广告异步请求接口，加载到广告后，拿到广告素材自定义渲染
+        mTTAdNative.loadNativeExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+            @Override
+            public void onError(int code, String message) {
+                Log.e("TAG", "onError: "+message );
+            }
+
+            @Override
+            public void onNativeExpressAdLoad(final List<TTNativeExpressAd> ads) {
+                if (list != null) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            bindAdListener(ads, position);
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+    private void initAds() {
+
+        mTTAdNative = TTAdSdk.getAdManager().createAdNative(mContext);
+        //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
+        TTAdSdk.getAdManager().requestPermissionIfNecessary(mContext);
+    }
+    private void bindAdListener(final List<TTNativeExpressAd> ads, int position) {
+        for (int i = 0; i < ads.size(); i++) {
+            VideoWithAds videoWithAds = new VideoWithAds();
+            TTNativeExpressAd ad = ads.get(i);
+            videoWithAds.ad = ad;
+            videoWithAds.itemType = VideoWithAds.ITEM_TYPE_Ads;
+            List<VideoWithAds> adapterList = mAdapter.getList();
+            adapterList.add(position, videoWithAds);
+            ad.render();
+        }
+        mAdapter.notifyDataSetChanged();
+
+       /* ad.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+            @Override
+            public void onAdClicked(View view, int type) {
+            }
+
+            @Override
+            public void onAdShow(View view, int type) {
+            }
+
+            @Override
+            public void onRenderFail(View view, String msg, int code) {
+            }
+
+            @Override
+            public void onRenderSuccess(View view, float width, float height) {
+                //返回view的宽高 单位 dp
+                Log.e(TAG, "onRenderSuccess: " + width + ":" + height);
+            }
+        });
+        ad.render();*/
 
     }
 
@@ -370,6 +476,7 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
         mTvContent.setText(contentSB);
 
         boolean isLike = 1 == mVideoBean.getLike();
+        boolean isCollection = "1".equals(mVideoBean.getVideo_cs()) ;
         boolean isFollow = "1".equals(mVideoBean.getIsattent());
 
 
@@ -379,7 +486,7 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
         mBtnLike.setTextColor(ContextCompat.getColor(mContext, isFollow ? R.color.global : R.color.textColor2));
 
         //
-        TextViewUtils.setDrawableRes(mBtnCollection, isLike ? R.mipmap.ic_video_d_collection_s : R.mipmap.ic_video_d_collection_n, 1);
+        TextViewUtils.setDrawableRes(mBtnCollection, isCollection ? R.mipmap.ic_video_d_collection_s : R.mipmap.ic_video_d_collection_n, 1);
 
         UserBean userBean = mVideoBean.getUserBean();
         if (userBean != null) {
@@ -490,9 +597,11 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
             clickLike();
         } else if (id == R.id.btn_download) {
         } else if (id == R.id.btn_reward) {
+            openGiftWindow();
         } else if (id == R.id.btn_forward) {
             clickShare();
         } else if (id == R.id.btn_collection) {
+            collection();
         } else if (id == R.id.avatar || id == R.id.name) {
             clickAvatar();
         } else if (id == R.id.btn_follow) {
@@ -503,6 +612,34 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
             openCommentInputWindow(true);
 
         }
+    }
+
+    /**
+     * 打开礼物窗口
+     */
+    public void openGiftWindow() {
+        LiveGiftDialogFragment fragment = new LiveGiftDialogFragment();
+        /*fragment.setLifeCycleListener(this);
+        fragment.setLiveGuardInfo(mLiveGuardInfo);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.LIVE_UID, mLiveUid);
+        bundle.putString(Constants.LIVE_STREAM, mStream);
+        fragment.setArguments(bundle);*/
+        fragment.show(getSupportFragmentManager(), "LiveGiftDialogFragment");
+    }
+
+    private void collection() {
+        VideoHttpUtil.setVideoCollection(mTag, mVideoBean.getId(), new HttpCallback() {
+            @Override
+            public void onSuccess(int code, String msg, String[] info) {
+                Log.e("TAG", "onSuccess: " +Arrays.toString(info)+"  msg"+ msg);
+                JSONObject obj = JSON.parseObject(info[0]);
+                String likeNum = obj.getString("issc_count");
+                boolean isCollect = TextUtils.equals("1", likeNum);
+                TextViewUtils.setDrawableRes(mBtnCollection, isCollect ? R.mipmap.ic_video_d_collection_s : R.mipmap.ic_video_d_collection_n, 1);
+                mBtnCollection.setTextColor(ContextCompat.getColor(mContext, isCollect ? R.color.global : R.color.textColor2));
+            }
+        });
     }
 
 

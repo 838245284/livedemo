@@ -115,11 +115,11 @@ public class TeachVideoView implements OnItemClickListener<VideoWithAds> {
             @Override
             public void loadData(int p, HttpCallback callback) {
                 if (mVideoClassId == ID_RECOMMEND) {
-                    VideoHttpUtil.getHomeVideoList(p, callback);
+                    VideoHttpUtil.getTeachVideoList(p, callback);
                 } else if (mVideoClassId == ID_SHORT_VIDEO) {
                     VideoHttpUtil.getHomeShortVideoList(p, callback);
                 } else {
-                    VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                    VideoHttpUtil.getTeachVideoClassList(mVideoClassId, p, callback);
                 }
             }
 
@@ -267,11 +267,11 @@ public class TeachVideoView implements OnItemClickListener<VideoWithAds> {
                     @Override
                     public void loadData(int p, HttpCallback callback) {
                         if (mVideoClassId == ID_RECOMMEND) {
-                            VideoHttpUtil.getHomeVideoList(p, callback);
-                        } else if (mVideoClassId == ID_SHORT_VIDEO) {
+                            VideoHttpUtil.getTeachVideoList(p, callback);
+                        } /*else if (mVideoClassId == ID_SHORT_VIDEO) {
                             VideoHttpUtil.getHomeShortVideoList(p, callback);
-                        } else {
-                            VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                        }*/ else {
+                            VideoHttpUtil.getTeachVideoClassList(mVideoClassId, p, callback);
                         }
                     }
                 };

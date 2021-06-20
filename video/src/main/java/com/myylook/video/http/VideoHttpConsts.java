@@ -7,8 +7,10 @@ package com.myylook.video.http;
 public class VideoHttpConsts {
     public static final String GET_VIDEO_DETAILS = "getVideoDetails";
     public static final String GET_HOME_VIDEO_LIST = "getHomeVideoList";
+    public static final String GET_TEACH_VIDEO_LIST = "getTeachVideoList";
     public static final String GET_HOME_SHORT_VIDEO_LIST = "getHomeShortVideoList";
     public static final String GET_HOME_VIDEO_CLASS_LIST = "getHomeVideoClassList";
+    public static final String GET_TEACH_VIDEO_CLASS_LIST = "getTeachVideoClassList";
     public static final String GET_ATTENTION_VIDEO = "getAttentionVideo";
     public static final String GET_VIDEO_COMMENT_LIST = "getVideoCommentList";
     public static final String SET_COMMENT_LIKE = "setCommentLike";

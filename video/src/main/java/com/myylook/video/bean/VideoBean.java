@@ -12,10 +12,6 @@ import com.myylook.common.bean.UserBean;
 
 public class VideoBean implements Parcelable {
 
-
-
-
-
     private String id;
     private String uid;
     private String title;
@@ -45,10 +41,10 @@ public class VideoBean implements Parcelable {
     private int mGoodsType;//0站内商品 1站外商品
 
 
-
     private String video_time;
     private String sc_count;
     private String videoclass;
+    private String video_cs;
     private String isattent; // 是否关注
 
 
@@ -389,6 +385,7 @@ public class VideoBean implements Parcelable {
         dest.writeString(this.sc_count);
         dest.writeString(this.videoclass);
         dest.writeString(this.isattent);
+        dest.writeString(this.video_cs);
     }
 
     public void readFromParcel(Parcel source) {
@@ -423,6 +420,7 @@ public class VideoBean implements Parcelable {
         this.sc_count = source.readString();
         this.videoclass = source.readString();
         this.isattent = source.readString();
+        this.video_cs = source.readString();
     }
 
     protected VideoBean(Parcel in) {
@@ -457,6 +455,7 @@ public class VideoBean implements Parcelable {
         this.sc_count = in.readString();
         this.videoclass = in.readString();
         this.isattent = in.readString();
+        this.video_cs = in.readString();
     }
 
     public static final Creator<VideoBean> CREATOR = new Creator<VideoBean>() {
@@ -477,4 +476,11 @@ public class VideoBean implements Parcelable {
         return "VideoBean" + this.getId() + this.hashCode();
     }
 
+    public String getVideo_cs() {
+        return video_cs;
+    }
+
+    public void setVideo_cs(String video_cs) {
+        this.video_cs = video_cs;
+    }
 }

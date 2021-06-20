@@ -1,59 +1,46 @@
 package com.myylook.main.views;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.GridView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.myylook.common.CommonAppConfig;
+import com.myylook.common.Constants;
 import com.myylook.common.bean.ConfigBean;
 import com.myylook.common.bean.VideoClassBean;
-import com.myylook.common.utils.WordUtil;
-import com.myylook.main.fragment.TabFragment;
-import com.myylook.main.fragment.TabTeachFragment;
-import com.myylook.video.bean.VideoBean;
-import com.myylook.video.bean.VideoWithAds;
-import com.myylook.video.http.VideoHttpConsts;
-import com.myylook.video.http.VideoHttpUtil;
-import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
-import com.youth.banner.loader.ImageLoader;
-import com.myylook.common.activity.WebViewActivity;
-import com.myylook.common.adapter.RefreshAdapter;
 import com.myylook.common.custom.CommonRefreshView;
-import com.myylook.common.custom.ItemDecoration;
-import com.myylook.common.glide.ImgLoader;
-import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
 import com.myylook.common.utils.DpUtil;
+import com.myylook.common.utils.WordUtil;
 import com.myylook.main.R;
-import com.myylook.main.activity.MallSearchActivity;
-import com.myylook.main.adapter.MainMallAdapter;
-import com.myylook.main.adapter.MainMallClassAdapter;
-import com.myylook.main.bean.BannerBean;
-import com.myylook.main.http.MainHttpConsts;
-import com.myylook.main.http.MainHttpUtil;
-import com.myylook.mall.activity.GoodsDetailActivity;
-import com.myylook.mall.bean.GoodsHomeClassBean;
-import com.myylook.mall.bean.GoodsSimpleBean;
+import com.myylook.main.adapter.MainHomeVideoAdapter;
+import com.myylook.main.adapter.MainHomeVideoClassAdapter;
+import com.myylook.main.adapter.ReportConditionAdapter;
+import com.myylook.main.fragment.TabFragment;
+import com.myylook.video.bean.VideoBean;
+import com.myylook.video.bean.VideoWithAds;
+import com.myylook.video.event.VideoDeleteEvent;
+import com.myylook.video.event.VideoScrollPageEvent;
+import com.myylook.video.http.VideoHttpConsts;
+import com.myylook.video.http.VideoHttpUtil;
+import com.myylook.video.interfaces.VideoScrollDataHelper;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -66,25 +53,37 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorT
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 首页 教學
- */
-public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoBean>, View.OnClickListener {
 
+/**
+ * Created by cxf on 2018/9/22.
+ * 首页视频
+ */
+
+public class MainTeachVideoViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoBean>,
+        View.OnClickListener {
+
+    private CommonRefreshView mRefreshView;
+    private MainHomeVideoAdapter mAdapter;
+    private VideoScrollDataHelper mVideoScrollDataHelper;
+    //    private RecyclerView mClassRecyclerView;
+    private MainHomeVideoClassAdapter mClassAdapter;
     private static final int ID_RECOMMEND = -1;
     private static final int ID_SHORT_VIDEO = -2;
+    private int mVideoClassId = ID_RECOMMEND;
     private ViewPager viewPager;
-    private List<TabTeachFragment> fragments;
+    private ArrayList<View> mViewList;
     private List<VideoClassBean> videoClassList;
     private MagicIndicator mIndicator;
     private View mBtnMore;
 
 
-    public MainMallViewHolder(Context context, ViewGroup parentView) {
+    public MainTeachVideoViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
     }
 
@@ -96,7 +95,7 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
     @Override
     public void init() {
         viewPager = findViewById(R.id.vp_video);
-        /*videoClassList = new ArrayList<>();
+        videoClassList = new ArrayList<>();
         videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoWithAds.ITEM_TYPE_SHORT_VIDEO, false));
         videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), VideoWithAds.ITEM_TYPE_LONG_VIDEO, true));
         ConfigBean configBean = CommonAppConfig.getInstance().getConfig();
@@ -110,42 +109,20 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
 
         mIndicator = (MagicIndicator) findViewById(R.id.indicator);
         mBtnMore = findViewById(R.id.btn_more);
-        mBtnMore.setOnClickListener(this);*/
+        mBtnMore.setOnClickListener(this);
 
+        mViewList = new ArrayList<>();
         initTabData(videoClassList);
 
         FragmentActivity activity = (FragmentActivity) mContext;
-        List<FrameLayout> mviews = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            FrameLayout frameLayout = new FrameLayout(mContext);
-            frameLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mviews.add(frameLayout);
-        }
-        viewPager.setAdapter(new MyViewPagerAdapter(mviews));
-        /*viewPager.setAdapter(new FragmentPagerAdapter(activity.getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int i) {
-                return fragments.get(i);
-            }
-
-            @Override
-            public int getCount() {
-                return fragments.size();
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return "pos"+position;
-            }
-        });*/
-//        initIndicator();
+        viewPager.setAdapter(new MyViewPagerAdapter(mViewList));
+        initIndicator();
 
     }
 
     public class MyViewPagerAdapter extends PagerAdapter {
-        private List<FrameLayout> mListViews;
-        public MyViewPagerAdapter(List<FrameLayout> mListViews) {
+        private List<View> mListViews;
+        public MyViewPagerAdapter(List<View> mListViews) {
             this.mListViews = mListViews;//构造方法，参数是我们的页卡，这样比较方便。
         }
         //直接继承PagerAdapter，至少必须重写下面的四个方法，否则会报错
@@ -217,18 +194,11 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
     private static final String TAG = "MainHomeVideoViewHolder";
 
     private void initTabData(List<VideoClassBean> videoClassList) {
-        fragments = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            TabTeachFragment tabFragment = new TabTeachFragment();
-            /*int id = videoClassList.get(i).getId();
+        for (int i = 0; i < videoClassList.size(); i++) {
+            int id = videoClassList.get(i).getId();
             int type = videoClassList.get(i).getType();
-//            Log.e(TAG, "initTabData: "+id+", name:"+ videoClassBean.getName() );
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", id);
-            bundle.putInt("type", type);
-            bundle.putString("index", String.valueOf(i));
-            tabFragment.setArguments(bundle);*/
-            fragments.add(tabFragment);
+            TeachVideoView teachVideoView = new TeachVideoView(mContext,id,String.valueOf(i),type);
+            mViewList.add(teachVideoView.getContentView());
         }
     }
 
@@ -236,7 +206,7 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
     public void loadData() {
     }
 
-   /* @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoScrollPageEvent(VideoScrollPageEvent e) {
         if (Constants.VIDEO_HOME.equals(e.getKey()) && mRefreshView != null) {
             mRefreshView.setPageCount(e.getPage());
@@ -251,10 +221,29 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
                 mRefreshView.showEmpty();
             }
         }
-    }*/
+    }
 
     @Override
     public void onItemClick(VideoBean bean, int position) {
+        /*int page = 1;
+        if (mRefreshView != null) {
+            page = mRefreshView.getPageCount();
+        }
+        if (mVideoScrollDataHelper == null) {
+            mVideoScrollDataHelper = new VideoScrollDataHelper() {
+
+                @Override
+                public void loadData(int p, HttpCallback callback) {
+                    if (mVideoClassId == ID_RECOMMEND) {
+                        VideoHttpUtil.getHomeVideoList(p, callback);
+                    } else {
+                        VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                    }
+                }
+            };
+        }
+        VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
+        VideoPlayActivity.forward(mContext, position, Constants.VIDEO_HOME, page);*/
     }
 
     @Override
@@ -262,6 +251,7 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
         VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_LIST);
         VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_CLASS_LIST);
         EventBus.getDefault().unregister(this);
+        mVideoScrollDataHelper = null;
     }
 
     @Override
@@ -273,6 +263,39 @@ public class MainMallViewHolder extends AbsMainHomeChildViewHolder implements On
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_more) {
+            showPop(view);
         }
+    }
+
+    private void showPop(View v) {
+        View pop = View.inflate(mContext, R.layout.pop_report_condition, null);
+        GridView listView = pop.findViewById(R.id.lv);
+        final ReportConditionAdapter adapter = new ReportConditionAdapter(videoClassList);
+        listView.setAdapter(adapter);
+        final PopupWindow popupWindow = new PopupWindow(pop);
+        popupWindow.setWidth(AbsListView.LayoutParams.MATCH_PARENT);
+        popupWindow.setHeight(AbsListView.LayoutParams.WRAP_CONTENT);
+       /* if (data.size() < 10) {
+        } else {
+            popupWindow.setHeight(DensityUtils.getScreenH(context) / 2);
+        }*/
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        if (popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        } else {
+            popupWindow.showAsDropDown(v);
+        }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               /* ReportCondition.DataBean bean = adapter.getData().get(position);
+                tv.setText(bean.name);
+                refreshByCondition(position, bean, tv);*/
+                viewPager.setCurrentItem(position);
+                popupWindow.dismiss();
+            }
+        });
     }
 }

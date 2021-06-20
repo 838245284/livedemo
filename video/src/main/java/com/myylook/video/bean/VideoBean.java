@@ -13,8 +13,7 @@ import com.myylook.common.bean.UserBean;
 public class VideoBean implements Parcelable {
 
 
-    public static final int ITEM_TYPE_SHORT_VIDEO = 1;
-    public static final int ITEM_TYPE_LONG_VIDEO = 2;
+
 
 
     private String id;
@@ -45,7 +44,7 @@ public class VideoBean implements Parcelable {
     private int mType;// type  绑定的内容类型 0 没绑定 1 商品 2 付费内容
     private int mGoodsType;//0站内商品 1站外商品
 
-    private int itemType;
+
 
     private String video_time;
     private String sc_count;
@@ -399,7 +398,6 @@ public class VideoBean implements Parcelable {
         dest.writeString(this.mGoodsId);
         dest.writeInt(this.mType);
         dest.writeInt(this.mGoodsType);
-        dest.writeInt(this.itemType);
         dest.writeString(this.video_time);
         dest.writeString(this.sc_count);
         dest.writeString(this.videoclass);
@@ -434,7 +432,6 @@ public class VideoBean implements Parcelable {
         this.mGoodsId = source.readString();
         this.mType = source.readInt();
         this.mGoodsType = source.readInt();
-        this.itemType = source.readInt();
         this.video_time = source.readString();
         this.sc_count = source.readString();
         this.videoclass = source.readString();
@@ -469,7 +466,6 @@ public class VideoBean implements Parcelable {
         this.mGoodsId = in.readString();
         this.mType = in.readInt();
         this.mGoodsType = in.readInt();
-        this.itemType = in.readInt();
         this.video_time = in.readString();
         this.sc_count = in.readString();
         this.videoclass = in.readString();
@@ -487,4 +483,22 @@ public class VideoBean implements Parcelable {
             return new VideoBean[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "VideoBean{" +
+                "title='" + title + '\'' +
+                ",href='" + href + '\'' +
+                ",id='" + id + '\'' +
+                ",uid='" + uid + '\'' +
+//                ",userNiceName='" + userBean.getUserNiceName() + '\'' +
+                ",thumb='" + thumb + '\'' +
+                '}';
+    }
+
+
+    public String getTag() {
+        return "VideoBean" + this.getId() + this.hashCode();
+    }
+
 }

@@ -24,12 +24,14 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
     private MainHomeFollowViewHolder mFollowViewHolder;
     private MainHomeLiveViewHolder mLiveViewHolder;
     private MainHomeVideoViewHolder mVideoViewHolder;
-    private MainHomeNearViewHolder mNearViewHolder;
-//    private ImageView[] mIcons;
+    public int type;
+    public static final int TYPE_HOMR = 0;
+    public static final int TYPE_TEACH = 1;
+    private MainTeachVideoViewHolder mVideoTeachViewHolder;
 
-
-    public MainHomeViewHolder(Context context, ViewGroup parentView) {
+    public MainHomeViewHolder(Context context, ViewGroup parentView,int type) {
         super(context, parentView);
+        this.type = type;
     }
 
     @Override
@@ -58,8 +60,13 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
                     return;
                 }
                 if (position == 0) {
-                    mVideoViewHolder = new MainHomeVideoViewHolder(mContext, parent);
-                    vh = mVideoViewHolder;
+                    if(type==0){
+                        mVideoViewHolder = new MainHomeVideoViewHolder(mContext, parent);
+                        vh = mVideoViewHolder;
+                    }else{
+                        mVideoTeachViewHolder = new MainTeachVideoViewHolder(mContext,parent);
+                        vh = mVideoTeachViewHolder;
+                    }
                 } else if (position == 1) {
                     mFollowViewHolder = new MainHomeFollowViewHolder(mContext, parent);
                     vh = mFollowViewHolder;

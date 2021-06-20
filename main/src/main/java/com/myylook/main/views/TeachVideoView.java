@@ -4,8 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
@@ -18,11 +21,12 @@ import com.myylook.common.custom.ItemDecoration;
 import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
 import com.myylook.common.utils.DensityUtils;
+import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.JsonUtil;
+import com.myylook.common.utils.LogUtil;
 import com.myylook.main.R;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
-import com.myylook.main.http.MainHttpConsts;
-import com.myylook.main.http.MainHttpUtil;
+import com.myylook.main.fragment.TabFragment;
 import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.bean.VideoWithAds;
@@ -34,80 +38,117 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by cxf on 2018/9/22.
- * 首页 关注
- */
-
-public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder implements OnItemClickListener<VideoWithAds> {
-
+public class TeachVideoView implements OnItemClickListener<VideoWithAds> {
     private CommonRefreshView mRefreshView;
     private MainHomeVideoAdapter mAdapter;
+    private static final int ID_RECOMMEND = -1;
+    private static final int ID_SHORT_VIDEO = -2;
+
+    private int mVideoClassId = ID_RECOMMEND;
+    /**
+     * 视频类型 1：短视频 2：长视频
+     */
+    private int mItemType = VideoWithAds.ITEM_TYPE_SHORT_VIDEO;
+
     private VideoScrollDataHelper mVideoScrollDataHelper;
+    private boolean isFirstLoadData = true;
+
+    private static final String TAG = "TabFragment";
+    private String index;
     private List<VideoWithAds> list = new ArrayList<>();
-    String key = "gz";
+    private Context context;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private TTAdNative mTTAdNative;
 
-    public MainHomeFollowViewHolder(Context context, ViewGroup parentView) {
-        super(context, parentView);
+    public TeachVideoView(Context context,int id, String index, int itemType) {
+        this.context = context;
+        mVideoClassId = id;
+        this.index = index;
+        mItemType = itemType;
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.layout_refreshlist;
-    }
-
-    @Override
-    public void init() {
+    public View getContentView(){
+        View root = View.inflate(context, R.layout.layout_refreshlist, null);
+        mRefreshView = root.findViewById(com.myylook.common.R.id.refreshView);
+        mRefreshView.setEmptyLayoutId(com.myylook.common.R.layout.view_no_data_live_video);
         initAds();
-        mRefreshView = (CommonRefreshView) findViewById(R.id.refreshView);
-        mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_video);
-        mRefreshView.setLayoutManager(new GridLayoutManager(mContext, 2, GridLayoutManager.VERTICAL, false));
-        ItemDecoration decoration = new ItemDecoration(mContext, 0x00000000, 5, 0);
-        decoration.setOnlySetItemOffsetsButNoDraw(true);
-        mRefreshView.setItemDecoration(decoration);
+        setAdapter();
+        loadData();
+        return root;
+    }
+
+    public void loadData() {
+        if (!isFirstLoadData) {
+            return;
+        }
+        if (mRefreshView != null) {
+            mRefreshView.initData();
+            isFirstLoadData = false;
+        }
+    }
+
+    private void setAdapter() {
+        if (mItemType == VideoWithAds.ITEM_TYPE_SHORT_VIDEO) {
+            mRefreshView.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false));
+            ItemDecoration decoration = new ItemDecoration(context, 0x00000000, 5, 0);
+            decoration.setOnlySetItemOffsetsButNoDraw(true);
+            mRefreshView.setItemDecoration(decoration);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.leftMargin = DpUtil.dp2px(5);
+            layoutParams.rightMargin = DpUtil.dp2px(5);
+            mRefreshView.setLayoutParams(layoutParams);
+        } else if (mItemType == VideoWithAds.ITEM_TYPE_LONG_VIDEO) {
+            mRefreshView.setLayoutManager(new LinearLayoutManager(context));
+            mRefreshView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
         mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoWithAds>() {
             @Override
             public RefreshAdapter<VideoWithAds> getAdapter() {
                 if (mAdapter == null) {
-                    mAdapter = new MainHomeVideoAdapter(mContext);
-                    mAdapter.setOnItemClickListener(MainHomeFollowViewHolder.this);
+                    mAdapter = new MainHomeVideoAdapter(context);
+                    mAdapter.setOnItemClickListener(TeachVideoView.this);
                 }
                 return mAdapter;
             }
 
             @Override
             public void loadData(int p, HttpCallback callback) {
-                VideoHttpUtil.getFollowVideoList(p,callback);
+                if (mVideoClassId == ID_RECOMMEND) {
+                    VideoHttpUtil.getHomeVideoList(p, callback);
+                } else if (mVideoClassId == ID_SHORT_VIDEO) {
+                    VideoHttpUtil.getHomeShortVideoList(p, callback);
+                } else {
+                    VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                }
             }
 
             @Override
             public List<VideoWithAds> processData(String[] info) {
                 List<VideoBean> infolist = JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
-               if (infolist != null && !infolist.isEmpty()) {
+                if (infolist != null && !infolist.isEmpty()) {
+                    LogUtil.e(TAG, Arrays.toString(info));
                     for (VideoBean videoBean : infolist) {
                         VideoWithAds videoWithAds = new VideoWithAds();
                         videoWithAds.videoBean = videoBean;
-                        videoWithAds.itemType = VideoWithAds.ITEM_TYPE_SHORT_VIDEO;;
+                        videoWithAds.itemType = mItemType;
                         list.add(videoWithAds);
                     }
-
-                   VideoStorge.getInstance().put(key, infolist);
+                    VideoStorge.getInstance().put(String.valueOf(index), infolist);
                 }
-               return list;
+                return list;
+
             }
 
             @Override
-            public void onRefreshSuccess(List<VideoWithAds> adapterItemList, int allItemCount) {
+            public void onRefreshSuccess(List<VideoWithAds> list, int listCount) {
                 if (list == null || list.isEmpty()) {
                     return;
                 }
-                int space = 10;
+                int space = list.get(0).itemType == VideoWithAds.ITEM_TYPE_SHORT_VIDEO ? 10 : 5;
                 int size = list.size();
                 for (int i = 0; i < size; i += space) {
                     if (i != 0 && i % space == 0) {
-                        loadListAd(i);
+                        loadListAd(space, i);
                     }
                 }
             }
@@ -119,7 +160,7 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
 
             @Override
             public void onLoadMoreSuccess(List<VideoWithAds> loadItemList, int loadItemCount) {
-
+//                loadListAd();
             }
 
             @Override
@@ -129,41 +170,23 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
         });
     }
 
-    @Override
-    public void loadData() {
-        if (mRefreshView != null) {
-            mRefreshView.initData();
-        }
-    }
-
-    @Override
-    public void release() {
-        MainHttpUtil.cancel(MainHttpConsts.GET_FOLLOW);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        release();
-    }
-
     private void initAds() {
 
-        mTTAdNative = TTAdSdk.getAdManager().createAdNative(mContext);
+        mTTAdNative = TTAdSdk.getAdManager().createAdNative(context);
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
-        TTAdSdk.getAdManager().requestPermissionIfNecessary(mContext);
+        TTAdSdk.getAdManager().requestPermissionIfNecessary(context);
     }
 
-    private void loadListAd(final int position) {
+    private void loadListAd(int type, final int position) {
         float expressViewWidth;
         float expressViewHeight;
-        expressViewWidth = DensityUtils.getScreenWdp(mContext) / 2 - 12;
-        expressViewHeight = expressViewWidth * 16f / 9 + 7;
-       /* if(type==10){
+        if(type==10){
+            expressViewWidth = DensityUtils.getScreenWdp(context) / 2 - 12;
+            expressViewHeight = expressViewWidth * 16f / 9 + 7;
         }else{
-            expressViewWidth = DensityUtils.getScreenWdp(mContext);
+            expressViewWidth = DensityUtils.getScreenWdp(context);
             expressViewHeight = expressViewWidth * 3f /4;
-        }*/
+        }
         //step4:创建feed广告请求类型参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId("946218632")
@@ -199,6 +222,7 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
             videoWithAds.ad = ad;
             videoWithAds.itemType = VideoWithAds.ITEM_TYPE_Ads;
             List<VideoWithAds> adapterList = mAdapter.getList();
+            Log.e(TAG, "bindAdListener: " + adapterList.size());
             adapterList.add(position, videoWithAds);
             ad.render();
         }
@@ -227,7 +251,6 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
 
     }
 
-
     @Override
     public void onItemClick(VideoWithAds bean, int position) {
         int page = 1;
@@ -239,11 +262,18 @@ public class MainHomeFollowViewHolder extends AbsMainHomeChildViewHolder impleme
 
                 @Override
                 public void loadData(int p, HttpCallback callback) {
-                    VideoHttpUtil.getFollowVideoList(p,callback);
+                    if (mVideoClassId == ID_RECOMMEND) {
+                        VideoHttpUtil.getHomeVideoList(p, callback);
+                    } else if (mVideoClassId == ID_SHORT_VIDEO) {
+                        VideoHttpUtil.getHomeShortVideoList(p, callback);
+                    } else {
+                        VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                    }
                 }
             };
         }
+
         VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
-        VideoPlayActivity.forward(mContext, position, key, page);
+        VideoPlayActivity.forward(context, position, index, page);
     }
 }

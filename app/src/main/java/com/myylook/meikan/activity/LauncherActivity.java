@@ -8,9 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,10 @@ import android.widget.ImageView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.TTAdNative;
+import com.bytedance.sdk.openadsdk.TTAdSdk;
+import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.tencent.live.InitEvent;
 import com.tencent.live.TXLiveBase;
 import com.tencent.rtmp.ITXLivePlayListener;
@@ -137,6 +143,77 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
             }
         };
         mHandler.sendEmptyMessageDelayed(WHAT_GET_CONFIG, 1000);
+        TTAdNative mTTAdNative = TTAdSdk.getAdManager().createAdNative(this);
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId("887491230")
+                .setImageAcceptedSize(1080, 1920)
+                .build();
+        mTTAdNative.loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
+            //请求广告失败
+            @Override
+            @MainThread
+            public void onError(int code, String message) {
+                //开发者处理跳转到APP主页面逻辑
+                forwardMainActivity();
+            }
+
+            //请求广告超时
+            @Override
+            @MainThread
+            public void onTimeout() {
+                //开发者处理跳转到APP主页面逻辑
+                forwardActivity();
+            }
+
+            //请求广告成功
+            @Override
+            @MainThread
+            public void onSplashAdLoad(TTSplashAd ad) {
+                if (ad == null) {
+                    return;
+                }
+                //获取SplashView
+                View view = ad.getSplashView();
+                if (view != null && !LauncherActivity.this.isFinishing()) {
+                    mRoot.removeAllViews();
+                    //把SplashView 添加到ViewGroup中,注意开屏广告view：width =屏幕宽；height >=75%屏幕高
+                    mRoot.addView(view);
+                    //设置不开启开屏广告倒计时功能以及不显示跳过按钮,如果这么设置，您需要自定义倒计时逻辑
+                    //ad.setNotAllowSdkCountdown();
+                }else {
+                    //开发者处理跳转到APP主页面逻辑
+                    forwardActivity();
+                }
+
+                //设置SplashView的交互监听器
+                ad.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
+                    @Override
+                    public void onAdClicked(View view, int type) {
+                        Log.d(TAG, "onAdClicked");
+                    }
+
+                    @Override
+                    public void onAdShow(View view, int type) {
+                        Log.d(TAG, "onAdShow");
+                    }
+
+                    @Override
+                    public void onAdSkip() {
+                        Log.d(TAG, "onAdSkip");
+                        forwardActivity();
+
+                    }
+
+                    @Override
+                    public void onAdTimeOver() {
+                        Log.d(TAG, "onAdTimeOver");
+                        forwardActivity();
+                    }
+                });
+            }
+
+
+        }, 5000);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -226,6 +303,10 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
         }
+//        forwardActivity();
+    }
+
+    private void forwardActivity() {
         String[] uidAndToken = SpUtil.getInstance().getMultiStringValue(
                 new String[]{SpUtil.UID, SpUtil.TOKEN});
         final String uid = uidAndToken[0];

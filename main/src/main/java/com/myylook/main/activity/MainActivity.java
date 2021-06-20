@@ -57,7 +57,6 @@ import com.myylook.main.views.AbsMainViewHolder;
 import com.myylook.main.views.BonusViewHolder;
 import com.myylook.main.views.MainActiveViewHolder;
 import com.myylook.main.views.MainHomeViewHolder;
-import com.myylook.main.views.MainMallViewHolder;
 import com.myylook.main.views.MainMeViewHolder;
 import com.myylook.video.activity.VideoRecordActivity;
 import com.myylook.video.utils.VideoStorge;
@@ -79,7 +78,7 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
     private MainHomeViewHolder mHomeViewHolder;
     private MainActiveViewHolder mActiveViewHolder;
     //    private MainListViewHolder mListViewHolder;
-    private MainMallViewHolder mMallViewHolder;
+    private MainHomeViewHolder mMallViewHolder;
     private MainMeViewHolder mMeViewHolder;
     private AbsMainViewHolder[] mViewHolders;
     private View mBottom;
@@ -548,11 +547,11 @@ public class MainActivity extends AbsActivity implements MainAppBarLayoutListene
                     return;
                 }
                 if (position == 0) {
-                    mHomeViewHolder = new MainHomeViewHolder(mContext, parent);
+                    mHomeViewHolder = new MainHomeViewHolder(mContext, parent,0);
                     mHomeViewHolder.setAppBarLayoutListener(this);
                     vh = mHomeViewHolder;
                 } else if (position == 1) {
-                    mMallViewHolder = new MainMallViewHolder(mContext, parent);
+                    mMallViewHolder = new MainHomeViewHolder(mContext, parent,1);
                     vh = mMallViewHolder;
                 } else if (position == 2) {
                     mActiveViewHolder = new MainActiveViewHolder(mContext, parent);

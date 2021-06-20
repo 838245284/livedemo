@@ -1,5 +1,7 @@
 package com.myylook.common.http;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lzy.okgo.OkGo;
@@ -12,6 +14,7 @@ import com.myylook.common.bean.ConfigBean;
 import com.myylook.common.event.FollowEvent;
 import com.myylook.common.interfaces.CommonCallback;
 import com.myylook.common.utils.L;
+import com.myylook.common.utils.LogUtil;
 import com.myylook.common.utils.MD5Util;
 import com.myylook.common.utils.SpUtil;
 import com.myylook.common.utils.ToastUtil;
@@ -19,6 +22,8 @@ import com.myylook.common.utils.WordFilterUtil;
 import com.myylook.common.utils.WordUtil;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Arrays;
 
 /**
  * Created by cxf on 2018/9/17.
@@ -137,6 +142,7 @@ public class CommonHttpUtil {
                     @Override
                     public void onSuccess(int code, String msg, String[] info) {
                         if (code == 0 && info.length > 0) {
+                            LogUtil.e("TAG", "onSuccess: "+ Arrays.toString(info) );
                             try {
                                 JSONObject obj = JSON.parseObject(info[0]);
                                 ConfigBean bean = JSON.toJavaObject(obj, ConfigBean.class);

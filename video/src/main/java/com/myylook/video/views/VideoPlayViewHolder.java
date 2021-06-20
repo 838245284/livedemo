@@ -160,10 +160,10 @@ public class VideoPlayViewHolder extends AbsViewHolder implements ITXVodPlayList
             mVideoCover.setVisibility(View.VISIBLE);
         }
         hidePlayBtn();
-        L.e("播放视频--->" + videoBean);
         if (videoBean == null) {
             return;
         }
+        L.e("播放视频--->" + videoBean);
         String url = videoBean.getHref();
         if (TextUtils.isEmpty(url)) {
             return;

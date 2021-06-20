@@ -27,6 +27,7 @@ import com.myylook.common.utils.LogUtil;
 import com.myylook.main.R;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
 import com.myylook.main.fragment.TabFragment;
+import com.myylook.video.activity.VideoLongDetailsActivity;
 import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.bean.VideoWithAds;
@@ -253,27 +254,31 @@ public class TeachVideoView implements OnItemClickListener<VideoWithAds> {
 
     @Override
     public void onItemClick(VideoWithAds bean, int position) {
-        int page = 1;
-        if (mRefreshView != null) {
-            page = mRefreshView.getPageCount();
-        }
-        if (mVideoScrollDataHelper == null) {
-            mVideoScrollDataHelper = new VideoScrollDataHelper() {
+        if (bean.itemType == VideoWithAds.ITEM_TYPE_LONG_VIDEO) {
+            VideoLongDetailsActivity.forward(context, bean.videoBean);
+        }else{
+            int page = 1;
+            if (mRefreshView != null) {
+                page = mRefreshView.getPageCount();
+            }
+            if (mVideoScrollDataHelper == null) {
+                mVideoScrollDataHelper = new VideoScrollDataHelper() {
 
-                @Override
-                public void loadData(int p, HttpCallback callback) {
-                    if (mVideoClassId == ID_RECOMMEND) {
-                        VideoHttpUtil.getHomeVideoList(p, callback);
-                    } else if (mVideoClassId == ID_SHORT_VIDEO) {
-                        VideoHttpUtil.getHomeShortVideoList(p, callback);
-                    } else {
-                        VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                    @Override
+                    public void loadData(int p, HttpCallback callback) {
+                        if (mVideoClassId == ID_RECOMMEND) {
+                            VideoHttpUtil.getHomeVideoList(p, callback);
+                        } else if (mVideoClassId == ID_SHORT_VIDEO) {
+                            VideoHttpUtil.getHomeShortVideoList(p, callback);
+                        } else {
+                            VideoHttpUtil.getHomeVideoClassList(mVideoClassId, p, callback);
+                        }
                     }
-                }
-            };
-        }
+                };
+            }
 
-        VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
-        VideoPlayActivity.forward(context, position, index, page);
+            VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
+            VideoPlayActivity.forward(context, position, index, page);
+        }
     }
 }

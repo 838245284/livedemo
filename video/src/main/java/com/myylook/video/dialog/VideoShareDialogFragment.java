@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.myylook.common.CommonAppConfig;
 import com.myylook.common.Constants;
 import com.myylook.common.bean.ConfigBean;
@@ -16,8 +17,10 @@ import com.myylook.video.R;
 import com.myylook.video.activity.AbsVideoPlayActivity;
 import com.myylook.video.adapter.VideoShareAdapter;
 import com.myylook.video.bean.VideoBean;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import com.myylook.video.activity.VideoReportActivity;
 
 /**
@@ -117,6 +120,7 @@ public class VideoShareDialogFragment extends AbsDialogFragment implements OnIte
             return;
         }
         dismiss();
+
         switch (bean.getType()) {
             case Constants.LINK://复制链接
                 ((AbsVideoPlayActivity) mContext).copyLink(mVideoBean);
@@ -135,5 +139,4 @@ public class VideoShareDialogFragment extends AbsDialogFragment implements OnIte
                 break;
         }
     }
-
 }

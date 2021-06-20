@@ -155,6 +155,80 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoWithAds> {
         }
     }
 
+
+    class VideoLongVh extends RecyclerView.ViewHolder {
+
+        ImageView mCover;
+        ImageView mAvatar;
+        TextView mName;
+        TextView mTitle;
+        TextView mNum;
+        private final TextView mTopic;
+        private final TextView mCollectionNum;
+        private final TextView mLikeNum;
+        private final TextView mTag;
+        private final TextView mTime;
+
+        public VideoLongVh(View itemView) {
+            super(itemView);
+            mCover = (ImageView) itemView.findViewById(R.id.cover);
+            mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
+            mName = (TextView) itemView.findViewById(R.id.name);
+            mTitle = (TextView) itemView.findViewById(R.id.title);
+            mNum = (TextView) itemView.findViewById(R.id.num);
+            mTopic = (TextView) itemView.findViewById(R.id.topic);
+            mLikeNum = (TextView) itemView.findViewById(R.id.like_num);
+            mCollectionNum = (TextView) itemView.findViewById(R.id.collection_num);
+            mTag = (TextView) itemView.findViewById(R.id.tag);
+            mTime = (TextView) itemView.findViewById(R.id.time);
+
+            itemView.setOnClickListener(mOnClickListener);
+        }
+
+        void setData(VideoWithAds bean, int position, Object payload) {
+            itemView.setTag(position);
+            ImgLoader.display(mContext, bean.videoBean.getThumb(), mCover);
+            mTitle.setText(bean.videoBean.getTitle());
+            mNum.setText(bean.videoBean.getViewNum());
+            UserBean userBean = bean.videoBean.getUserBean();
+            if (userBean != null) {
+                ImgLoader.display(mContext, userBean.getAvatar(), mAvatar);
+                mName.setText(userBean.getUserNiceName());
+
+                mTopic.setText(userBean.getSignature());
+            }
+
+            mTopic.setText(bean.videoBean.getCity()); //
+            mCollectionNum.setText(bean.videoBean.getCommentNum()); //
+            mLikeNum.setText(bean.videoBean.getLikeNum());
+            mTag.setText(bean.videoBean.getLikeNum());  //
+            mTime.setText(bean.videoBean.getDatetime()); //
+            mCollectionNum.setText(bean.videoBean.getSc_count());
+            mLikeNum.setText(bean.videoBean.getLikeNum());
+            mTag.setText(bean.videoBean.getVideoclass());
+            mTime.setText(bean.videoBean.getVideo_time());
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                mTotalY += dy;
+                if (mLastTotalY != mTotalY && mActionListener != null) {
+                    mLastTotalY = mTotalY;
+                    mActionListener.onScrollYChanged(-mLastTotalY);
+                }
+            }
+        });
+    }
+
     class VideoAdVh extends RecyclerView.ViewHolder{
 
         private ViewGroup videoView;
@@ -222,8 +296,8 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoWithAds> {
             @Override
             public void onSelected(int i, String s) {
                 //用户选择不喜欢原因后，移除广告展示
-                    mList.remove(position);
-                    notifyDataSetChanged();
+                mList.remove(position);
+                notifyDataSetChanged();
             }
 
             @Override
@@ -316,72 +390,6 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoWithAds> {
         }
     }
 
-    class VideoLongVh extends RecyclerView.ViewHolder {
-
-        ImageView mCover;
-        ImageView mAvatar;
-        TextView mName;
-        TextView mTitle;
-        TextView mNum;
-        private final TextView mTopic;
-        private final TextView mCollectionNum;
-        private final TextView mLikeNum;
-        private final TextView mTag;
-        private final TextView mTime;
-
-        public VideoLongVh(View itemView) {
-            super(itemView);
-            mCover = (ImageView) itemView.findViewById(R.id.cover);
-            mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
-            mName = (TextView) itemView.findViewById(R.id.name);
-            mTitle = (TextView) itemView.findViewById(R.id.title);
-            mNum = (TextView) itemView.findViewById(R.id.num);
-            mTopic = (TextView) itemView.findViewById(R.id.topic);
-            mLikeNum = (TextView) itemView.findViewById(R.id.like_num);
-            mCollectionNum = (TextView) itemView.findViewById(R.id.collection_num);
-            mTag = (TextView) itemView.findViewById(R.id.tag);
-            mTime = (TextView) itemView.findViewById(R.id.time);
-
-            itemView.setOnClickListener(mOnClickListener);
-        }
-
-        void setData(VideoWithAds bean, int position, Object payload) {
-            itemView.setTag(position);
-            ImgLoader.display(mContext, bean.videoBean.getThumb(), mCover);
-            mTitle.setText(bean.videoBean.getTitle());
-            mNum.setText(bean.videoBean.getViewNum());
-            UserBean userBean = bean.videoBean.getUserBean();
-            if (userBean != null) {
-                ImgLoader.display(mContext, userBean.getAvatar(), mAvatar);
-                mName.setText(userBean.getUserNiceName());
-            }
-
-            mTopic.setText(bean.videoBean.getCity()); //
-            mCollectionNum.setText(bean.videoBean.getCommentNum()); //
-            mLikeNum.setText(bean.videoBean.getLikeNum());
-            mTag.setText(bean.videoBean.getLikeNum());  //
-            mTime.setText(bean.videoBean.getDatetime()); //
-        }
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                mTotalY += dy;
-                if (mLastTotalY != mTotalY && mActionListener != null) {
-                    mLastTotalY = mTotalY;
-                    mActionListener.onScrollYChanged(-mLastTotalY);
-                }
-            }
-        });
-    }
 
     public ActionListener mActionListener;
 

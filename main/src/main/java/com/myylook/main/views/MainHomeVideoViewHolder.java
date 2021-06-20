@@ -173,14 +173,12 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               /* ReportCondition.DataBean bean = adapter.getData().get(position);
-                tv.setText(bean.name);
-                refreshByCondition(position, bean, tv);*/
                 viewPager.setCurrentItem(position);
                 popupWindow.dismiss();
             }
         });
     }
+
 
     private void initIndicator() {
         mBtnMore.setVisibility(videoClassList != null && videoClassList.size() > 6 ? View.VISIBLE : View.GONE);

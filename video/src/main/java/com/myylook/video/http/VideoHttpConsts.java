@@ -5,6 +5,7 @@ package com.myylook.video.http;
  */
 
 public class VideoHttpConsts {
+    public static final String GET_VIDEO_DETAILS = "getVideoDetails";
     public static final String GET_HOME_VIDEO_LIST = "getHomeVideoList";
     public static final String GET_HOME_SHORT_VIDEO_LIST = "getHomeShortVideoList";
     public static final String GET_HOME_VIDEO_CLASS_LIST = "getHomeVideoClassList";

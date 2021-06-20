@@ -28,7 +28,7 @@ import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.ToastUtil;
 import com.myylook.common.utils.WordUtil;
 import com.myylook.video.R;
-import com.myylook.video.activity.AbsVideoPlayActivity;
+import com.myylook.video.activity.AbsVideoCommentActivity;
 import com.myylook.video.bean.VideoCommentBean;
 import com.myylook.video.event.VideoCommentEvent;
 import com.myylook.video.http.VideoHttpConsts;
@@ -219,7 +219,7 @@ public class VideoInputDialogFragment extends AbsDialogFragment implements View.
     private void showFace() {
         if (mFaceHeight > 0) {
             changeHeight(mFaceHeight);
-            View faceView = ((AbsVideoPlayActivity) mContext).getFaceView();
+            View faceView = ((AbsVideoCommentActivity) mContext).getFaceView();
             if (faceView != null) {
                 mChatFaceDialog = new ChatFaceDialog(mRootView, faceView, false, VideoInputDialogFragment.this);
                 mChatFaceDialog.show();
@@ -289,7 +289,7 @@ public class VideoInputDialogFragment extends AbsDialogFragment implements View.
                         EventBus.getDefault().post(new VideoCommentEvent(mVideoId, commentNum));
                         ToastUtil.show(msg);
                         dismiss();
-                        ((AbsVideoPlayActivity) mContext).hideCommentWindow(true);
+                        ((AbsVideoCommentActivity) mContext).hideCommentWindow(true);
                     }
                 } else {
                     ToastUtil.show(msg);

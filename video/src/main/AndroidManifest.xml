@@ -12,6 +12,11 @@
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden"
             />
         <activity
+            android:name="com.myylook.video.activity.VideoLongDetailsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name="com.myylook.video.activity.VideoRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing|stateAlwaysHidden"

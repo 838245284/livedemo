@@ -73,6 +73,18 @@ public class VideoHttpUtil {
 
 
     /**
+     * 获取视频详情
+     */
+    public static void getVideoDetails(String videoid, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.GetVideo", VideoHttpConsts.GET_VIDEO_DETAILS)
+                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("videoid", videoid)
+                .execute(callback);
+    }
+
+
+    /**
      * 视频点赞
      */
     public static void setVideoLike(String tag, String videoid, HttpCallback callback) {

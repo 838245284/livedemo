@@ -163,6 +163,7 @@ public class UserBean implements Parcelable {
         return level;
     }
 
+
     public void setLevel(int level) {
         this.level = level;
     }

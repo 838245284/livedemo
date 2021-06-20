@@ -46,11 +46,48 @@ public class VideoBean implements Parcelable {
 
 
 
+    private String video_time;
+    private String sc_count;
+    private String videoclass;
+    private String isattent; // 是否关注
+
 
     public VideoBean() {
 
     }
 
+
+    public String getIsattent() {
+        return isattent;
+    }
+
+    public void setIsattent(String isattent) {
+        this.isattent = isattent;
+    }
+
+    public String getVideo_time() {
+        return video_time;
+    }
+
+    public void setVideo_time(String video_time) {
+        this.video_time = video_time;
+    }
+
+    public String getSc_count() {
+        return sc_count;
+    }
+
+    public void setSc_count(String sc_count) {
+        this.sc_count = sc_count;
+    }
+
+    public String getVideoclass() {
+        return videoclass;
+    }
+
+    public void setVideoclass(String videoclass) {
+        this.videoclass = videoclass;
+    }
 
     public String getId() {
         return id;
@@ -300,6 +337,20 @@ public class VideoBean implements Parcelable {
         mGoodsType = goodsType;
     }
 
+
+    @Override
+    public String toString() {
+        return "VideoBean{" +
+                "title='" + title + '\'' +
+                ",href='" + href + '\'' +
+                ",id='" + id + '\'' +
+                ",uid='" + uid + '\'' +
+                ",userNiceName='" + (userBean != null ? userBean.getUserNiceName() : "null") + '\'' +
+                ",thumb='" + thumb + '\'' +
+                '}';
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -313,6 +364,7 @@ public class VideoBean implements Parcelable {
         dest.writeString(this.thumb);
         dest.writeString(this.thumbs);
         dest.writeString(this.href);
+        dest.writeString(this.hrefW);
         dest.writeString(this.likeNum);
         dest.writeString(this.viewNum);
         dest.writeString(this.commentNum);
@@ -322,27 +374,65 @@ public class VideoBean implements Parcelable {
         dest.writeString(this.lat);
         dest.writeString(this.lng);
         dest.writeString(this.city);
+        dest.writeParcelable(this.userBean, flags);
         dest.writeString(this.datetime);
-        dest.writeInt(this.like);
-        dest.writeInt(this.attent);
         dest.writeString(this.distance);
         dest.writeInt(this.step);
-        dest.writeParcelable(this.userBean, flags);
+        dest.writeInt(this.like);
+        dest.writeInt(this.attent);
         dest.writeInt(this.status);
-        dest.writeString(this.mGoodsId);
         dest.writeInt(this.musicId);
+        dest.writeString(this.mGoodsId);
         dest.writeInt(this.mType);
         dest.writeInt(this.mGoodsType);
-
+        dest.writeString(this.video_time);
+        dest.writeString(this.sc_count);
+        dest.writeString(this.videoclass);
+        dest.writeString(this.isattent);
     }
 
-    public VideoBean(Parcel in) {
+    public void readFromParcel(Parcel source) {
+        this.id = source.readString();
+        this.uid = source.readString();
+        this.title = source.readString();
+        this.thumb = source.readString();
+        this.thumbs = source.readString();
+        this.href = source.readString();
+        this.hrefW = source.readString();
+        this.likeNum = source.readString();
+        this.viewNum = source.readString();
+        this.commentNum = source.readString();
+        this.stepNum = source.readString();
+        this.shareNum = source.readString();
+        this.addtime = source.readString();
+        this.lat = source.readString();
+        this.lng = source.readString();
+        this.city = source.readString();
+        this.userBean = source.readParcelable(UserBean.class.getClassLoader());
+        this.datetime = source.readString();
+        this.distance = source.readString();
+        this.step = source.readInt();
+        this.like = source.readInt();
+        this.attent = source.readInt();
+        this.status = source.readInt();
+        this.musicId = source.readInt();
+        this.mGoodsId = source.readString();
+        this.mType = source.readInt();
+        this.mGoodsType = source.readInt();
+        this.video_time = source.readString();
+        this.sc_count = source.readString();
+        this.videoclass = source.readString();
+        this.isattent = source.readString();
+    }
+
+    protected VideoBean(Parcel in) {
         this.id = in.readString();
         this.uid = in.readString();
         this.title = in.readString();
         this.thumb = in.readString();
         this.thumbs = in.readString();
         this.href = in.readString();
+        this.hrefW = in.readString();
         this.likeNum = in.readString();
         this.viewNum = in.readString();
         this.commentNum = in.readString();
@@ -352,43 +442,35 @@ public class VideoBean implements Parcelable {
         this.lat = in.readString();
         this.lng = in.readString();
         this.city = in.readString();
+        this.userBean = in.readParcelable(UserBean.class.getClassLoader());
         this.datetime = in.readString();
-        this.like = in.readInt();
-        this.attent = in.readInt();
         this.distance = in.readString();
         this.step = in.readInt();
-        this.mGoodsId = in.readString();
-        this.userBean = in.readParcelable(UserBean.class.getClassLoader());
+        this.like = in.readInt();
+        this.attent = in.readInt();
         this.status = in.readInt();
         this.musicId = in.readInt();
+        this.mGoodsId = in.readString();
         this.mType = in.readInt();
         this.mGoodsType = in.readInt();
+        this.video_time = in.readString();
+        this.sc_count = in.readString();
+        this.videoclass = in.readString();
+        this.isattent = in.readString();
     }
 
-
     public static final Creator<VideoBean> CREATOR = new Creator<VideoBean>() {
+        @Override
+        public VideoBean createFromParcel(Parcel source) {
+            return new VideoBean(source);
+        }
+
         @Override
         public VideoBean[] newArray(int size) {
             return new VideoBean[size];
         }
-
-        @Override
-        public VideoBean createFromParcel(Parcel in) {
-            return new VideoBean(in);
-        }
     };
 
-    @Override
-    public String toString() {
-        return "VideoBean{" +
-                "title='" + title + '\'' +
-                ",href='" + href + '\'' +
-                ",id='" + id + '\'' +
-                ",uid='" + uid + '\'' +
-//                ",userNiceName='" + userBean.getUserNiceName() + '\'' +
-                ",thumb='" + thumb + '\'' +
-                '}';
-    }
 
 
     public String getTag() {

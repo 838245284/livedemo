@@ -27,6 +27,7 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
     public int type;
     public static final int TYPE_HOMR = 0;
     public static final int TYPE_TEACH = 1;
+    private MainTeachVideoViewHolder mVideoTeachViewHolder;
 
     public MainHomeViewHolder(Context context, ViewGroup parentView,int type) {
         super(context, parentView);
@@ -63,8 +64,8 @@ public class MainHomeViewHolder extends AbsMainHomeParentViewHolder {
                         mVideoViewHolder = new MainHomeVideoViewHolder(mContext, parent);
                         vh = mVideoViewHolder;
                     }else{
-                        /*mVideoTeachViewHolder = new MainTeachVideoViewHolder(mContext,parent);
-                        vh = mVideoTeachViewHolder;*/
+                        mVideoTeachViewHolder = new MainTeachVideoViewHolder(mContext,parent);
+                        vh = mVideoTeachViewHolder;
                     }
                 } else if (position == 1) {
                     mFollowViewHolder = new MainHomeFollowViewHolder(mContext, parent);

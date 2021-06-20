@@ -1,29 +1,20 @@
-package com.myylook.main.fragment;
+package com.myylook.main.views;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
-import com.google.gson.jpush.Gson;
-import com.google.gson.jpush.reflect.TypeToken;
 import com.myylook.common.Constants;
-import com.myylook.common.R;
 import com.myylook.common.adapter.RefreshAdapter;
 import com.myylook.common.custom.CommonRefreshView;
 import com.myylook.common.custom.ItemDecoration;
@@ -33,28 +24,21 @@ import com.myylook.common.utils.DensityUtils;
 import com.myylook.common.utils.DpUtil;
 import com.myylook.common.utils.JsonUtil;
 import com.myylook.common.utils.LogUtil;
+import com.myylook.main.R;
 import com.myylook.main.adapter.MainHomeVideoAdapter;
+import com.myylook.main.fragment.TabFragment;
 import com.myylook.video.activity.VideoPlayActivity;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.bean.VideoWithAds;
-import com.myylook.video.http.VideoHttpConsts;
 import com.myylook.video.http.VideoHttpUtil;
 import com.myylook.video.interfaces.VideoScrollDataHelper;
 import com.myylook.video.utils.VideoStorge;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TabFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TabFragment extends Fragment implements OnItemClickListener<VideoWithAds> {
-
+public class TeachVideoView implements OnItemClickListener<VideoWithAds> {
     private CommonRefreshView mRefreshView;
     private MainHomeVideoAdapter mAdapter;
     private static final int ID_RECOMMEND = -1;
@@ -76,37 +60,37 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private TTAdNative mTTAdNative;
 
-    public static TabFragment newInstance(String label) {
-        Bundle args = new Bundle();
-        args.putString("label", label);
-        TabFragment fragment = new TabFragment();
-        fragment.setArguments(args);
-        return fragment;
+    public TeachVideoView(Context context,int id, String index, int itemType) {
+        this.context = context;
+        mVideoClassId = id;
+        this.index = index;
+        mItemType = itemType;
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.layout_refreshlist, container, false);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        context = getContext();
-        mVideoClassId = getArguments().getInt("id");
-        index = getArguments().getString("index");
-        mItemType = getArguments().getInt("type", VideoWithAds.ITEM_TYPE_SHORT_VIDEO);
-        mRefreshView = view.findViewById(R.id.refreshView);
-        mRefreshView.setEmptyLayoutId(R.layout.view_no_data_live_video);
+    public View getContentView(){
+        View root = View.inflate(context, R.layout.layout_refreshlist, null);
+        mRefreshView = root.findViewById(com.myylook.common.R.id.refreshView);
+        mRefreshView.setEmptyLayoutId(com.myylook.common.R.layout.view_no_data_live_video);
         initAds();
+        setAdapter();
+        loadData();
+        return root;
+    }
+
+    public void loadData() {
+        if (!isFirstLoadData) {
+            return;
+        }
+        if (mRefreshView != null) {
+            mRefreshView.initData();
+            isFirstLoadData = false;
+        }
+    }
+
+    private void setAdapter() {
         if (mItemType == VideoWithAds.ITEM_TYPE_SHORT_VIDEO) {
-            mRefreshView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
-            ItemDecoration decoration = new ItemDecoration(getContext(), 0x00000000, 5, 0);
+            mRefreshView.setLayoutManager(new GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false));
+            ItemDecoration decoration = new ItemDecoration(context, 0x00000000, 5, 0);
             decoration.setOnlySetItemOffsetsButNoDraw(true);
             mRefreshView.setItemDecoration(decoration);
             FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -114,15 +98,15 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
             layoutParams.rightMargin = DpUtil.dp2px(5);
             mRefreshView.setLayoutParams(layoutParams);
         } else if (mItemType == VideoWithAds.ITEM_TYPE_LONG_VIDEO) {
-            mRefreshView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mRefreshView.setLayoutManager(new LinearLayoutManager(context));
             mRefreshView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoWithAds>() {
             @Override
             public RefreshAdapter<VideoWithAds> getAdapter() {
                 if (mAdapter == null) {
-                    mAdapter = new MainHomeVideoAdapter(getContext());
-                    mAdapter.setOnItemClickListener(TabFragment.this);
+                    mAdapter = new MainHomeVideoAdapter(context);
+                    mAdapter.setOnItemClickListener(TeachVideoView.this);
                 }
                 return mAdapter;
             }
@@ -177,7 +161,6 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
             @Override
             public void onLoadMoreSuccess(List<VideoWithAds> loadItemList, int loadItemCount) {
 //                loadListAd();
-                Log.e(TAG, "onLoadMoreSuccess: "+loadItemList.size()+"  "+loadItemCount );
             }
 
             @Override
@@ -197,19 +180,16 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
     private void loadListAd(int type, final int position) {
         float expressViewWidth;
         float expressViewHeight;
-        String code;
         if(type==10){
             expressViewWidth = DensityUtils.getScreenWdp(context) / 2 - 12;
             expressViewHeight = expressViewWidth * 16f / 9 + 7;
-            code = "946218632";
         }else{
             expressViewWidth = DensityUtils.getScreenWdp(context);
             expressViewHeight = expressViewWidth * 3f /4;
-            code = "946243418";
         }
         //step4:创建feed广告请求类型参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(code)
+                .setCodeId("946218632")
                 .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
                 .setAdType(AdSlot.TYPE_FEED)
                 .setAdCount(1) //请求广告数量为1到3条
@@ -218,7 +198,6 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
         mTTAdNative.loadNativeExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
-                Log.e(TAG, "onError: "+message );
             }
 
             @Override
@@ -272,23 +251,6 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
 
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadData();
-    }
-
-    public void loadData() {
-        if (!isFirstLoadData) {
-            return;
-        }
-        if (mRefreshView != null) {
-            mRefreshView.initData();
-            isFirstLoadData = false;
-        }
-    }
-
     @Override
     public void onItemClick(VideoWithAds bean, int position) {
         int page = 1;
@@ -312,21 +274,6 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
         }
 
         VideoStorge.getInstance().putDataHelper(Constants.VIDEO_HOME, mVideoScrollDataHelper);
-        VideoPlayActivity.forward(getContext(), position, index, page);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        isFirstLoadData = true;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_LIST);
-        VideoHttpUtil.cancel(VideoHttpConsts.GET_HOME_VIDEO_CLASS_LIST);
-        EventBus.getDefault().unregister(this);
-        mVideoScrollDataHelper = null;
+        VideoPlayActivity.forward(context, position, index, page);
     }
 }

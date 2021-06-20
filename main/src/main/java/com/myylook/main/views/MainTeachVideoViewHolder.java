@@ -96,7 +96,6 @@ public class MainTeachVideoViewHolder extends AbsMainHomeChildViewHolder impleme
     public void init() {
         viewPager = findViewById(R.id.vp_video);
         videoClassList = new ArrayList<>();
-        videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoWithAds.ITEM_TYPE_SHORT_VIDEO, false));
         videoClassList.add(new VideoClassBean(ID_RECOMMEND, WordUtil.getString(R.string.recommend), VideoWithAds.ITEM_TYPE_LONG_VIDEO, true));
         ConfigBean configBean = CommonAppConfig.getInstance().getConfig();
         if (configBean != null) {
@@ -149,14 +148,14 @@ public class MainTeachVideoViewHolder extends AbsMainHomeChildViewHolder impleme
     }
 
     private void initIndicator() {
-        mBtnMore.setVisibility(videoClassList != null && videoClassList.size() > 6 ? View.VISIBLE : View.GONE);
+        mBtnMore.setVisibility(mViewList != null && mViewList.size() > 6 ? View.VISIBLE : View.GONE);
 
         CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
 
             @Override
             public int getCount() {
-                return videoClassList.size();
+                return mViewList.size();
             }
 
             @Override
@@ -197,8 +196,10 @@ public class MainTeachVideoViewHolder extends AbsMainHomeChildViewHolder impleme
         for (int i = 0; i < videoClassList.size(); i++) {
             int id = videoClassList.get(i).getId();
             int type = videoClassList.get(i).getType();
-            TeachVideoView teachVideoView = new TeachVideoView(mContext,id,String.valueOf(i),type);
-            mViewList.add(teachVideoView.getContentView());
+            if(type!= VideoWithAds.ITEM_TYPE_SHORT_VIDEO){
+                TeachVideoView teachVideoView = new TeachVideoView(mContext,id,String.valueOf(i),type);
+                mViewList.add(teachVideoView.getContentView());
+            }
         }
     }
 

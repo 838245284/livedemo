@@ -244,7 +244,6 @@ public class TabFragment extends Fragment implements OnItemClickListener<VideoWi
             videoWithAds.ad = ad;
             videoWithAds.itemType = VideoWithAds.ITEM_TYPE_Ads;
             List<VideoWithAds> adapterList = mAdapter.getList();
-            Log.e(TAG, "bindAdListener: " + adapterList.size());
             adapterList.add(position, videoWithAds);
             ad.render();
         }

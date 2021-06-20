@@ -89,14 +89,6 @@ public class VideoBean implements Parcelable {
         this.videoclass = videoclass;
     }
 
-    public int getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(int itemType) {
-        this.itemType = itemType;
-    }
-
     public String getId() {
         return id;
     }
@@ -359,11 +351,6 @@ public class VideoBean implements Parcelable {
     }
 
 
-    public String getTag() {
-        return "VideoBean" + this.getId() + this.hashCode();
-    }
-
-
     @Override
     public int describeContents() {
         return 0;
@@ -484,17 +471,6 @@ public class VideoBean implements Parcelable {
         }
     };
 
-    @Override
-    public String toString() {
-        return "VideoBean{" +
-                "title='" + title + '\'' +
-                ",href='" + href + '\'' +
-                ",id='" + id + '\'' +
-                ",uid='" + uid + '\'' +
-//                ",userNiceName='" + userBean.getUserNiceName() + '\'' +
-                ",thumb='" + thumb + '\'' +
-                '}';
-    }
 
 
     public String getTag() {

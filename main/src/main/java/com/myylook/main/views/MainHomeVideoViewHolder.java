@@ -100,7 +100,6 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 
     @Override
     public void init() {
-        int selectIndex = 1;
         viewPager = findViewById(R.id.vp_video);
         View more = findViewById(R.id.btn_more);
         videoClassList = new ArrayList<>();
@@ -172,34 +171,8 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
             popupWindow.showAsDropDown(v);
         }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        viewPager.setCurrentItem(selectIndex, false);
-
-
-//        tabLayout.setupWithViewPager(viewPager);
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                int position = tab.getPosition();
-//                viewPager.setCurrentItem(position);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                // 未选中tab
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//                // 再次选中tab
-//            }
-//        });
-       /* mClassAdapter = new MainHomeVideoClassAdapter(mContext, videoClassList);
-        mClassAdapter.setOnItemClickListener(new OnItemClickListener<VideoClassBean>() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               /* ReportCondition.DataBean bean = adapter.getData().get(position);
-                tv.setText(bean.name);
-                refreshByCondition(position, bean, tv);*/
                 viewPager.setCurrentItem(position);
                 popupWindow.dismiss();
             }

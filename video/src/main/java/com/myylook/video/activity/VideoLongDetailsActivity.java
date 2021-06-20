@@ -33,6 +33,7 @@ import com.myylook.common.mob.MobCallback;
 import com.myylook.common.mob.MobShareUtil;
 import com.myylook.common.mob.ShareData;
 import com.myylook.common.utils.JsonUtil;
+import com.myylook.common.utils.LogUtil;
 import com.myylook.common.utils.RouteUtil;
 import com.myylook.common.utils.StringUtil;
 import com.myylook.common.utils.TextViewUtils;
@@ -41,6 +42,7 @@ import com.myylook.video.R;
 import com.myylook.video.adapter.VideoRecommendAdapter;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.bean.VideoCommentBean;
+import com.myylook.video.bean.VideoWithAds;
 import com.myylook.video.dialog.VideoInputDialogFragment;
 import com.myylook.video.dialog.VideoShareDialogFragment;
 import com.myylook.video.event.VideoLikeEvent;
@@ -61,12 +63,13 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements View.OnClickListener,
-        OnItemClickListener<VideoBean> {
+        OnItemClickListener<VideoWithAds> {
 
 
     private View mLayoutHeadView;
@@ -99,6 +102,8 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
 
     private boolean isPlay;
     private boolean isPause;
+
+    private List<VideoWithAds> list = new ArrayList<>();
 
 
     @Override
@@ -178,9 +183,9 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
     private void initList() {
         mRefreshView.setEmptyLayoutId(R.layout.view_no_data_video_long_details);
         mRefreshView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoBean>() {
+        mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoWithAds>() {
             @Override
-            public RefreshAdapter<VideoBean> getAdapter() {
+            public RefreshAdapter<VideoWithAds> getAdapter() {
                 if (mAdapter == null) {
                     mAdapter = new VideoRecommendAdapter(mContext);
                     mAdapter.setOnItemClickListener(VideoLongDetailsActivity.this);
@@ -194,20 +199,24 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
             }
 
             @Override
-            public List<VideoBean> processData(String[] info) {
-                List<VideoBean> list = JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
-                if (list != null && !list.isEmpty()) {
-                    for (VideoBean videoBean : list) {
-                        videoBean.setItemType(VideoBean.ITEM_TYPE_SHORT_VIDEO);
+            public List<VideoWithAds> processData(String[] info) {
+                List<VideoBean> infolist = JsonUtil.getJsonToList(Arrays.toString(info), VideoBean.class);
+                if (infolist != null && !infolist.isEmpty()) {
+                    for (VideoBean videoBean : infolist) {
+                        VideoWithAds videoWithAds = new VideoWithAds();
+                        videoWithAds.videoBean = videoBean;
+                        videoWithAds.itemType = VideoWithAds.ITEM_TYPE_SHORT_VIDEO;
+                        list.add(videoWithAds);
                     }
+                    VideoStorge.getInstance().put("TAG", infolist);
                 }
+
                 return list;
 
             }
 
             @Override
-            public void onRefreshSuccess(List<VideoBean> list, int listCount) {
-                VideoStorge.getInstance().put(Constants.VIDEO_HOME, list);
+            public void onRefreshSuccess(List<VideoWithAds> list, int listCount) {
             }
 
             @Override
@@ -216,7 +225,7 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
             }
 
             @Override
-            public void onLoadMoreSuccess(List<VideoBean> loadItemList, int loadItemCount) {
+            public void onLoadMoreSuccess(List<VideoWithAds> loadItemList, int loadItemCount) {
 
             }
 
@@ -445,8 +454,8 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
     }
 
     @Override
-    public void onItemClick(VideoBean bean, int position) {
-        VideoLongDetailsActivity.forward(mContext, bean);
+    public void onItemClick(VideoWithAds bean, int position) {
+        VideoLongDetailsActivity.forward(mContext, bean.videoBean);
     }
 
     @Override

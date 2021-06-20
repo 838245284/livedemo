@@ -14,6 +14,7 @@ import com.myylook.common.bean.UserBean;
 import com.myylook.common.glide.ImgLoader;
 import com.myylook.video.R;
 import com.myylook.video.bean.VideoBean;
+import com.myylook.video.bean.VideoWithAds;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * Created by cxf on 2018/9/26.
  */
 
-public class VideoRecommendAdapter extends RefreshAdapter<VideoBean> {
+public class VideoRecommendAdapter extends RefreshAdapter<VideoWithAds> {
 
 
     protected View.OnClickListener mOnClickListener;
@@ -40,7 +41,7 @@ public class VideoRecommendAdapter extends RefreshAdapter<VideoBean> {
                 if (tag != null) {
                     int position = (int) tag;
                     if (mOnItemClickListener != null) {
-                        VideoBean videoBean = mList.get(position);
+                        VideoWithAds videoBean = mList.get(position);
                         mOnItemClickListener.onItemClick(videoBean, position);
                     }
                 }
@@ -50,7 +51,7 @@ public class VideoRecommendAdapter extends RefreshAdapter<VideoBean> {
 
     @Override
     public int getItemViewType(int position) {
-        return mList != null ? mList.get(position).getItemType() : 0;
+        return mList != null ? mList.get(position).itemType : 0;
     }
 
     @NonNull
@@ -74,9 +75,9 @@ public class VideoRecommendAdapter extends RefreshAdapter<VideoBean> {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder vh, int position, @NonNull List payloads) {
         Object payload = payloads.size() > 0 ? payloads.get(0) : null;
         if (vh instanceof Vh) {
-            ((Vh) vh).setData(mList.get(position), position, payload);
+            ((Vh) vh).setData(mList.get(position).videoBean, position, payload);
         } else if (vh instanceof VideoLongVh) {
-            ((VideoLongVh) vh).setData(mList.get(position), position, payload);
+            ((VideoLongVh) vh).setData(mList.get(position).videoBean, position, payload);
         }
     }
 

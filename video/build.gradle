@@ -38,4 +38,10 @@ dependencies {
     compile project(':common')
     //萌颜
     compile project(':beauty')
+
+    implementation 'com.shuyu:GSYVideoPlayer:6.0.3'
+
+
+
+
 }

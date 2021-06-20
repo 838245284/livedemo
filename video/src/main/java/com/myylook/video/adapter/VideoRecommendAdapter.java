@@ -1,4 +1,4 @@
-package com.myylook.main.adapter;
+package com.myylook.video.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.myylook.common.adapter.RefreshAdapter;
 import com.myylook.common.bean.UserBean;
 import com.myylook.common.glide.ImgLoader;
-import com.myylook.main.R;
+import com.myylook.video.R;
 import com.myylook.video.bean.VideoBean;
 
 import java.util.List;
@@ -21,14 +21,14 @@ import java.util.List;
  * Created by cxf on 2018/9/26.
  */
 
-public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
+public class VideoRecommendAdapter extends RefreshAdapter<VideoBean> {
 
 
     protected View.OnClickListener mOnClickListener;
     private int mTotalY;
     private int mLastTotalY;
 
-    public MainHomeVideoAdapter(Context context) {
+    public VideoRecommendAdapter(Context context) {
         super(context);
         mOnClickListener = new View.OnClickListener() {
             @Override
@@ -56,12 +56,13 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VideoBean.ITEM_TYPE_SHORT_VIDEO) {
-            return new Vh(mInflater.inflate(R.layout.item_main_home_video, parent, false));
-        } else if (viewType == VideoBean.ITEM_TYPE_LONG_VIDEO) {
-            return new VideoLongVh(mInflater.inflate(R.layout.item_main_home_video_long, parent, false));
-        }
-        return new Vh(mInflater.inflate(R.layout.item_main_home_video, parent, false));
+//        if (viewType == VideoBean.ITEM_TYPE_SHORT_VIDEO) {
+//            return new Vh(mInflater.inflate(R.layout.item_main_home_video, parent, false));
+//        } else if (viewType == VideoBean.ITEM_TYPE_LONG_VIDEO) {
+//            return new VideoLongVh(mInflater.inflate(R.layout.item_main_home_video_long, parent, false));
+//        }
+//        return new Vh(mInflater.inflate(R.layout.item_main_home_video, parent, false));
+        return new VideoLongVh(mInflater.inflate(R.layout.item_video_recommend, parent, false));
     }
 
     @Override
@@ -77,27 +78,6 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
         } else if (vh instanceof VideoLongVh) {
             ((VideoLongVh) vh).setData(mList.get(position), position, payload);
         }
-    }
-
-    /**
-     * 删除视频
-     */
-    public void deleteVideo(String videoId) {
-        if (TextUtils.isEmpty(videoId)) {
-            return;
-        }
-//        int position = -1;
-//        for (int i = 0, size = mList.size(); i < size; i++) {
-//            if (videoId.equals(mList.get(i).getId())) {
-//                position = i;
-//                break;
-//            }
-//        }
-//        if (position >= 0) {
-//            notifyItemRemoved(position);
-//            notifyItemRangeChanged(position, mList.size(), Constants.PAYLOAD);
-//        }
-        notifyDataSetChanged();
     }
 
     class Vh extends RecyclerView.ViewHolder {
@@ -139,11 +119,8 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
         TextView mName;
         TextView mTitle;
         TextView mNum;
-        private final TextView mTopic;
         private final TextView mCollectionNum;
         private final TextView mLikeNum;
-        private final TextView mTag;
-        private final TextView mTime;
 
         public VideoLongVh(View itemView) {
             super(itemView);
@@ -152,11 +129,8 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
             mName = (TextView) itemView.findViewById(R.id.name);
             mTitle = (TextView) itemView.findViewById(R.id.title);
             mNum = (TextView) itemView.findViewById(R.id.num);
-            mTopic = (TextView) itemView.findViewById(R.id.topic);
             mLikeNum = (TextView) itemView.findViewById(R.id.like_num);
             mCollectionNum = (TextView) itemView.findViewById(R.id.collection_num);
-            mTag = (TextView) itemView.findViewById(R.id.tag);
-            mTime = (TextView) itemView.findViewById(R.id.time);
 
             itemView.setOnClickListener(mOnClickListener);
         }
@@ -171,13 +145,11 @@ public class MainHomeVideoAdapter extends RefreshAdapter<VideoBean> {
                 ImgLoader.display(mContext, userBean.getAvatar(), mAvatar);
                 mName.setText(userBean.getUserNiceName());
 
-                mTopic.setText(userBean.getSignature());
             }
 
             mCollectionNum.setText(bean.getSc_count());
             mLikeNum.setText(bean.getLikeNum());
-            mTag.setText(bean.getVideoclass());
-            mTime.setText(bean.getVideo_time());
+
         }
     }
 

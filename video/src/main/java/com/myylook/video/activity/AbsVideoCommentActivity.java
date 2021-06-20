@@ -1,5 +1,8 @@
 package com.myylook.video.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -17,6 +20,7 @@ import com.myylook.common.interfaces.OnFaceClickListener;
 import com.myylook.common.utils.ProcessResultUtil;
 import com.myylook.common.utils.ToastUtil;
 import com.myylook.video.R;
+import com.myylook.video.bean.VideoBean;
 import com.myylook.video.bean.VideoCommentBean;
 import com.myylook.video.dialog.VideoInputDialogFragment;
 import com.myylook.video.views.VideoCommentViewHolder;
@@ -32,6 +36,7 @@ public abstract class AbsVideoCommentActivity extends AbsActivity implements Vie
     protected VideoInputDialogFragment mVideoInputDialogFragment;
     private View mFaceView;//表情面板
     private int mFaceHeight;//表情面板高度
+    private ClipboardManager mClipboardManager;
 
     @Override
     protected void main() {
@@ -176,5 +181,6 @@ public abstract class AbsVideoCommentActivity extends AbsActivity implements Vie
     public void releaseVideoInputDialog() {
         mVideoInputDialogFragment = null;
     }
+
 
 }

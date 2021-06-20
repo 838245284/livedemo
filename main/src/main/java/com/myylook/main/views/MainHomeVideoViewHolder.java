@@ -82,6 +82,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
 
     @Override
     public void init() {
+        int selectIndex = 1;
         viewPager = findViewById(R.id.vp_video);
         videoClassList = new ArrayList<>();
         videoClassList.add(new VideoClassBean(ID_SHORT_VIDEO, WordUtil.getString(R.string.short_video), VideoBean.ITEM_TYPE_SHORT_VIDEO, false));
@@ -147,6 +148,9 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
         initIndicator();
 
 
+        viewPager.setCurrentItem(selectIndex, false);
+
+
 //        tabLayout.setupWithViewPager(viewPager);
 //        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override
@@ -177,6 +181,7 @@ public class MainHomeVideoViewHolder extends AbsMainHomeChildViewHolder implemen
         });*/
 //        EventBus.getDefault().register(this);
     }
+
 
     private void initIndicator() {
         mBtnMore.setVisibility(videoClassList != null && videoClassList.size() > 6 ? View.VISIBLE : View.GONE);

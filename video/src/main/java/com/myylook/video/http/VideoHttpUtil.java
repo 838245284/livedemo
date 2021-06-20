@@ -40,7 +40,7 @@ public class VideoHttpUtil {
      * 获取首页视频列表
      */
     public static void getHomeVideoList(int p, HttpCallback callback) {
-        HttpClient.getInstance().get("Video.getChangVideos", VideoHttpConsts.GET_HOME_VIDEO_LIST)
+        HttpClient.getInstance().get("Video.getChangVideo", VideoHttpConsts.GET_HOME_VIDEO_LIST)
 //        HttpClient.getInstance().get("Video.GetVideoList", VideoHttpConsts.GET_HOME_VIDEO_LIST)
                 .params("uid", CommonAppConfig.getInstance().getUid())
                 .params("token", CommonAppConfig.getInstance().getToken())
@@ -68,6 +68,18 @@ public class VideoHttpUtil {
                 .params("uid", "43458")
                 .params("token", CommonAppConfig.getInstance().getToken())
                 .params("p", p)
+                .execute(callback);
+    }
+
+
+    /**
+     * 获取视频详情
+     */
+    public static void getVideoDetails(String videoid, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.GetVideo", VideoHttpConsts.GET_VIDEO_DETAILS)
+                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("videoid", videoid)
                 .execute(callback);
     }
 

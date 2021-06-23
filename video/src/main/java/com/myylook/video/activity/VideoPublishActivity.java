@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -123,6 +124,10 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             return;
         }
         mMusicId = intent.getIntExtra(Constants.VIDEO_MUSIC_ID, 0);
+        Log.d(TAG, "mVideoPath=" + mVideoPath);
+        Log.d(TAG, "mVideoPathWater=" + mVideoPathWater);
+        Log.d(TAG, "mSaveType=" + mSaveType);
+        Log.d(TAG, "mMusicId=" + mMusicId);
         mBtnPub = findViewById(R.id.btn_pub);
         mBtnPub.setOnClickListener(this);
         mRecyclerView = findViewById(R.id.recyclerView);

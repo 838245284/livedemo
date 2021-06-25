@@ -596,6 +596,7 @@ public class VideoLongDetailsActivity extends AbsVideoPlayActivity implements Vi
         if (id == R.id.btn_like) {
             clickLike();
         } else if (id == R.id.btn_download) {
+            downloadVideo(mVideoBean);
         } else if (id == R.id.btn_reward) {
             openGiftWindow();
         } else if (id == R.id.btn_forward) {

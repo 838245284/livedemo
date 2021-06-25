@@ -54,19 +54,16 @@ import java.util.List;
 
 public class MainMeViewHolder extends AbsMainViewHolder implements OnItemClickListener<UserItemBean>, View.OnClickListener {
 
-    private AppBarLayout mAppBarLayout;
-    private TextView mTtileView;
+
     private ImageView mAvatar;
     private TextView mName;
     private ImageView mSex;
-    private ImageView mLevelAnchor;
-    private ImageView mLevel;
     private TextView mID;
     private TextView mFollow;
     private TextView mFans;
+    private TextView mCllocet;
     private boolean mPaused;
-    private RecyclerView mRecyclerView;
-    private MainMeAdapter mAdapter;
+    private List<UserItemBean> list;
 
     public MainMeViewHolder(Context context, ViewGroup parentView) {
         super(context, parentView);
@@ -74,45 +71,39 @@ public class MainMeViewHolder extends AbsMainViewHolder implements OnItemClickLi
 
     @Override
     protected int getLayoutId() {
-        return R.layout.view_main_me;
+        return R.layout.view_me;
     }
 
     @Override
     public void init() {
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                float totalScrollRange = appBarLayout.getTotalScrollRange();
-                float rate = -1 * verticalOffset / totalScrollRange * 2;
-                if (rate >= 1) {
-                    rate = 1;
-                }
-                if (mTtileView != null) {
-                    mTtileView.setAlpha(rate);
-                }
-            }
-        });
 
-        mTtileView = (TextView) findViewById(R.id.titleView);
         mAvatar = (ImageView) findViewById(R.id.avatar);
         mName = (TextView) findViewById(R.id.name);
         mSex = (ImageView) findViewById(R.id.sex);
-        mLevelAnchor = (ImageView) findViewById(R.id.level_anchor);
-        mLevel = (ImageView) findViewById(R.id.level);
         mID = (TextView) findViewById(R.id.id_val);
         mFollow = (TextView) findViewById(R.id.btn_follow);
         mFans = (TextView) findViewById(R.id.btn_fans);
-        mFollow.setOnClickListener(this);
-        mFans.setOnClickListener(this);
-        findViewById(R.id.btn_edit).setOnClickListener(this);
-        findViewById(R.id.btn_msg).setOnClickListener(this);
-        findViewById(R.id.btn_wallet).setOnClickListener(this);
-        findViewById(R.id.btn_detail).setOnClickListener(this);
-        findViewById(R.id.btn_shop).setOnClickListener(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        mCllocet = (TextView) findViewById(R.id.btn_collect);
+        findViewById(R.id.fans).setOnClickListener(this);
+        findViewById(R.id.follow).setOnClickListener(this);
+        findViewById(R.id.collect).setOnClickListener(this);
+        findViewById(R.id.edit).setOnClickListener(this);
+        findViewById(R.id.msg).setOnClickListener(this);
+        findViewById(R.id.wallet).setOnClickListener(this);
+        findViewById(R.id.mingxi).setOnClickListener(this);
+        findViewById(R.id.daoju).setOnClickListener(this);
+        findViewById(R.id.myvideo).setOnClickListener(this);
+        findViewById(R.id.my_dongtai).setOnClickListener(this);
+        findViewById(R.id.my_shouyi).setOnClickListener(this);
+        findViewById(R.id.my_renzheng).setOnClickListener(this);
+        findViewById(R.id.my_risk).setOnClickListener(this);
+        findViewById(R.id.pay_content).setOnClickListener(this);
+        findViewById(R.id.my_xiaodian).setOnClickListener(this);
+        findViewById(R.id.room_manage).setOnClickListener(this);
+        findViewById(R.id.zhuangbeicenter).setOnClickListener(this);
+        findViewById(R.id.mylevel).setOnClickListener(this);
+        findViewById(R.id.invite_award).setOnClickListener(this);
+        findViewById(R.id.person_setting).setOnClickListener(this);
     }
 
     @Override
@@ -160,31 +151,22 @@ public class MainMeViewHolder extends AbsMainViewHolder implements OnItemClickLi
     };
 
     private void showData(UserBean u, List<UserItemBean> list) {
+        this.list = list;
         ImgLoader.displayAvatar(mContext, u.getAvatar(), mAvatar);
-        mTtileView.setText(u.getUserNiceName());
         mName.setText(u.getUserNiceName());
         mSex.setImageResource(CommonIconUtil.getSexIcon(u.getSex()));
         CommonAppConfig appConfig = CommonAppConfig.getInstance();
         LevelBean anchorLevelBean = appConfig.getAnchorLevel(u.getLevelAnchor());
-        if (anchorLevelBean != null) {
+        /*if (anchorLevelBean != null) {
             ImgLoader.display(mContext, anchorLevelBean.getThumb(), mLevelAnchor);
         }
         LevelBean levelBean = appConfig.getLevel(u.getLevel());
         if (levelBean != null) {
             ImgLoader.display(mContext, levelBean.getThumb(), mLevel);
-        }
+        }*/
         mID.setText(u.getLiangNameTip());
-        mFollow.setText(StringUtil.contact(StringUtil.toWan(u.getFollows()), " ", WordUtil.getString(R.string.follow)));
-        mFans.setText(StringUtil.contact(StringUtil.toWan(u.getFans()), " ", WordUtil.getString(R.string.fans)));
-        if (list != null && list.size() > 0) {
-            if (mAdapter == null) {
-                mAdapter = new MainMeAdapter(mContext, list);
-                mAdapter.setOnItemClickListener(this);
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                mAdapter.setList(list);
-            }
-        }
+        mFollow.setText(StringUtil.toWan(u.getFollows()));
+        mFans.setText(StringUtil.toWan(u.getFans()));
     }
 
 
@@ -238,6 +220,28 @@ public class MainMeViewHolder extends AbsMainViewHolder implements OnItemClickLi
         }
     }
 
+    private void toWeb(int id){
+        for (int i = 0; i < list.size(); i++) {
+            UserItemBean bean = null;
+            if(list.get(i).getId()==id){
+                bean = list.get(i);
+            }else{
+                continue;
+            }
+            String url = bean.getHref();
+            if (!TextUtils.isEmpty(url)) {
+                if (!url.contains("?")) {
+                    url = StringUtil.contact(url, "?");
+                }
+                if (bean.getId() == 8) {//三级分销
+                    ThreeDistributActivity.forward(mContext, bean.getName(), url);
+                } else {
+                    WebViewActivity.forward(mContext, url);
+                }
+            }
+        }
+    }
+
     /**
      * 我的小店 商城
      */
@@ -271,22 +275,47 @@ public class MainMeViewHolder extends AbsMainViewHolder implements OnItemClickLi
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.btn_edit) {
+        if (i == R.id.edit) {
             RouteUtil.forwardUserHome(mContext, CommonAppConfig.getInstance().getUid());
-        } else if (i == R.id.btn_follow) {
+        } else if (i == R.id.follow) {
             forwardFollow();
-
-        } else if (i == R.id.btn_fans) {
+        } else if (i == R.id.fans) {
             forwardFans();
-
-        } else if (i == R.id.btn_msg) {
+        } else if (i == R.id.msg) {
             ChatActivity.forward(mContext);
-        } else if (i == R.id.btn_wallet) {
+        }else if(i == R.id.collect){
+            mContext.startActivity(new Intent(mContext, GoodsCollectActivity.class));
+        } else if (i == R.id.wallet) {
             RouteUtil.forwardMyCoin(mContext);
-        } else if (i == R.id.btn_detail) {
+        } else if (i == R.id.mingxi) {
             WebViewActivity.forward(mContext, HtmlConfig.DETAIL);
-        } else if (i == R.id.btn_shop) {
+        } else if (i == R.id.daoju) {
             WebViewActivity.forward(mContext, HtmlConfig.SHOP);
+        }else if(i == R.id.my_dongtai){
+            ((MainActivity)mContext).getLocation();
+            mContext.startActivity(new Intent(mContext, MyActiveActivity.class));
+        }else if(i == R.id.myvideo){
+            forwardMyVideo();
+        }else if(i == R.id.my_shouyi){
+            forwardProfit();
+        }else if(i == R.id.my_renzheng){
+            toWeb(11);
+        }else if(i == R.id.my_risk){
+            mContext.startActivity(new Intent(mContext, DailyTaskActivity.class));
+        }else if(i == R.id.pay_content){
+            forwardPayContent();
+        }else if(i == R.id.my_xiaodian){
+            forwardMall();
+        }else if(i == R.id.room_manage){
+            forwardRoomManage();
+        }else if(i == R.id.zhuangbeicenter){
+            toWeb(5);
+        }else if(i == R.id.mylevel){
+            toWeb(3);
+        }else if(i == R.id.invite_award){
+            toWeb(8);
+        }else if(i == R.id.person_setting){
+            forwardSetting();
         }
     }
 

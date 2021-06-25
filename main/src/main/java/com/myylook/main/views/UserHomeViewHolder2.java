@@ -80,7 +80,7 @@ import java.util.List;
 
 public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveShareDialogFragment.ActionListener {
 
-    private static final int PAGE_COUNT = 4;
+    private static final int PAGE_COUNT = 6;
     private UserHomeDetailViewHolder mDetailViewHolder;
     private VideoHomeViewHolder mVideoHomeViewHolder;
     private ActiveHomeViewHolder mActiveHomeViewHolder;
@@ -127,7 +127,16 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
     private boolean mIsUpdateField;
     private boolean mPaused;
     private LiveRoomCheckLivePresenter mCheckLivePresenter;
+    private String teachVideoString;
+    private String longVideoString;
+    private UserLongVideoViewHolder mVideoLongViewHolder;
+    private UserLongVideoViewHolder mVideoTeachViewHolder;
 
+    public static final int TYPE_LONG = 98;
+
+    public static final int TYPE_TEACH = 99;
+    private SimplePagerTitleView mChangCountTextView;
+    private SimplePagerTitleView mJiaoCountTextView;
 
     public UserHomeViewHolder2(Context context, ViewGroup parentView, String toUid, boolean fromLiveRoom, String fromLiveUid) {
         super(context, parentView, toUid, fromLiveRoom, fromLiveUid);
@@ -223,11 +232,13 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
             }
         });
 
-        mVideoString = WordUtil.getString(R.string.video);
+        mVideoString = "短视频";
+        longVideoString = "长视频";
+        teachVideoString = "教学";
         mLiveString = WordUtil.getString(R.string.live);
-        mActiveString = WordUtil.getString(R.string.main_active);
+        mActiveString = "动态";
         mIndicator = (MagicIndicator) findViewById(R.id.indicator);
-        final String[] titles = new String[]{WordUtil.getString(R.string.live_user_home_detail), mVideoString, mActiveString, mLiveString};
+        final String[] titles = new String[]{ mVideoString, longVideoString,teachVideoString,mActiveString, mLiveString,WordUtil.getString(R.string.live_user_home_detail)};
         CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
 
@@ -251,11 +262,15 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
                         }
                     }
                 });
-                if (index == 1) {
+                if (index == 0) {
                     mVideoCountTextView = simplePagerTitleView;
+                }  else if (index == 1) {
+                    mChangCountTextView = simplePagerTitleView;
                 } else if (index == 2) {
-                    mActiveCountTextView = simplePagerTitleView;
+                    mLiveCountTextView = simplePagerTitleView;
                 } else if (index == 3) {
+                    mJiaoCountTextView = simplePagerTitleView;
+                } else if (index == 4) {
                     mLiveCountTextView = simplePagerTitleView;
                 }
                 return simplePagerTitleView;
@@ -264,16 +279,19 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
-                linePagerIndicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                linePagerIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+//                linePagerIndicator.setXOffset(DpUtil.dp2px(13));
+                linePagerIndicator.setRoundRadius(DpUtil.dp2px(2));
                 linePagerIndicator.setLineWidth(DpUtil.dp2px(20));
+                /*linePagerIndicator.setLineWidth(DpUtil.dp2px(20));
                 linePagerIndicator.setLineHeight(DpUtil.dp2px(2));
-                linePagerIndicator.setRoundRadius(DpUtil.dp2px(1));
+                linePagerIndicator.setRoundRadius(DpUtil.dp2px(1));*/
                 linePagerIndicator.setColors(ContextCompat.getColor(mContext, R.color.global));
                 return linePagerIndicator;
             }
 
         });
-        commonNavigator.setAdjustMode(true);
+//        commonNavigator.setAdjustMode(true);
         mIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(mIndicator, mViewPager);
 
@@ -307,10 +325,7 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
                     return;
                 }
                 if (position == 0) {
-                    mDetailViewHolder = new UserHomeDetailViewHolder(mContext, parent, mToUid, mSelf);
-                    vh = mDetailViewHolder;
-                } else if (position == 1) {
-                    mVideoHomeViewHolder = new VideoHomeViewHolder(mContext, parent, mToUid);
+                    mVideoHomeViewHolder = new VideoHomeViewHolder(mContext, parent, mToUid,VideoHomeViewHolder.TYPE_USER);
                     mVideoHomeViewHolder.setActionListener(new VideoHomeViewHolder.ActionListener() {
                         @Override
                         public void onVideoDelete(int deleteCount) {
@@ -324,7 +339,25 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
                         }
                     });
                     vh = mVideoHomeViewHolder;
-                } else if (position == 2) {
+
+                }else if (position == 1) {
+                    mVideoLongViewHolder = new UserLongVideoViewHolder(mContext, parent, mToUid,TYPE_LONG);
+                    mVideoLongViewHolder.setActionListener(new UserLongVideoViewHolder.ActionListener() {
+                        @Override
+                        public void onVideoDelete(int deleteCount) {
+                        }
+                    });
+                    vh = mVideoLongViewHolder;
+                }else if (position == 2) {
+                    mVideoTeachViewHolder = new UserLongVideoViewHolder(mContext, parent, mToUid,TYPE_TEACH);
+                    mVideoTeachViewHolder.setActionListener(new UserLongVideoViewHolder.ActionListener() {
+                        @Override
+                        public void onVideoDelete(int deleteCount) {
+                        }
+                    });
+                    vh = mVideoTeachViewHolder;
+                }
+                else if (position == 3) {
                     mActiveHomeViewHolder = new ActiveHomeViewHolder(mContext, parent, mToUid);
                     mActiveHomeViewHolder.setActionListener(new ActiveHomeViewHolder.ActionListener() {
                         @Override
@@ -339,7 +372,7 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
                         }
                     });
                     vh = mActiveHomeViewHolder;
-                } else if (position == 3) {
+                } else if (position == 4) {
                     mLiveRecordViewHolder = new LiveRecordViewHolder(mContext, parent, mToUid);
                     mLiveRecordViewHolder.setActionListener(new LiveRecordViewHolder.ActionListener() {
                         @Override
@@ -348,6 +381,11 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
                         }
                     });
                     vh = mLiveRecordViewHolder;
+
+                } else if (position == 5) {
+                    mDetailViewHolder = new UserHomeDetailViewHolder(mContext, parent, mToUid, mSelf);
+                    vh = mDetailViewHolder;
+
                 }
                 if (vh == null) {
                     return;
@@ -422,7 +460,10 @@ public class UserHomeViewHolder2 extends AbsLivePageViewHolder implements LiveSh
                         mLiveCountTextView.setText(mLiveString + " " + obj.getString("livenums"));
                     }
                     mUserHomeSharePresenter.setToUid(mToUid).setToName(toName).setAvatarThumb(userBean.getAvatarThumb()).setFansNum(fansNum);
-
+                    int videonumsc = obj.getIntValue("videonumsc");
+                    int videonumsj = obj.getIntValue("videonumsj");
+                    mChangCountTextView.setText("长视频"+" "+videonumsc);
+                    mJiaoCountTextView.setText("教学"+" "+videonumsj);
                     if (mDetailViewHolder != null) {
                         mDetailViewHolder.showData(userBean, obj);
                     }

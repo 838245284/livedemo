@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="10dp">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shape_bg_video_time"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/white"
+                android:textSize="9sp" />
+
+        </FrameLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="9dp"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="8dp"
+            android:textColor="@color/textColor"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="@string/tip_text" />
+            <TextView
+                android:id="@+id/tv_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingHorizontal="9dp"
+                android:text="2161播放"
+                android:textColor="#ff7b7b7b"
+                android:textSize="12sp"
+                />
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_play"
+                android:layout_marginLeft="12dp"
+                android:layout_alignParentBottom="true"
+                android:paddingHorizontal="9dp"
+                android:text="2020-02-25"
+                android:textColor="#ff7b7b7b"
+                android:textSize="12sp"
+                />
+            <ImageView
+                android:id="@+id/oprate"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@mipmap/sandian"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="9dp"
+        android:background="#F5F5F5" />
+
+</LinearLayout>

@@ -10,6 +10,7 @@ import android.media.MediaMetadataRetriever;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -1036,6 +1037,7 @@ public class VideoEditActivity extends AbsActivity implements
 
         @Override
         public void handleMessage(Message msg) {
+            Log.e(TAG, msg.what + "");
             if (mVideoEditActivity != null) {
                 switch (msg.what) {
                     case SUCCESS:

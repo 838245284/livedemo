@@ -22,7 +22,9 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.myylook.common.mob.CoverBean;
 import com.myylook.common.utils.DensityUtils;
+import com.myylook.video.adapter.VideoCoverAdapter;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXVodPlayConfig;
@@ -76,6 +78,8 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
     private long originalVideoDuration;
     private TXVideoEditer mTxVideoEditer;
     private boolean originalVideoHorizontal;
+    private VideoCoverAdapter mVideoCoverAdapter;
+    private RecyclerView mRecyclerCover;
 
     public static void forward(Context context, String videoPath, String videoWaterPath, int saveType, int musicId) {
         Intent intent = new Intent(context, VideoPublishActivity.class);
@@ -211,6 +215,11 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             mPlayStarted = true;
         }
 
+        mRecyclerCover = findViewById(R.id.recyclerViewCover);
+        mRecyclerCover.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        mVideoCoverAdapter = new VideoCoverAdapter(mContext);
+        mRecyclerCover.setAdapter(mVideoCoverAdapter);
+
         VideoHttpUtil.getConcatGoods(new HttpCallback() {
             @Override
             public void onSuccess(int code, String msg, String[] info) {
@@ -226,7 +235,13 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             }
         });
 
+        initVideoParameter();
+        setVideoSize(originalVideoWidth, originalVideoHeight);
+        getVideoThumbnailList();
+    }
 
+
+    private void initVideoParameter() {
         mTxVideoEditer = new TXVideoEditer(mContext);
         mTxVideoEditer.setVideoPath(mVideoPath);
 
@@ -234,8 +249,8 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
         MediaMetadataRetriever mmr = null;
         mmr = new MediaMetadataRetriever();
         mmr.setDataSource(mVideoPath);
-        String width = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);//宽
-        String height = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);//高
+        String width = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);//宽
+        String height = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);//高
         String rotation = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
         //视频的长度
         originalVideoDuration = Long.valueOf(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
@@ -244,8 +259,6 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
         originalVideoWidth = Float.valueOf(width);
         originalVideoHeight = Float.valueOf(height);
         originalVideoHorizontal = originalVideoWidth > originalVideoHeight;
-        setVideoSize(originalVideoWidth, originalVideoHeight);
-        getVideoThumbnailList();
     }
 
     private void getVideoThumbnailList() {
@@ -270,6 +283,7 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             list.add(time);
             time = time + timeItem;
         }
+        list.add(originalVideoDuration);
         mTxVideoEditer.getThumbnail(list, (int) originalVideoHeight, (int) originalVideoWidth, false, mThumbnailListener);
 
         Log.d(TAG_NEW, "getThumbnail end");
@@ -280,6 +294,10 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
         public void onThumbnail(int index, long timeMs, final Bitmap bitmap) {
             Log.d(TAG_NEW, "onThumbnail: index = " + index + ",timeMs:" + timeMs);
             //将缩略图放入图片控件上
+            CoverBean bean = new CoverBean();
+            bean.setBitmap(bitmap);
+            bean.setChecked(index == 0);
+            mVideoCoverAdapter.getList().add(bean);
         }
     };
 

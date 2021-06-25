@@ -1,6 +1,7 @@
 package com.myylook.common.glide;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -77,6 +78,12 @@ public class ImgLoader {
             return;
         }
         Glide.with(context).asDrawable().load(file).skipMemoryCache(SKIP_MEMORY_CACHE).into(imageView);
+    }
+    public static void display(Context context, Bitmap bitmap, ImageView imageView) {
+        if (context == null || imageView == null) {
+            return;
+        }
+        Glide.with(context).asDrawable().load(bitmap).skipMemoryCache(SKIP_MEMORY_CACHE).into(imageView);
     }
 
     public static void display(Context context, int res, ImageView imageView) {

@@ -132,7 +132,7 @@ public class VideoShareDialogFragment extends AbsDialogFragment implements OnIte
                 ((AbsVideoPlayActivity) mContext).deleteVideo(mVideoBean);
                 break;
             case Constants.DELETE://删除
-                ((AbsVideoPlayActivity) mContext).deleteVideo(mVideoBean);
+                ((AbsVideoPlayActivity) mContext).downloadVideo(mVideoBean);
                 break;
             default:
                 ((AbsVideoPlayActivity) mContext).shareVideoPage(bean.getType(), mVideoBean);

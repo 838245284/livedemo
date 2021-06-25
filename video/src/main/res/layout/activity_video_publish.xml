@@ -3,39 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    >
+    android:orientation="vertical">
 
     <include layout="@layout/view_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="7dp"
         android:layout_marginRight="15dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        >
+        android:paddingBottom="10dp">
 
         <FrameLayout
-            android:layout_width="110dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:background="#000">
+            android:id="@+id/layout_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
             <com.tencent.rtmp.ui.TXCloudVideoView
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
         </FrameLayout>
-
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewCover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <ImageView
+                android:id="@+id/btn_cover_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/btn_cover_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_reset_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_btn_bg_video_cover_frame"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:text="@string/reset_video"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/btn_upload_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:background="@drawable/shape_btn_bg_video_cover_frame"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="6dp"
+                android:text="@string/upload_cover"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/btn_capture_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_btn_bg_video_cover_frame"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="6dp"
+                android:text="@string/capture_cover"
+                android:textColor="@color/textColor"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/shape_bg_video_publish_input">
 
             <EditText
                 android:id="@+id/input"
@@ -45,6 +109,7 @@
                 android:gravity="top"
                 android:hint="@string/video_pub_des_tip"
                 android:maxLength="50"
+                android:padding="8dp"
                 android:textColor="@color/gray1"
                 android:textColorHint="@color/gray3"
                 android:textSize="14sp" />
@@ -54,6 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
+                android:padding="8dp"
                 android:text="0/50"
                 android:textColor="@color/gray1"
                 android:textSize="14sp" />
@@ -96,8 +162,7 @@
                 android:layout_gravity="center_vertical|right"
                 android:background="@drawable/bg_check_box"
                 android:button="@null"
-                android:checked="true"
-                />
+                android:checked="true" />
 
         </FrameLayout>
 
@@ -110,8 +175,7 @@
             android:id="@+id/btn_goods_add"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="18dp"
@@ -183,6 +247,91 @@
                 android:layout_gravity="center_vertical|right"
                 android:layout_marginRight="10dp"
                 android:src="@mipmap/icon_arrow_video_right" />
+
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray2" />
+
+        <FrameLayout
+            android:id="@+id/btn_original"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/icon_video_class" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="30dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="@string/is_original"
+                android:singleLine="true"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
+                android:textSize="14sp" />
+
+            <CheckBox
+                android:id="@+id/checkbox_original"
+                android:layout_width="54dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|right"
+                android:background="@drawable/bg_check_box"
+                android:button="@null"
+                android:checked="true" />
+
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray2" />
+
+        <FrameLayout
+            android:id="@+id/btn_teaching"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:src="@mipmap/icon_video_class" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="30dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="@string/is_teaching"
+                android:singleLine="true"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
+                android:textSize="14sp" />
+
+
+            <CheckBox
+                android:id="@+id/checkbox_teachingl"
+                android:layout_width="54dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|right"
+                android:background="@drawable/bg_check_box"
+                android:button="@null"
+                android:checked="true" />
 
 
         </FrameLayout>

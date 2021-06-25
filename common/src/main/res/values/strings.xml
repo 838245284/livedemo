@@ -727,6 +727,8 @@
     <string name="login_forbidden_2">封禁时长：</string>
     <string name="know">知道了</string>
     <string name="video_class">视频分类</string>
+    <string name="is_original">是否原创</string>
+    <string name="is_teaching">是否教学</string>
     <string name="video_all_class">所有分类</string>
     <string name="video_choose_class">选择视频分类</string>
     <string name="video_choose_class_2">请选择视频分类</string>

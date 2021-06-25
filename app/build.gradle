@@ -9,6 +9,12 @@ android {
             storeFile file('../meikan.jks')
             storePassword '123456'
         }
+        debug {
+            keyAlias 'mk'
+            keyPassword '123456'
+            storeFile file('../meikan.jks')
+            storePassword '123456'
+        }
     }
 
 

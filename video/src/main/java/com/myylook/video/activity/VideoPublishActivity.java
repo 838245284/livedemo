@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.myylook.common.mob.CoverBean;
+import com.myylook.common.utils.DensityUtils;
+import com.myylook.video.adapter.VideoCoverAdapter;
 import com.tencent.rtmp.ITXVodPlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXVodPlayConfig;
@@ -50,10 +54,13 @@ import com.myylook.video.upload.VideoUploadCallback;
 import com.myylook.video.upload.VideoUploadQnImpl;
 import com.myylook.video.upload.VideoUploadStrategy;
 import com.myylook.video.upload.VideoUploadTxImpl;
+import com.tencent.ugc.TXVideoEditer;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -66,6 +73,14 @@ import top.zibin.luban.OnRenameListener;
 
 public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListener, View.OnClickListener {
 
+    private float originalVideoWidth;
+    private float originalVideoHeight;
+    private long originalVideoDuration;
+    private TXVideoEditer mTxVideoEditer;
+    private boolean originalVideoHorizontal;
+    private VideoCoverAdapter mVideoCoverAdapter;
+    private RecyclerView mRecyclerCover;
+
     public static void forward(Context context, String videoPath, String videoWaterPath, int saveType, int musicId) {
         Intent intent = new Intent(context, VideoPublishActivity.class);
         intent.putExtra(Constants.VIDEO_PATH, videoPath);
@@ -76,6 +91,7 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
     }
 
     private static final String TAG = "VideoPublishActivity";
+    private static final String TAG_NEW = "视频发布";
     private static final int REQ_CODE_GOODS = 100;
     private static final int REQ_CODE_CLASS = 101;
     private TextView mNum;
@@ -98,6 +114,8 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
     private int mMusicId;
     private View mBtnPub;
     private CheckBox mCheckBox;
+    private CheckBox mCheckBoxOriginal;
+    private CheckBox mCheckBoxTeachingl;
     private TextView mGoodsName;
     private View mBtnGoodsAdd;
     private TextView mVideoClassName;
@@ -123,6 +141,10 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             return;
         }
         mMusicId = intent.getIntExtra(Constants.VIDEO_MUSIC_ID, 0);
+        Log.d(TAG, "mVideoPath=" + mVideoPath);
+        Log.d(TAG, "mVideoPathWater=" + mVideoPathWater);
+        Log.d(TAG, "mSaveType=" + mSaveType);
+        Log.d(TAG, "mMusicId=" + mMusicId);
         mBtnPub = findViewById(R.id.btn_pub);
         mBtnPub.setOnClickListener(this);
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -162,6 +184,11 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
         mLocation.setText(CommonAppConfig.getInstance().getCity());
         mCheckBox = findViewById(R.id.checkbox);
         mCheckBox.setOnClickListener(this);
+        mCheckBoxOriginal = findViewById(R.id.checkbox_original);
+        mCheckBoxOriginal.setOnClickListener(this);
+        mCheckBoxTeachingl = findViewById(R.id.checkbox_teachingl);
+        mCheckBoxTeachingl.setOnClickListener(this);
+
         mBtnGoodsAdd = findViewById(R.id.btn_goods_add);
         mVideoClassName = findViewById(R.id.video_class_name);
         mGoodsName = findViewById(R.id.goods_name);
@@ -169,6 +196,12 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
 
         mTXCloudVideoView = findViewById(R.id.video_view);
         mPlayer = new TXVodPlayer(mContext);
+//        mPlayer.snapshot(new TXLivePlayer.ITXSnapshotListener() {
+//            @Override
+//            public void onSnapshot(Bitmap bitmap) {
+//
+//            }
+//        });
         mPlayer.setConfig(new TXVodPlayConfig());
         mPlayer.setPlayerView(mTXCloudVideoView);
         mPlayer.enableHardwareDecode(false);
@@ -177,9 +210,15 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
         mPlayer.setVodListener(this);
         mPlayer.setLoop(true);
         int result = mPlayer.startPlay(mVideoPath);
+        Log.d(TAG_NEW, "play result=" + result);
         if (result == 0) {
             mPlayStarted = true;
         }
+
+        mRecyclerCover = findViewById(R.id.recyclerViewCover);
+        mRecyclerCover.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        mVideoCoverAdapter = new VideoCoverAdapter(mContext);
+        mRecyclerCover.setAdapter(mVideoCoverAdapter);
 
         VideoHttpUtil.getConcatGoods(new HttpCallback() {
             @Override
@@ -196,13 +235,103 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             }
         });
 
+        initVideoParameter();
+        setVideoSize(originalVideoWidth, originalVideoHeight);
+        getVideoThumbnailList();
+    }
+
+
+    private void initVideoParameter() {
+        mTxVideoEditer = new TXVideoEditer(mContext);
+        mTxVideoEditer.setVideoPath(mVideoPath);
+
+        //生成视频封面图
+        MediaMetadataRetriever mmr = null;
+        mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(mVideoPath);
+        String width = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);//宽
+        String height = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);//高
+        String rotation = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+        //视频的长度
+        originalVideoDuration = Long.valueOf(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+
+        Log.d(TAG_NEW, "width=" + width + "," + "height=" + height + "," + "rotation=" + rotation + ",originalVideoDuration=" + originalVideoDuration);
+        originalVideoWidth = Float.valueOf(width);
+        originalVideoHeight = Float.valueOf(height);
+        originalVideoHorizontal = originalVideoWidth > originalVideoHeight;
+    }
+
+    private void getVideoThumbnailList() {
+
+        int count = originalVideoHorizontal ? 6 : 4;
+//        参数 @param fast 可以使用两种模式：
+//        快速出图：输出的缩略图速度比较快，但是与视频对应不精准，传入参数 true。
+//        精准出图：输出的缩略图与视频时间点精准对应，但是在高分辨率上速度慢一些，传入参数 false。
+        /**
+         * 获取缩略图列表
+         * @param count    缩略图张数
+         * @param width    缩略图宽度
+         * @param height   缩略图高度
+         * @param fast       缩略图是否关键帧的图片
+         * @param listener 缩略图的回调函数
+
+         */
+        ArrayList<Long> list = new ArrayList<>();
+        long time = 0L;
+        long timeItem = originalVideoDuration / count;
+        for (int i = 0; i < count; i++) {
+            list.add(time);
+            time = time + timeItem;
+        }
+        list.add(originalVideoDuration);
+        mTxVideoEditer.getThumbnail(list, (int) originalVideoHeight, (int) originalVideoWidth, false, mThumbnailListener);
+
+        Log.d(TAG_NEW, "getThumbnail end");
+    }
+
+    TXVideoEditer.TXThumbnailListener mThumbnailListener = new TXVideoEditer.TXThumbnailListener() {
+        @Override
+        public void onThumbnail(int index, long timeMs, final Bitmap bitmap) {
+            Log.d(TAG_NEW, "onThumbnail: index = " + index + ",timeMs:" + timeMs);
+            //将缩略图放入图片控件上
+            CoverBean bean = new CoverBean();
+            bean.setBitmap(bitmap);
+            bean.setChecked(index == 0);
+            mVideoCoverAdapter.getList().add(bean);
+        }
+    };
+
+    /**
+     * 设置视频大小
+     *
+     * @param videoWidth
+     * @param videoHeight
+     */
+    private void setVideoSize(float videoWidth, float videoHeight) {
+        if (mTXCloudVideoView == null) return;
+        int maxWidth = DensityUtils.getScreenW(mContext) - DensityUtils.dip2px(mContext, 30);
+        int maxHight = DensityUtils.dip2px(mContext, 200);
+        float ratio = videoWidth / videoHeight;
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mTXCloudVideoView.getLayoutParams();
+        if (originalVideoHorizontal) {
+            // 横屏
+            params.width = FrameLayout.LayoutParams.MATCH_PARENT;
+            params.height = (int) (maxWidth / ratio);
+        } else {
+            // 竖屏
+            params.width = (int) (maxHight * ratio);
+            params.height = maxHight;
+        }
+        Log.d(TAG_NEW, "setVideoSize w=" + params.width + ",h=" + params.height);
+        mTXCloudVideoView.requestLayout();
     }
 
     @Override
     public void onPlayEvent(TXVodPlayer txVodPlayer, int e, Bundle bundle) {
         switch (e) {
             case TXLiveConstants.PLAY_EVT_CHANGE_RESOLUTION:
-                onVideoSizeChanged(bundle.getInt("EVT_PARAM1", 0), bundle.getInt("EVT_PARAM2", 0));
+//                onVideoSizeChanged(bundle.getInt("EVT_PARAM1", 0), bundle.getInt("EVT_PARAM2", 0));
                 break;
         }
     }
@@ -219,6 +348,13 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
     public void onVideoSizeChanged(float videoWidth, float videoHeight) {
         if (mTXCloudVideoView != null && videoWidth > 0 && videoHeight > 0) {
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mTXCloudVideoView.getLayoutParams();
+            if (videoWidth > videoHeight) {
+                // 横屏
+
+            } else {
+                // 竖屏
+
+            }
             if (videoWidth / videoHeight > 0.5625f) {//横屏 9:16=0.5625
                 params.height = (int) (mTXCloudVideoView.getWidth() / videoWidth * videoHeight);
                 params.gravity = Gravity.CENTER;
@@ -304,6 +440,8 @@ public class VideoPublishActivity extends AbsActivity implements ITXVodPlayListe
             publishVideo();
         } else if (i == R.id.checkbox) {
             clickCheckBox();
+        } else if (i == R.id.checkbox_original) {
+        } else if (i == R.id.checkbox_teachingl) {
         } else if (i == R.id.btn_goods_add) {
             RouteUtil.searchMallGoods(this, REQ_CODE_GOODS);
         } else if (i == R.id.btn_video_class) {

@@ -1,22 +1,22 @@
 package com.myylook.main.views;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.myylook.common.CommonAppConfig;
 import com.myylook.common.Constants;
 import com.myylook.common.adapter.RefreshAdapter;
 import com.myylook.common.custom.CommonRefreshView;
-import com.myylook.common.custom.ItemDecoration;
 import com.myylook.common.http.HttpCallback;
 import com.myylook.common.interfaces.OnItemClickListener;
 import com.myylook.common.utils.JsonUtil;
 import com.myylook.live.views.AbsUserHomeViewHolder;
 import com.myylook.main.R;
-import com.myylook.main.adapter.VideoHomeAdapter;
-import com.myylook.video.activity.VideoPlayActivity;
+import com.myylook.main.adapter.LongVideoHomeAdapter;
+import com.myylook.video.activity.VideoLongDetailsActivity;
 import com.myylook.video.bean.VideoBean;
 import com.myylook.video.event.VideoDeleteEvent;
 import com.myylook.video.event.VideoScrollPageEvent;
@@ -37,19 +37,17 @@ import java.util.List;
  * 用户个人中心发布的视频列表
  */
 
-public class VideoHomeViewHolder extends AbsUserHomeViewHolder implements OnItemClickListener<VideoBean> {
+public class UserLongVideoViewHolder extends AbsUserHomeViewHolder implements OnItemClickListener<VideoBean> {
 
     private CommonRefreshView mRefreshView;
-    private VideoHomeAdapter mAdapter;
+    private LongVideoHomeAdapter mAdapter;
     private String mToUid;
     private VideoScrollDataHelper mVideoScrollDataHelper;
     private ActionListener mActionListener;
     private String mKey;
     private int type;
-    public static final int TYPE_USER = 0;
-    public static final int TYPE_MINE = 1;
 
-    public VideoHomeViewHolder(Context context, ViewGroup parentView, String toUid,int type) {
+    public UserLongVideoViewHolder(Context context, ViewGroup parentView, String toUid, int type) {
         super(context, parentView, toUid);
         this.type = type;
     }
@@ -76,27 +74,22 @@ public class VideoHomeViewHolder extends AbsUserHomeViewHolder implements OnItem
         } else {
             mRefreshView.setEmptyLayoutId(R.layout.view_no_data_video_home_2);
         }
-        mRefreshView.setLayoutManager(new GridLayoutManager(mContext, 3, GridLayoutManager.VERTICAL, false));
-        ItemDecoration decoration = new ItemDecoration(mContext, 0x00000000, 2, 0);
-        decoration.setOnlySetItemOffsetsButNoDraw(true);
-        mRefreshView.setItemDecoration(decoration);
+        mRefreshView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRefreshView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         mRefreshView.setDataHelper(new CommonRefreshView.DataHelper<VideoBean>() {
             @Override
             public RefreshAdapter<VideoBean> getAdapter() {
                 if (mAdapter == null) {
-                    mAdapter = new VideoHomeAdapter(mContext);
-                    mAdapter.setOnItemClickListener(VideoHomeViewHolder.this);
+                    mAdapter = new LongVideoHomeAdapter(mContext);
+                    mAdapter.setOnItemClickListener(UserLongVideoViewHolder.this);
                 }
                 return mAdapter;
             }
 
             @Override
             public void loadData(int p, HttpCallback callback) {
-                if(type==TYPE_USER){
-                    VideoHttpUtil.getHomeVideo(mToUid, p,100, callback);
-                }else{
-                    VideoHttpUtil.getMyVideo(mToUid, p,100, callback);
-                }
+//                VideoHttpUtil.getHomeVideo(mToUid, p, callback);
+                VideoHttpUtil.getHomeVideo(mToUid, p,type, callback);
             }
 
             @Override
@@ -125,10 +118,10 @@ public class VideoHomeViewHolder extends AbsUserHomeViewHolder implements OnItem
 
             @Override
             public void loadData(int p, HttpCallback callback) {
-                VideoHttpUtil.getHomeVideo(mToUid, p,100, callback);
+                VideoHttpUtil.getHomeVideo(mToUid, p, 98,callback);
             }
         };
-        EventBus.getDefault().register(VideoHomeViewHolder.this);
+        EventBus.getDefault().register(UserLongVideoViewHolder.this);
     }
 
 
@@ -169,12 +162,7 @@ public class VideoHomeViewHolder extends AbsUserHomeViewHolder implements OnItem
 
     @Override
     public void onItemClick(VideoBean bean, int position) {
-        int page = 1;
-        if (mRefreshView != null) {
-            page = mRefreshView.getPageCount();
-        }
-        VideoStorge.getInstance().putDataHelper(mKey, mVideoScrollDataHelper);
-        VideoPlayActivity.forward(mContext, position, mKey, page);
+        VideoLongDetailsActivity.forward(mContext, bean);
     }
 
 

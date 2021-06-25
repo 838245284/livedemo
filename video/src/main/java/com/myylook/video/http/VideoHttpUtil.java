@@ -309,11 +309,25 @@ public class VideoHttpUtil {
     /**
      * 获取某人发布的视频
      */
-    public static void getHomeVideo(String toUid, int p, HttpCallback callback) {
-        HttpClient.getInstance().get("Video.getHomeVideo", VideoHttpConsts.GET_HOME_VIDEO)
+    public static void getHomeVideo(String toUid, int p,int classid, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.getHomeVideos", VideoHttpConsts.GET_HOME_VIDEO)
                 .params("uid", CommonAppConfig.getInstance().getUid())
                 .params("token", CommonAppConfig.getInstance().getToken())
                 .params("touid", toUid)
+                .params("classid", classid)
+                .params("p", p)
+                .execute(callback);
+    }
+
+    /**
+     * 获取我发布的视频
+     */
+    public static void getMyVideo(String toUid, int p,int classid, HttpCallback callback) {
+        HttpClient.getInstance().get("Video.GetMyVideos", VideoHttpConsts.GET_MY_VIDEO)
+                .params("uid", CommonAppConfig.getInstance().getUid())
+                .params("token", CommonAppConfig.getInstance().getToken())
+                .params("touid", toUid)
+                .params("classid", classid)
                 .params("p", p)
                 .execute(callback);
     }
